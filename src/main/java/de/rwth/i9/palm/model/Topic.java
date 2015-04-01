@@ -20,6 +20,14 @@ public class Topic extends Concept
 	@CollectionTable( name = "term_value" )
 	Map<String, Double> termValues;
 
+	/* collection of term with comma separated value */
+	@Column
+	String termString;
+
+	/* percentage of topic composed in a document */
+	@Column
+	double composition;
+
 	// getter & setter
 
 	public Map<String, Double> getTermValues()
@@ -40,5 +48,25 @@ public class Topic extends Concept
 		termValues.put( term, value );
 
 		return this;
+	}
+
+	public String getTermString()
+	{
+		return termString;
+	}
+
+	public void setTermString( String termString )
+	{
+		this.termString = termString;
+	}
+
+	public double getComposition()
+	{
+		return composition;
+	}
+
+	public void setComposition( double composition )
+	{
+		this.composition = composition;
 	}
 }
