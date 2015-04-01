@@ -35,6 +35,10 @@ public class Author extends PersistableResource
 	@JoinTable( name = "author_institution", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "institution_id" ) )
 	private List<Institution> institutions;
 
+	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@JoinTable( name = "author_interest", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "topic_id" ) )
+	List<Topic> topics;
+
 	public String getName()
 	{
 		return name;
@@ -91,6 +95,35 @@ public class Author extends PersistableResource
 			this.institutions = new ArrayList<Institution>();
 
 		institutions.add( institution );
+		return this;
+	}
+
+	public List<Institution> getInstitutions()
+	{
+		return institutions;
+	}
+
+	public void setInstitutions( List<Institution> institutions )
+	{
+		this.institutions = institutions;
+	}
+
+	public List<Topic> getTopics()
+	{
+		return topics;
+	}
+
+	public void setTopics( List<Topic> topics )
+	{
+		this.topics = topics;
+	}
+
+	public Author addTopic( Topic topic )
+	{
+		if ( this.topics == null )
+			this.topics = new ArrayList<Topic>();
+
+		this.topics.add( topic );
 		return this;
 	}
 }

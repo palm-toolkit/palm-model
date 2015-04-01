@@ -25,6 +25,9 @@ public class Venue extends PersistableResource
 	private String type;
 
 	@Column
+	private String notation;
+
+	@Column
 	private String knowledgeGroup;
 
 	@OneToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
@@ -78,5 +81,15 @@ public class Venue extends PersistableResource
 	public void setKnowledgeGroup( String knowledgeGroup )
 	{
 		this.knowledgeGroup = knowledgeGroup;
+	}
+
+	public String getNotation()
+	{
+		return notation;
+	}
+
+	public void setNotation( String notation )
+	{
+		this.notation = notation;
 	}
 }

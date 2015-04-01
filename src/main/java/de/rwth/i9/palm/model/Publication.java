@@ -69,14 +69,20 @@ public class Publication extends PersistableResource
 	@Column
 	private Date createdAt;
 	
-	// relations	
+	@Column
+	private Date fetchAt;
+
+	@Column
+	private String type;
+
+	// relations
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_keyword", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "keyword_id" ) )
-	private List<Keyword> keywords = new ArrayList<Keyword>();
+	private List<Keyword> keywords;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_topic", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "publication_topic" ) )
-	private List<Topic> topics = new ArrayList<Topic>();
+	private List<Topic> topics;
 	
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinColumn( name = "venue_id" )
@@ -88,11 +94,11 @@ public class Publication extends PersistableResource
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_cites", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "publication_cites_id" ) )
-	private List<Publication> publicationCitess = new ArrayList<Publication>();
+	private List<Publication> publicationCitess;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_citedby", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "publication_citedby_id" ) )
-	private List<Publication> publicationCitedBys = new ArrayList<Publication>();
+	private List<Publication> publicationCitedBys;
 
 	public String getTitle()
 	{
@@ -257,6 +263,26 @@ public class Publication extends PersistableResource
 
 		publicationCitedBys.add( publicationCiteBy );
 		return this;
+	}
+
+	public String getType()
+	{
+		return type;
+	}
+
+	public void setType( String type )
+	{
+		this.type = type;
+	}
+
+	public Date getFetchAt()
+	{
+		return fetchAt;
+	}
+
+	public void setFetchAt( Date fetchAt )
+	{
+		this.fetchAt = fetchAt;
 	}
 
 }
