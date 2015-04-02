@@ -5,27 +5,15 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
-import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
-import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
-import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Parameter;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.search.annotations.TermVector;
-import org.hibernate.search.annotations.TokenFilterDef;
-import org.hibernate.search.annotations.TokenizerDef;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
 @Table( name = "publication_old" )
-@JsonIgnoreProperties( { } )
-@Indexed
-@AnalyzerDef( name = "customanalyzer", tokenizer = @TokenizerDef( factory = StandardTokenizerFactory.class ), filters = { @TokenFilterDef( factory = LowerCaseFilterFactory.class ), @TokenFilterDef( factory = SnowballPorterFilterFactory.class, params = { @Parameter( name = "language", value = "English" ) } ) } )
 public class PublicationOld extends PersistableResource
 {
 
