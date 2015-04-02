@@ -30,7 +30,7 @@ public class Author extends PersistableResource
 	/* other name of the author */
 	@OneToMany( cascade = CascadeType.ALL )
 	@JoinColumn( name = "author_id" )
-	List<String> aliases;
+	List<AuthorAlias> aliases;
 
 	/* few authors work for several institution */
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
@@ -109,20 +109,20 @@ public class Author extends PersistableResource
 		return this;
 	}
 
-	public List<String> getAliases()
+	public List<AuthorAlias> getAliases()
 	{
 		return aliases;
 	}
 
-	public void setAliases( List<String> aliases )
+	public void setAliases( List<AuthorAlias> aliases )
 	{
 		this.aliases = aliases;
 	}
 
-	public Author addAlias( final String aliasName )
+	public Author addAlias( final AuthorAlias aliasName )
 	{
 		if ( this.aliases == null )
-			this.aliases = new ArrayList<String>();
+			this.aliases = new ArrayList<AuthorAlias>();
 
 		this.aliases.add( aliasName );
 
