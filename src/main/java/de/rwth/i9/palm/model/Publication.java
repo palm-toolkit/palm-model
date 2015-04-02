@@ -44,6 +44,10 @@ public class Publication extends PersistableResource
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
 	private String title;
 	
+	/* comma separated author list */
+	@Column
+	private String authorString;
+
 	@Column
 	@Lob
 	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
@@ -79,6 +83,10 @@ public class Publication extends PersistableResource
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_keyword", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "keyword_id" ) )
 	private List<Keyword> keywords;
+
+	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@JoinTable( name = "publication_tag", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "tag_id" ) )
+	private List<Tag> tags;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_topic", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "publication_topic" ) )
@@ -285,5 +293,33 @@ public class Publication extends PersistableResource
 		this.fetchAt = fetchAt;
 	}
 
+	public String getAuthorString()
+	{
+		return authorString;
+	}
+
+	public void setAuthorString( String authorString )
+	{
+		this.authorString = authorString;
+	}
+
+	public List<Tag> getTags()
+	{
+		return tags;
+	}
+
+	public void setTags( List<Tag> tags )
+	{
+		this.tags = tags;
+	}
+
+	public Publication addTag( final Tag tag )
+	{
+		if ( this.tags == null )
+			this.tags = new ArrayList<Tag>();
+
+		tags.add( tag );
+		return this;
+	}
 }
 

@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="de.rwth.i9.palm.model.Keyword" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/Keyword.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="71" y="533"/>    
+    <position height="-1" width="-1" x="133" y="435"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -48,7 +48,7 @@
   </class>  
   <class id="6" language="java" name="de.rwth.i9.palm.model.Location" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/Location.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="659" y="709"/>    
+    <position height="-1" width="-1" x="660" y="704"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -57,7 +57,7 @@
   </class>  
   <class id="7" language="java" name="de.rwth.i9.palm.model.Institution" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/Institution.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="662" y="488"/>    
+    <position height="-1" width="-1" x="660" y="487"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -118,177 +118,198 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <association id="14">    
+  <class id="14" language="java" name="de.rwth.i9.palm.model.Tag" project="palm-model" 
+    file="/palm-model/src/main/java/de/rwth/i9/palm/model/Tag.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="64" y="533"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <association id="15">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="15" name="authors"/>      
-      <multiplicity id="16" minimum="0" maximum="2147483647"/>    
+      <attribute id="16" name="authors"/>      
+      <multiplicity id="17" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="12" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="17">    
+  <association id="18">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="18" name="publicationCitedBys">        
+      <attribute id="19" name="publicationCitedBys">        
         <position height="0" width="0" x="36" y="237"/>      
       </attribute>      
-      <multiplicity id="19" minimum="0" maximum="2147483647">        
+      <multiplicity id="20" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="36" y="237"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="20">    
+  <association id="21">    
     <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="21" name="institutions"/>      
-      <multiplicity id="22" minimum="0" maximum="2147483647"/>    
+      <attribute id="22" name="institutions"/>      
+      <multiplicity id="23" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="23">    
+  <association id="24">    
     <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="24" name="role">        
+      <attribute id="25" name="role">        
         <position height="0" width="0" x="-154" y="-269"/>      
       </attribute>      
-      <multiplicity id="25" minimum="0" maximum="1">        
+      <multiplicity id="26" minimum="0" maximum="1">        
         <position height="0" width="0" x="-154" y="-269"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="26">    
+  <association id="27">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="27" name="publicationCitess">        
+      <attribute id="28" name="publicationCitess">        
         <position height="0" width="0" x="36" y="237"/>      
       </attribute>      
-      <multiplicity id="28" minimum="0" maximum="2147483647">        
+      <multiplicity id="29" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="36" y="237"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="29">    
+  <association id="30">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="30" name="venue">        
+      <attribute id="31" name="venue">        
         <position height="0" width="0" x="-3" y="229"/>      
       </attribute>      
-      <multiplicity id="31" minimum="0" maximum="1">        
+      <multiplicity id="32" minimum="0" maximum="1">        
         <position height="0" width="0" x="-3" y="229"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="32">    
+  <generalization id="33">    
     <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="2"/>  
   </generalization>  
-  <association id="33">    
+  <association id="34">    
     <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="34" name="topics"/>      
-      <multiplicity id="35" minimum="0" maximum="2147483647"/>    
+      <attribute id="35" name="topics"/>      
+      <multiplicity id="36" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="36">    
+  <association id="37">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="38" name="tags"/>      
+      <multiplicity id="39" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="40">    
     <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="37" name="narrower">        
+      <attribute id="41" name="narrower">        
         <position height="0" width="0" x="-39" y="262"/>      
       </attribute>      
-      <multiplicity id="38" minimum="0" maximum="2147483647">        
+      <multiplicity id="42" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="-39" y="262"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="39">    
+  <association id="43">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="40" name="location">        
-        <position height="0" width="0" x="109" y="270"/>      
+      <attribute id="44" name="location">        
+        <position height="0" width="0" x="110" y="265"/>      
       </attribute>      
-      <multiplicity id="41" minimum="0" maximum="1">        
-        <position height="0" width="0" x="109" y="270"/>      
+      <multiplicity id="45" minimum="0" maximum="1">        
+        <position height="0" width="0" x="110" y="265"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="42">    
+  <association id="46">    
     <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="43" name="runTimes"/>      
-      <multiplicity id="44" minimum="0" maximum="2147483647"/>    
+      <attribute id="47" name="runTimes"/>      
+      <multiplicity id="48" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="45">    
+  <generalization id="49">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <association id="50">    
     <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="46" name="broader">        
+      <attribute id="51" name="broader">        
         <position height="0" width="0" x="-39" y="262"/>      
       </attribute>      
-      <multiplicity id="47" minimum="0" maximum="2147483647">        
+      <multiplicity id="52" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="-39" y="262"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="48">    
+  <association id="53">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="49" name="keywords">        
-        <position height="0" width="0" x="-23" y="368"/>      
+      <attribute id="54" name="keywords">        
+        <position height="18" width="57" x="185" y="447"/>      
       </attribute>      
-      <multiplicity id="50" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="-23" y="368"/>      
+      <multiplicity id="55" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="39" y="270"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="51">    
+  <association id="56">    
     <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="52" name="publications"/>      
-      <multiplicity id="53" minimum="0" maximum="2147483647"/>    
+      <attribute id="57" name="publications"/>      
+      <multiplicity id="58" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="54">    
+  <generalization id="59">    
     <end type="SOURCE" refId="4"/>    
     <end type="TARGET" refId="2"/>  
   </generalization>  
-  <association id="55">    
+  <association id="60">    
     <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="56" name="topics"/>      
-      <multiplicity id="57" minimum="0" maximum="2147483647"/>    
+      <attribute id="61" name="topics"/>      
+      <multiplicity id="62" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="58">    
+  <association id="63">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="59" name="topics">        
+      <attribute id="64" name="topics">        
         <position height="0" width="0" x="2" y="225"/>      
       </attribute>      
-      <multiplicity id="60" minimum="0" maximum="2147483647">        
+      <multiplicity id="65" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="2" y="225"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="61">    
+  <association id="66">    
     <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="62" name="location">        
-        <position height="0" width="0" x="109" y="270"/>      
+      <attribute id="67" name="location">        
+        <position height="0" width="0" x="110" y="265"/>      
       </attribute>      
-      <multiplicity id="63" minimum="0" maximum="1">        
-        <position height="0" width="0" x="109" y="270"/>      
+      <multiplicity id="68" minimum="0" maximum="1">        
+        <position height="0" width="0" x="110" y="265"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    

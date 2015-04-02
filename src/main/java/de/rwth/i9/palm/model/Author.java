@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
@@ -18,17 +19,18 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 @Table( name = "author" )
 public class Author extends PersistableResource
 {
+	/* the full name of the author, most commonly used */
 	@Column
 	private String name;
 
 	@Column
-	private String firstname;
-
-	@Column
-	private String lastname;
-
-	@Column
 	private String email;
+
+	// relations
+	/* other name of the author */
+	@OneToMany( cascade = CascadeType.ALL )
+	@JoinColumn( name = "author_id" )
+	List<String> aliases;
 
 	/* few authors work for several institution */
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
@@ -47,26 +49,6 @@ public class Author extends PersistableResource
 	public void setName( String name )
 	{
 		this.name = name;
-	}
-
-	public String getFirstname()
-	{
-		return firstname;
-	}
-
-	public void setFirstname( String firstname )
-	{
-		this.firstname = firstname;
-	}
-
-	public String getLastname()
-	{
-		return lastname;
-	}
-
-	public void setLastname( String lastname )
-	{
-		this.lastname = lastname;
 	}
 
 	public String getEmail()
@@ -124,6 +106,26 @@ public class Author extends PersistableResource
 			this.topics = new ArrayList<Topic>();
 
 		this.topics.add( topic );
+		return this;
+	}
+
+	public List<String> getAliases()
+	{
+		return aliases;
+	}
+
+	public void setAliases( List<String> aliases )
+	{
+		this.aliases = aliases;
+	}
+
+	public Author addAlias( final String aliasName )
+	{
+		if ( this.aliases == null )
+			this.aliases = new ArrayList<String>();
+
+		this.aliases.add( aliasName );
+
 		return this;
 	}
 }
