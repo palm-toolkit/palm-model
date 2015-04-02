@@ -35,7 +35,7 @@ public class PublicationOld extends PersistableResource
 	@Column
 	private String keywords;
 	
-	@Column
+	@Column( columnDefinition = "int default 0" )
 	private int citations;
 
 	@Column

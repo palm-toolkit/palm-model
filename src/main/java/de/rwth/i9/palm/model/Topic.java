@@ -25,7 +25,7 @@ public class Topic extends Concept
 	String termString;
 
 	/* percentage of topic composed in a document */
-	@Column
+	@Column( columnDefinition = "int default 0.0" )
 	double composition;
 
 	// getter & setter

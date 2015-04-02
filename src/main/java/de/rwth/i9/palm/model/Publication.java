@@ -79,7 +79,7 @@ public class Publication extends PersistableResource
 	@Column
 	private String type;
 
-	@Column
+	@Column( columnDefinition = "int default 0" )
 	private int numberOfCitation;
 
 	// relations
