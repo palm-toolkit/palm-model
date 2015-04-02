@@ -79,6 +79,9 @@ public class Publication extends PersistableResource
 	@Column
 	private String type;
 
+	@Column
+	private int numberOfCitation;
+
 	// relations
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_keyword", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "keyword_id" ) )
@@ -320,6 +323,16 @@ public class Publication extends PersistableResource
 
 		tags.add( tag );
 		return this;
+	}
+
+	public int getNumberOfCitation()
+	{
+		return numberOfCitation;
+	}
+
+	public void setNumberOfCitation( int numberOfCitation )
+	{
+		this.numberOfCitation = numberOfCitation;
 	}
 }
 

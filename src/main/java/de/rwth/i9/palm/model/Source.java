@@ -49,6 +49,10 @@ public class Source extends PersistableResource
 	@JoinColumn( name = "source_id" )
 	private List<Publication> publications;
 
+	@OneToMany( cascade = CascadeType.ALL )
+	@JoinColumn( name = "source_id" )
+	private List<PublicationOld> publicationOlds;
+
 	public List<Publication> getPublications()
 	{
 		return publications;
