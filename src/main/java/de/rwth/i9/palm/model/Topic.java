@@ -8,10 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.MapKeyColumn;
-import javax.persistence.Table;
 
-@Entity
-@Table( name = "topic" )
+@Entity( name = "topic" )
 public class Topic extends Concept
 {
 	@ElementCollection

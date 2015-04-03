@@ -79,6 +79,11 @@ public class Publication extends PersistableResource
 	@Column
 	private String type;
 
+	@Column
+	@Lob
+	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
+	private String citationText;
+
 	@Column( columnDefinition = "int default 0" )
 	private int numberOfCitation;
 
@@ -101,7 +106,7 @@ public class Publication extends PersistableResource
 	
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_author", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "author_id" ) )
-	private List<Author> authors;
+	private List<Author> coauthors;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_cites", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "publication_cites_id" ) )
@@ -221,20 +226,20 @@ public class Publication extends PersistableResource
 
 	public List<Author> getAuthors()
 	{
-		return authors;
+		return coauthors;
 	}
 
-	public void setAuthors( List<Author> authors )
+	public void setAuthors( List<Author> coauthors )
 	{
-		this.authors = authors;
+		this.coauthors = coauthors;
 	}
 
 	public Publication addAuthor( final Author author )
 	{
-		if ( this.authors == null )
-			this.authors = new ArrayList<Author>();
+		if ( this.coauthors == null )
+			this.coauthors = new ArrayList<Author>();
 
-		authors.add( author );
+		coauthors.add( author );
 		return this;
 	}
 

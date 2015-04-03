@@ -5,11 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Store;
-import org.hibernate.search.annotations.TermVector;
-
 import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
@@ -29,7 +24,6 @@ public class PublicationOld extends PersistableResource
 
 	@Column
 	@Lob
-	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
 	private String abstractText;
 
 	@Column
