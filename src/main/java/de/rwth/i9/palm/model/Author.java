@@ -27,10 +27,17 @@ public class Author extends PersistableResource
 	private String email;
 
 	// relations
+	@ManyToMany( mappedBy = "author" )
+	private List<Publication> publications;
+
+	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@JoinTable( name = "author_coauthor", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "author_coauthor_id" ) )
+	private List<Author> coAuthors;
+
 	/* other name of the author */
 	@OneToMany( cascade = CascadeType.ALL )
 	@JoinColumn( name = "author_id" )
-	List<AuthorAlias> aliases;
+	private List<AuthorAlias> aliases;
 
 	/* few authors work for several institution */
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
@@ -39,7 +46,7 @@ public class Author extends PersistableResource
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "author_interest", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "topic_id" ) )
-	List<Topic> topics;
+	private List<Topic> topics;
 
 	public String getName()
 	{
@@ -128,4 +135,45 @@ public class Author extends PersistableResource
 
 		return this;
 	}
+
+	public List<Publication> getPublications()
+	{
+		return publications;
+	}
+
+	public void setPublications( List<Publication> publications )
+	{
+		this.publications = publications;
+	}
+
+	public Author addPublication( final Publication publication )
+	{
+		if ( this.publications == null )
+			this.publications = new ArrayList<Publication>();
+
+		this.publications.add( publication );
+
+		return this;
+	}
+
+	public List<Author> getCoAuthors()
+	{
+		return coAuthors;
+	}
+
+	public void setCoAuthors( List<Author> coAuthors )
+	{
+		this.coAuthors = coAuthors;
+	}
+
+	public Author addCoAuthor( final Author coAuthor )
+	{
+		if ( this.coAuthors == null )
+			this.coAuthors = new ArrayList<Author>();
+
+		this.coAuthors.add( coAuthor );
+
+		return this;
+	}
+
 }
