@@ -33,7 +33,7 @@ public class Author extends PersistableResource
 	private String email;
 
 	// relations
-	@ManyToMany( mappedBy = "author" )
+	@ManyToMany( mappedBy = "coAuthors", cascade = CascadeType.ALL )
 	private List<Publication> publications;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
@@ -142,25 +142,25 @@ public class Author extends PersistableResource
 		return this;
 	}
 
-	public List<Publication> getPublications()
-	{
-		return publications;
-	}
-
-	public void setPublications( List<Publication> publications )
-	{
-		this.publications = publications;
-	}
-
-	public Author addPublication( final Publication publication )
-	{
-		if ( this.publications == null )
-			this.publications = new ArrayList<Publication>();
-
-		this.publications.add( publication );
-
-		return this;
-	}
+//	public List<Publication> getPublications()
+//	{
+//		return publications;
+//	}
+//
+//	public void setPublications( List<Publication> publications )
+//	{
+//		this.publications = publications;
+//	}
+//
+//	public Author addPublication( final Publication publication )
+//	{
+//		if ( this.publications == null )
+//			this.publications = new ArrayList<Publication>();
+//
+//		this.publications.add( publication );
+//
+//		return this;
+//	}
 
 	public List<Author> getCoAuthors()
 	{
