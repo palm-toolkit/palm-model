@@ -87,6 +87,9 @@ public class Publication extends PersistableResource
 	@Column( columnDefinition = "int default 0" )
 	private int numberOfCitation;
 
+	@Column( columnDefinition = "varchar(15) default 'english'" )
+	private String language;
+
 	// relations
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_keyword", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "keyword_id" ) )
@@ -106,7 +109,7 @@ public class Publication extends PersistableResource
 	
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_author", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "author_id" ) )
-	private List<Author> coauthors;
+	private List<Author> coAuthors;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_cites", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "publication_cites_id" ) )
@@ -224,22 +227,22 @@ public class Publication extends PersistableResource
 		this.venue = venue;
 	}
 
-	public List<Author> getAuthors()
+	public List<Author> getCoAuthors()
 	{
-		return coauthors;
+		return coAuthors;
 	}
 
-	public void setAuthors( List<Author> coauthors )
+	public void setCoAuthors( List<Author> coAuthors )
 	{
-		this.coauthors = coauthors;
+		this.coAuthors = coAuthors;
 	}
 
-	public Publication addAuthor( final Author author )
+	public Publication addCoAuthor( final Author author )
 	{
-		if ( this.coauthors == null )
-			this.coauthors = new ArrayList<Author>();
+		if ( this.coAuthors == null )
+			this.coAuthors = new ArrayList<Author>();
 
-		coauthors.add( author );
+		this.coAuthors.add( author );
 		return this;
 	}
 
@@ -258,7 +261,7 @@ public class Publication extends PersistableResource
 		if ( this.publicationCitess == null )
 			this.publicationCitess = new ArrayList<Publication>();
 
-		publicationCitess.add( publicationCites );
+		this.publicationCitess.add( publicationCites );
 		return this;
 	}
 
@@ -277,7 +280,7 @@ public class Publication extends PersistableResource
 		if ( this.publicationCitedBys == null )
 			this.publicationCitedBys = new ArrayList<Publication>();
 
-		publicationCitedBys.add( publicationCiteBy );
+		this.publicationCitedBys.add( publicationCiteBy );
 		return this;
 	}
 
@@ -326,7 +329,7 @@ public class Publication extends PersistableResource
 		if ( this.tags == null )
 			this.tags = new ArrayList<Tag>();
 
-		tags.add( tag );
+		this.tags.add( tag );
 		return this;
 	}
 
@@ -339,5 +342,26 @@ public class Publication extends PersistableResource
 	{
 		this.numberOfCitation = numberOfCitation;
 	}
+
+	public String getCitationText()
+	{
+		return citationText;
+	}
+
+	public void setCitationText( String citationText )
+	{
+		this.citationText = citationText;
+	}
+
+	public String getLanguage()
+	{
+		return language;
+	}
+
+	public void setLanguage( String language )
+	{
+		this.language = language;
+	}
+
 }
 
