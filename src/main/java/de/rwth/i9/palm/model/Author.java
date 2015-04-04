@@ -13,6 +13,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Store;
+
 import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
@@ -21,6 +26,7 @@ public class Author extends PersistableResource
 {
 	/* the full name of the author, most commonly used */
 	@Column
+	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	private String name;
 
 	@Column
