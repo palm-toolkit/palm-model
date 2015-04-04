@@ -44,6 +44,10 @@ public class Publication extends PersistableResource
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
 	private String title;
 	
+	/* comma separated author list */
+	@Column
+	private String authorString;
+
 	@Column
 	@Lob
 	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
@@ -69,14 +73,35 @@ public class Publication extends PersistableResource
 	@Column
 	private Date createdAt;
 	
-	// relations	
+	@Column
+	private Date fetchAt;
+
+	@Column
+	private String type;
+
+	@Column
+	@Lob
+	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
+	private String citationText;
+
+	@Column( columnDefinition = "int default 0" )
+	private int numberOfCitation;
+
+	@Column( columnDefinition = "varchar(15) default 'english'" )
+	private String language;
+
+	// relations
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_keyword", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "keyword_id" ) )
-	private List<Keyword> keywords = new ArrayList<Keyword>();
+	private List<Keyword> keywords;
+
+	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@JoinTable( name = "publication_tag", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "tag_id" ) )
+	private List<Tag> tags;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_topic", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "publication_topic" ) )
-	private List<Topic> topics = new ArrayList<Topic>();
+	private List<Topic> topics;
 	
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinColumn( name = "venue_id" )
@@ -84,15 +109,15 @@ public class Publication extends PersistableResource
 	
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_author", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "author_id" ) )
-	private List<Author> authors;
+	private List<Author> coAuthors;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_cites", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "publication_cites_id" ) )
-	private List<Publication> publicationCitess = new ArrayList<Publication>();
+	private List<Publication> publicationCitess;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_citedby", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "publication_citedby_id" ) )
-	private List<Publication> publicationCitedBys = new ArrayList<Publication>();
+	private List<Publication> publicationCitedBys;
 
 	public String getTitle()
 	{
@@ -202,22 +227,22 @@ public class Publication extends PersistableResource
 		this.venue = venue;
 	}
 
-	public List<Author> getAuthors()
+	public List<Author> getCoAuthors()
 	{
-		return authors;
+		return coAuthors;
 	}
 
-	public void setAuthors( List<Author> authors )
+	public void setCoAuthors( List<Author> coAuthors )
 	{
-		this.authors = authors;
+		this.coAuthors = coAuthors;
 	}
 
-	public Publication addAuthor( final Author author )
+	public Publication addCoAuthor( final Author author )
 	{
-		if ( this.authors == null )
-			this.authors = new ArrayList<Author>();
+		if ( this.coAuthors == null )
+			this.coAuthors = new ArrayList<Author>();
 
-		authors.add( author );
+		this.coAuthors.add( author );
 		return this;
 	}
 
@@ -236,7 +261,7 @@ public class Publication extends PersistableResource
 		if ( this.publicationCitess == null )
 			this.publicationCitess = new ArrayList<Publication>();
 
-		publicationCitess.add( publicationCites );
+		this.publicationCitess.add( publicationCites );
 		return this;
 	}
 
@@ -255,8 +280,87 @@ public class Publication extends PersistableResource
 		if ( this.publicationCitedBys == null )
 			this.publicationCitedBys = new ArrayList<Publication>();
 
-		publicationCitedBys.add( publicationCiteBy );
+		this.publicationCitedBys.add( publicationCiteBy );
 		return this;
+	}
+
+	public String getType()
+	{
+		return type;
+	}
+
+	public void setType( String type )
+	{
+		this.type = type;
+	}
+
+	public Date getFetchAt()
+	{
+		return fetchAt;
+	}
+
+	public void setFetchAt( Date fetchAt )
+	{
+		this.fetchAt = fetchAt;
+	}
+
+	public String getAuthorString()
+	{
+		return authorString;
+	}
+
+	public void setAuthorString( String authorString )
+	{
+		this.authorString = authorString;
+	}
+
+	public List<Tag> getTags()
+	{
+		return tags;
+	}
+
+	public void setTags( List<Tag> tags )
+	{
+		this.tags = tags;
+	}
+
+	public Publication addTag( final Tag tag )
+	{
+		if ( this.tags == null )
+			this.tags = new ArrayList<Tag>();
+
+		this.tags.add( tag );
+		return this;
+	}
+
+	public int getNumberOfCitation()
+	{
+		return numberOfCitation;
+	}
+
+	public void setNumberOfCitation( int numberOfCitation )
+	{
+		this.numberOfCitation = numberOfCitation;
+	}
+
+	public String getCitationText()
+	{
+		return citationText;
+	}
+
+	public void setCitationText( String citationText )
+	{
+		this.citationText = citationText;
+	}
+
+	public String getLanguage()
+	{
+		return language;
+	}
+
+	public void setLanguage( String language )
+	{
+		this.language = language;
 	}
 
 }

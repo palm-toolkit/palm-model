@@ -4,17 +4,17 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 /**
- * Extends {@link PersistableType} with Resource specific attributes, namely a
- * <i>URN</i>.
+ * Extends {@link PersistableType} with Uniform Resource Identifier , namely a
+ * <i>URI</i>. Preparing for linking the relational database with linked-data
+ * RDF
  */
 @MappedSuperclass
 public abstract class PersistableResource extends PersistableType
 {
 
 	// properties
-
-	@Column( length = 100 )
-	private String urn;
+	@Column( unique = true )
+	private String uri;
 
 	// getter / setter
 
@@ -23,14 +23,14 @@ public abstract class PersistableResource extends PersistableType
 		super();
 	}
 
-	public String getURN()
+	public String getURI()
 	{
-		return urn;
+		return uri;
 	}
 
-	public void setURN( final String urn )
+	public void setURN( final String uri )
 	{
-		this.urn = urn;
+		this.uri = uri;
 	}
 
 }

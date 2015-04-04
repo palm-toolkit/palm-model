@@ -2,10 +2,8 @@ package de.rwth.i9.palm.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
-@Entity
-@Table( name = "keyword" )
+@Entity( name = "keyword" )
 public class Keyword extends Concept
 {
 	@Column
