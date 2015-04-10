@@ -46,6 +46,11 @@ public class Publication extends PersistableResource
 	
 	/* comma separated author list */
 	@Column
+	@Lob
+	private String authorInformation;
+
+	/* comma separated author list */
+	@Column
 	private String authorString;
 
 	@Column
@@ -361,6 +366,16 @@ public class Publication extends PersistableResource
 	public void setLanguage( String language )
 	{
 		this.language = language;
+	}
+
+	public String getAuthorInformation()
+	{
+		return authorInformation;
+	}
+
+	public void setAuthorInformation( String authorInformation )
+	{
+		this.authorInformation = authorInformation;
 	}
 
 }

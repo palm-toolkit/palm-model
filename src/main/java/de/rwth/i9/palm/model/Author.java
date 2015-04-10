@@ -30,6 +30,9 @@ public class Author extends PersistableResource
 	private String name;
 
 	@Column
+	private String department;
+
+	@Column
 	private String email;
 
 	// relations
@@ -182,4 +185,33 @@ public class Author extends PersistableResource
 		return this;
 	}
 
+	public String getDepartment()
+	{
+		return department;
+	}
+
+	public void setDepartment( String department )
+	{
+		this.department = department;
+	}
+
+	public List<Publication> getPublications()
+	{
+		return publications;
+	}
+
+	public void setPublications( List<Publication> publications )
+	{
+		this.publications = publications;
+	}
+
+	public Author addPublication( final Publication publication )
+	{
+		if ( this.publications == null )
+			this.publications = new ArrayList<Publication>();
+
+		this.publications.add( publication );
+
+		return this;
+	}
 }
