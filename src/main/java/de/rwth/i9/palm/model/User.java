@@ -56,7 +56,29 @@ public class User extends PersistableResource
 	@JoinColumn( name = "user_id" )
 	private List<Dataset> datasets;
 
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@JoinColumn( name = "user_id" )
+	private List<UserWidget> userWidgets;
+
 	// getter and setter
+
+	public List<UserWidget> getUserWidgets()
+	{
+		return userWidgets;
+	}
+
+	public void setUserWidgets( List<UserWidget> userWidgets )
+	{
+		this.userWidgets = userWidgets;
+	}
+
+	public User addUserWidget( UserWidget userWidget )
+	{
+		if ( this.userWidgets == null )
+			this.userWidgets = new ArrayList<UserWidget>();
+		this.userWidgets.add( userWidget );
+		return this;
+	}
 
 	public String getName()
 	{
