@@ -17,11 +17,38 @@ public class Widget extends PersistableResource
 	@Column( length = 16 )
 	private WidgetType widgetType;
 
+	@Column( name = "position_" )
+	private int position;
+
 	@Column
 	private String title;
 
 	@Column
 	private String source;
+
+	@Enumerated( EnumType.STRING )
+	@Column( length = 16 )
+	private WidgetStatus widgetStatus;
+
+	public int getPosition()
+	{
+		return position;
+	}
+
+	public void setPosition( int position )
+	{
+		this.position = position;
+	}
+
+	public WidgetStatus getWidgetStatus()
+	{
+		return widgetStatus;
+	}
+
+	public void setWidgetStatus( WidgetStatus widgetStatus )
+	{
+		this.widgetStatus = widgetStatus;
+	}
 
 	@Column
 	@Lob
