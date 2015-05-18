@@ -24,35 +24,19 @@ public class Widget extends PersistableResource
 	private String title;
 
 	@Column
-	private String source;
+	private String widgetGroup;
 
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
 	private WidgetStatus widgetStatus;
 
-	public int getPosition()
-	{
-		return position;
-	}
-
-	public void setPosition( int position )
-	{
-		this.position = position;
-	}
-
-	public WidgetStatus getWidgetStatus()
-	{
-		return widgetStatus;
-	}
-
-	public void setWidgetStatus( WidgetStatus widgetStatus )
-	{
-		this.widgetStatus = widgetStatus;
-	}
+	@Enumerated( EnumType.STRING )
+	@Column( length = 16 )
+	private WidgetSource widgetSource;
 
 	@Column
 	@Lob
-	private String sourceUrl;
+	private String sourcePath;
 
 	@Column
 	@Lob
@@ -93,24 +77,14 @@ public class Widget extends PersistableResource
 		this.title = title;
 	}
 
-	public String getSource()
+	public String getSourcePath()
 	{
-		return source;
+		return this.sourcePath;
 	}
 
-	public void setSource( String source )
+	public void setSourcePath( String sourcePath )
 	{
-		this.source = source;
-	}
-
-	public String getSourceUrl()
-	{
-		return sourceUrl;
-	}
-
-	public void setSourceUrl( String sourceUrl )
-	{
-		this.sourceUrl = sourceUrl;
+		this.sourcePath = sourcePath;
 	}
 
 	public String getInformation()
@@ -161,6 +135,46 @@ public class Widget extends PersistableResource
 	public void setWidgetWidth( WidgetWidth widgetWidth )
 	{
 		this.widgetWidth = widgetWidth;
+	}
+
+	public String getWidgetGroup()
+	{
+		return widgetGroup;
+	}
+
+	public void setWidgetGroup( String widgetGroup )
+	{
+		this.widgetGroup = widgetGroup;
+	}
+
+	public int getPosition()
+	{
+		return position;
+	}
+
+	public void setPosition( int position )
+	{
+		this.position = position;
+	}
+
+	public WidgetStatus getWidgetStatus()
+	{
+		return widgetStatus;
+	}
+
+	public void setWidgetStatus( WidgetStatus widgetStatus )
+	{
+		this.widgetStatus = widgetStatus;
+	}
+
+	public WidgetSource getWidgetSource()
+	{
+		return widgetSource;
+	}
+
+	public void setWidgetSource( WidgetSource widgetSource )
+	{
+		this.widgetSource = widgetSource;
 	}
 
 }
