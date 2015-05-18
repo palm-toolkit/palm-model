@@ -20,7 +20,7 @@ public class UserWidget extends PersistableResource
 	private int position;
 
 	@Enumerated( EnumType.STRING )
-	@Column( length = 16 )
+	@Column( columnDefinition = "VARCHAR(16) DEFAULT 'NORMAL'" )
 	private WidgetCondition witgetCondition;
 
 	@Enumerated( EnumType.STRING )
