@@ -24,6 +24,10 @@ public class UserWidget extends PersistableResource
 	private WidgetCondition witgetCondition;
 
 	@Enumerated( EnumType.STRING )
+	@Column( length = 8 )
+	private WidgetWidth widgetWidth;
+
+	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
 	private Color widgetColor;
 
@@ -75,4 +79,13 @@ public class UserWidget extends PersistableResource
 		this.widget = widget;
 	}
 
+	public WidgetWidth getWidgetWidth()
+	{
+		return widgetWidth;
+	}
+
+	public void setWidgetWidth( WidgetWidth widgetWidth )
+	{
+		this.widgetWidth = widgetWidth;
+	}
 }
