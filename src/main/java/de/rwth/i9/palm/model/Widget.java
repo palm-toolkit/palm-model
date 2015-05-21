@@ -13,26 +13,31 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 @Table( name = "widget" )
 public class Widget extends PersistableResource
 {
-	@Enumerated( EnumType.STRING )
-	@Column( length = 16 )
-	private WidgetType widgetType;
-
-	@Column( name = "position_" )
-	private int position;
 
 	@Column
 	private String title;
+	
+	@Column( name = "position_", columnDefinition = "int default 0" )
+	private int position;	
 
+	@Enumerated( EnumType.STRING )
+	@Column( length = 16 )
+	private WidgetType widgetType;
+	
 	@Column
 	private String widgetGroup;
 
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
-	private WidgetStatus widgetStatus;
+	private WidgetSource widgetSource;
 
 	@Enumerated( EnumType.STRING )
+	@Column( length = 8 )
+	private WidgetWidth widgetWidth;
+	
+	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
-	private WidgetSource widgetSource;
+	private WidgetStatus widgetStatus;
 
 	@Column
 	@Lob
@@ -50,10 +55,6 @@ public class Widget extends PersistableResource
 
 	@Column( columnDefinition = "bit default 1" )
 	private boolean maximizeEnabled = true;
-
-	@Enumerated( EnumType.STRING )
-	@Column( length = 8 )
-	private WidgetWidth widgetWidth;
 
 	// getter / setter
 
