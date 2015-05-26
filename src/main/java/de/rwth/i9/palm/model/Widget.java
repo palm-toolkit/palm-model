@@ -54,7 +54,17 @@ public class Widget extends PersistableResource
 	private boolean minimizeEnabled = true;
 
 	@Column( columnDefinition = "bit default 1" )
-	private boolean maximizeEnabled = true;
+	private boolean resizeEnabled = true;
+
+	@Column( columnDefinition = "bit default 1" )
+	private boolean moveableEnabled = true;
+
+	@Column( columnDefinition = "bit default 1" )
+	private boolean colorEnabled = true;
+
+	@Enumerated( EnumType.STRING )
+	@Column( length = 16 )
+	private Color color;
 
 	// getter / setter
 
@@ -118,16 +128,6 @@ public class Widget extends PersistableResource
 		this.minimizeEnabled = minimizeEnabled;
 	}
 
-	public boolean isMaximizeEnabled()
-	{
-		return maximizeEnabled;
-	}
-
-	public void setMaximizeEnabled( boolean maximizeEnabled )
-	{
-		this.maximizeEnabled = maximizeEnabled;
-	}
-
 	public WidgetWidth getWidgetWidth()
 	{
 		return widgetWidth;
@@ -176,6 +176,46 @@ public class Widget extends PersistableResource
 	public void setWidgetSource( WidgetSource widgetSource )
 	{
 		this.widgetSource = widgetSource;
+	}
+
+	public boolean isResizeEnabled()
+	{
+		return resizeEnabled;
+	}
+
+	public void setResizeEnabled( boolean resizeEnabled )
+	{
+		this.resizeEnabled = resizeEnabled;
+	}
+
+	public boolean isMoveableEnabled()
+	{
+		return moveableEnabled;
+	}
+
+	public void setMoveableEnabled( boolean moveableEnabled )
+	{
+		this.moveableEnabled = moveableEnabled;
+	}
+
+	public boolean isColorEnabled()
+	{
+		return colorEnabled;
+	}
+
+	public void setColorEnabled( boolean colorEnabled )
+	{
+		this.colorEnabled = colorEnabled;
+	}
+
+	public Color getColor()
+	{
+		return color;
+	}
+
+	public void setColor( Color color )
+	{
+		this.color = color;
 	}
 
 }
