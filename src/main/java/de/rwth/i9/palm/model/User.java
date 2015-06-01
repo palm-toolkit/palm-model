@@ -25,6 +25,9 @@ public class User extends PersistableResource
 	@Column( length = 80 )
 	private String name;
 
+	@Column( unique = true, length = 80 )
+	private String username;
+
 	@Column( length = 80 )
 	private String email;
 
@@ -98,6 +101,16 @@ public class User extends PersistableResource
 	public void setEmail( String email )
 	{
 		this.email = email;
+	}
+
+	public String getUsername()
+	{
+		return username;
+	}
+
+	public void setUsername( String username )
+	{
+		this.username = username;
 	}
 
 	public Role getRole()
