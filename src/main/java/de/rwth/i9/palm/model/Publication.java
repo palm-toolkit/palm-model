@@ -109,8 +109,8 @@ public class Publication extends PersistableResource
 	private List<Topic> topics;
 	
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinColumn( name = "venue_id" )
-	private Venue venue;
+	@JoinColumn( name = "conference_id" )
+	private Conference conference;
 	
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_author", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "author_id" ) )
@@ -222,14 +222,14 @@ public class Publication extends PersistableResource
 		return this;
 	}
 
-	public Venue getVenue()
+	public Conference getVenue()
 	{
-		return venue;
+		return conference;
 	}
 
-	public void setVenue( Venue venue )
+	public void setVenue( Conference conference )
 	{
-		this.venue = venue;
+		this.conference = conference;
 	}
 
 	public List<Author> getCoAuthors()

@@ -12,8 +12,8 @@ import javax.persistence.Table;
 import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
-@Table( name = "venue" )
-public class Venue extends PersistableResource
+@Table( name = "conference" )
+public class Conference extends PersistableResource
 {
 	@Column
 	private String name;
