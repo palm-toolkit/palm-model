@@ -10,24 +10,51 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
+import org.hibernate.search.annotations.TokenFilterDef;
+import org.hibernate.search.annotations.TokenizerDef;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
 @Table( name = "author" )
+@Indexed
+@AnalyzerDef( 
+		name = "authoranalyzer", 
+		tokenizer = @TokenizerDef( factory = StandardTokenizerFactory.class ), 
+		filters = { 
+			@TokenFilterDef( factory = LowerCaseFilterFactory.class ) 
+			} 
+		)
 public class Author extends PersistableResource
 {
 	/* the full name of the author, most commonly used */
 	@Column
-	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
+	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
+	@Analyzer( definition = "authoranalyzer" )
 	private String name;
+
+	@Column
+	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
+	@Analyzer( definition = "authoranalyzer" )
+	private String firstName;
+
+	@Column
+	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
+	@Analyzer( definition = "authoranalyzer" )
+	private String lastName;
 
 	@Column
 	private String department;
@@ -36,6 +63,11 @@ public class Author extends PersistableResource
 	private String email;
 
 	// relations
+
+	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@JoinColumn( name = "location_id" )
+	private Location based_near;
+
 	@ManyToMany( mappedBy = "coAuthors", cascade = CascadeType.ALL )
 	private List<Publication> publications;
 
@@ -145,25 +177,25 @@ public class Author extends PersistableResource
 		return this;
 	}
 
-//	public List<Publication> getPublications()
-//	{
-//		return publications;
-//	}
-//
-//	public void setPublications( List<Publication> publications )
-//	{
-//		this.publications = publications;
-//	}
-//
-//	public Author addPublication( final Publication publication )
-//	{
-//		if ( this.publications == null )
-//			this.publications = new ArrayList<Publication>();
-//
-//		this.publications.add( publication );
-//
-//		return this;
-//	}
+	public String getFirstName()
+	{
+		return firstName;
+	}
+
+	public void setFirstName( String firstName )
+	{
+		this.firstName = firstName;
+	}
+
+	public String getLastName()
+	{
+		return lastName;
+	}
+
+	public void setLastName( String lastName )
+	{
+		this.lastName = lastName;
+	}
 
 	public List<Author> getCoAuthors()
 	{
@@ -213,5 +245,15 @@ public class Author extends PersistableResource
 		this.publications.add( publication );
 
 		return this;
+	}
+
+	public Location getBased_near()
+	{
+		return based_near;
+	}
+
+	public void setBased_near( Location based_near )
+	{
+		this.based_near = based_near;
 	}
 }

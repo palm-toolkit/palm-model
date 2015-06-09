@@ -16,41 +16,40 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 public class Conference extends PersistableResource
 {
 	@Column
-	private String name;
+	private Date date;
 
 	@Column
-	private Date year;
+	private String thema;
 
-	@Column
-	private String type;
+	@Column( length = 4 )
+	private String year;
 
-	@Column
-	private String notation;
-
-	@Column
-	private String knowledgeGroup;
-
-	@OneToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	private Location location;
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName( String name )
-	{
-		this.name = name;
-	}
-
-	public Date getYear()
+	public String getYear()
 	{
 		return year;
 	}
 
-	public void setYear( Date year )
+	public void setYear( String year )
 	{
 		this.year = year;
+	}
+
+	public void setThema( String thema )
+	{
+		this.thema = thema;
+	}
+
+	@OneToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	private Location location;
+
+	public Date getDate()
+	{
+		return date;
+	}
+
+	public void setDate( Date date )
+	{
+		this.date = date;
 	}
 
 	public Location getLocation()
@@ -63,33 +62,13 @@ public class Conference extends PersistableResource
 		this.location = location;
 	}
 
-	public String getType()
+	public String getThema()
 	{
-		return type;
+		return thema;
 	}
 
-	public void setType( String type )
+	public void setType( String thema )
 	{
-		this.type = type;
-	}
-
-	public String getKnowledgeGroup()
-	{
-		return knowledgeGroup;
-	}
-
-	public void setKnowledgeGroup( String knowledgeGroup )
-	{
-		this.knowledgeGroup = knowledgeGroup;
-	}
-
-	public String getNotation()
-	{
-		return notation;
-	}
-
-	public void setNotation( String notation )
-	{
-		this.notation = notation;
+		this.thema = thema;
 	}
 }

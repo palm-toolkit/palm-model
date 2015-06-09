@@ -120,7 +120,7 @@
   </class>  
   <class id="14" language="java" name="de.rwth.i9.palm.model.Dataset" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/Dataset.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="483" y="437"/>    
+    <position height="-1" width="-1" x="480" y="545"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -147,7 +147,7 @@
   </enumeration>  
   <class id="17" language="java" name="de.rwth.i9.palm.model.Author" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/Author.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="419" y="61"/>    
+    <position height="-1" width="-1" x="425" y="71"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -228,7 +228,7 @@
   </enumeration>  
   <class id="26" language="java" name="de.rwth.i9.palm.model.Conference" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/Conference.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="474" y="282"/>    
+    <position height="-1" width="-1" x="479" y="379"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -362,10 +362,10 @@
   <association id="58">    
     <end type="SOURCE" refId="17" navigable="false">      
       <attribute id="59" name="coAuthors">        
-        <position height="18" width="59" x="450" y="119"/>      
+        <position height="18" width="59" x="456" y="129"/>      
       </attribute>      
       <multiplicity id="60" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="0" width="0" x="6" y="10"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="17" navigable="true"/>    
@@ -470,10 +470,10 @@
   <association id="86">    
     <end type="SOURCE" refId="7" navigable="false">      
       <attribute id="87" name="datasets">        
-        <position height="18" width="50" x="526" y="486"/>      
+        <position height="18" width="50" x="523" y="594"/>      
       </attribute>      
       <multiplicity id="88" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="0" width="0" x="-3" y="108"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="14" navigable="true"/>    
@@ -567,10 +567,10 @@
     <bendpoint x="347" y="257"/>    
     <end type="SOURCE" refId="1" navigable="false">      
       <attribute id="111" name="coAuthors">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="0" width="0" x="6" y="10"/>      
       </attribute>      
       <multiplicity id="112" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="0" width="0" x="6" y="10"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="17" navigable="true"/>    

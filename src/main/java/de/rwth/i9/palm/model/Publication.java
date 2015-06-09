@@ -37,7 +37,14 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 @Table( name = "publication" )
 @JsonIgnoreProperties( { } )
 @Indexed
-@AnalyzerDef( name = "customanalyzer", tokenizer = @TokenizerDef( factory = StandardTokenizerFactory.class ), filters = { @TokenFilterDef( factory = LowerCaseFilterFactory.class ), @TokenFilterDef( factory = SnowballPorterFilterFactory.class, params = { @Parameter( name = "language", value = "English" ) } ) } )
+@AnalyzerDef( 
+		name = "customanalyzer", 
+		tokenizer = @TokenizerDef( factory = StandardTokenizerFactory.class ), 
+		filters = { 
+			@TokenFilterDef( factory = LowerCaseFilterFactory.class ), 
+			@TokenFilterDef( factory = SnowballPorterFilterFactory.class, params = { @Parameter( name = "language", value = "English" ) } ) 
+			} 
+		)
 public class Publication extends PersistableResource
 {
 	@Column( unique = true, nullable = false )
