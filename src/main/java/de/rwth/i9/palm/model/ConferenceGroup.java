@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -37,8 +36,7 @@ public class ConferenceGroup extends PersistableResource
 	@Column
 	private String knowledgeGroup;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinColumn( name = "conference_group_id" )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "conferenceGroup" )
 	private List<Conference> conferences;
 
 	public ConferenceType getConferenceType()

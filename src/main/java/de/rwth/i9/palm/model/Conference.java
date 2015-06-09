@@ -6,6 +6,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -38,6 +40,20 @@ public class Conference extends PersistableResource
 	{
 		this.thema = thema;
 	}
+
+	public ConferenceGroup getConferenceGroup()
+	{
+		return conferenceGroup;
+	}
+
+	public void setConferenceGroup( ConferenceGroup conferenceGroup )
+	{
+		this.conferenceGroup = conferenceGroup;
+	}
+
+	@ManyToOne
+	@JoinColumn( name = "conference_group_id" )
+	private ConferenceGroup conferenceGroup;
 
 	@OneToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	private Location location;
