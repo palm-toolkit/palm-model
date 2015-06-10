@@ -13,6 +13,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
@@ -130,6 +131,38 @@ public class Publication extends PersistableResource
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_citedby", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "publication_citedby_id" ) )
 	private List<Publication> publicationCitedBys;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication" )
+	private List<Reference> references;
+
+	public Conference getConference()
+	{
+		return conference;
+	}
+
+	public void setConference( Conference conference )
+	{
+		this.conference = conference;
+	}
+
+	public List<Reference> getReferences()
+	{
+		return references;
+	}
+
+	public void setReferences( List<Reference> references )
+	{
+		this.references = references;
+	}
+
+	public Publication addReference( Reference reference )
+	{
+		if ( this.references == null )
+			this.references = new ArrayList<Reference>();
+		this.references.add( reference );
+
+		return this;
+	}
 
 	public String getTitle()
 	{
