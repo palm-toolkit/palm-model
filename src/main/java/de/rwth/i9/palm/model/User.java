@@ -13,6 +13,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -63,7 +64,27 @@ public class User extends PersistableResource
 	@JoinColumn( name = "user_id" )
 	private List<UserWidget> userWidgets;
 
+	@OneToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@JoinColumn( name = "author_id" )
+	private Author author;
+
+	@OneToMany( cascade = CascadeType.ALL, mappedBy = "user" )
+	private List<PublicationHistory> publicationHistories;
+
+	@OneToMany( cascade = CascadeType.ALL, mappedBy = "user" )
+	private List<PublicationSource> publicationSources;
+
 	// getter and setter
+
+	public Author getAuthor()
+	{
+		return author;
+	}
+
+	public void setAuthor( Author author )
+	{
+		this.author = author;
+	}
 
 	public List<UserWidget> getUserWidgets()
 	{

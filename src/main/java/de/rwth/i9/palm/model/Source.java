@@ -6,7 +6,9 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -24,6 +26,19 @@ public class Source extends PersistableResource
 	@Lob
 	private String description;
 
+	@Enumerated( EnumType.STRING )
+	@Column( length = 16 )
+	private SourceType SourceType;
+
+	public void setDescription( String description )
+	{
+		this.description = description;
+	}
+
+	// relations
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "source" )
+	private List<PublicationSource> publicationSources;
+
 	public String getName()
 	{
 		return name;
@@ -39,36 +54,27 @@ public class Source extends PersistableResource
 		return description;
 	}
 
-	public void setDescription( String description )
+	public SourceType getSourceType()
 	{
-		this.description = description;
+		return SourceType;
 	}
 
-	// relations
-	@OneToMany( cascade = CascadeType.ALL )
-	@JoinColumn( name = "source_id" )
-	private List<Publication> publications;
-
-	@OneToMany( cascade = CascadeType.ALL )
-	@JoinColumn( name = "source_id" )
-	private List<PublicationOld> publicationOlds;
-
-	public List<Publication> getPublications()
+	public void setSourceType( SourceType sourceType )
 	{
-		return publications;
+		SourceType = sourceType;
 	}
 
-	public void setPublications( List<Publication> publications )
+	public void setPublicationSources( List<PublicationSource> publicationSources )
 	{
-		this.publications = publications;
+		this.publicationSources = publicationSources;
 	}
 
-	public Source addPublication( final Publication publication )
+	public Source addPublicationSource( final PublicationSource publicationSource )
 	{
-		if ( publications == null )
-			publications = new ArrayList<Publication>();
+		if ( this.publicationSources == null )
+			this.publicationSources = new ArrayList<PublicationSource>();
 
-		publications.add( publication );
+		this.publicationSources.add( publicationSource );
 		return this;
 	}
 }

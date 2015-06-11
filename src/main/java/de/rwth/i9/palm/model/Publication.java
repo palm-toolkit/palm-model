@@ -1,7 +1,6 @@
 package de.rwth.i9.palm.model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -54,17 +53,12 @@ public class Publication extends PersistableResource
 	
 	/* comma separated author list */
 	@Column
-	@Lob
-	private String authorInformation;
-
-	/* comma separated author list */
-	@Column
 	private String authorString;
 
 	@Column
 	@Lob
 	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
-	private String abstractOriginal;
+	private String abstractText;
 
 	@Column
 	@Lob
@@ -75,22 +69,13 @@ public class Publication extends PersistableResource
 	@Column
 	@Lob
 	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
-	private String fulltextOriginal;
+	private String fulltext;
 
 	@Column
 	@Lob
 	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
 	@Analyzer( definition = "customanalyzer" )
 	private String fulltextTokenized;
-
-	@Column
-	private Date createdAt;
-	
-	@Column
-	private Date fetchAt;
-
-	@Column
-	private String type;
 
 	@Column
 	@Lob
@@ -106,11 +91,7 @@ public class Publication extends PersistableResource
 	// relations
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_keyword", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "keyword_id" ) )
-	private List<Keyword> keywords;
-
-	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinTable( name = "publication_tag", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "tag_id" ) )
-	private List<Tag> tags;
+	private List<Subject> subjects;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_topic", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "publication_topic" ) )
@@ -134,6 +115,12 @@ public class Publication extends PersistableResource
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication" )
 	private List<Reference> references;
+
+	@OneToMany( cascade = CascadeType.ALL, mappedBy = "publication" )
+	private List<PublicationHistory> publicationHistories;
+
+	@OneToMany( cascade = CascadeType.ALL, mappedBy = "publication" )
+	private List<PublicationSource> publicationSources;
 
 	public Conference getConference()
 	{
@@ -174,14 +161,14 @@ public class Publication extends PersistableResource
 		this.title = title;
 	}
 
-	public String getAbstractOriginal()
+	public String getAbstractText()
 	{
-		return abstractOriginal;
+		return abstractText;
 	}
 
-	public void setAbstractOriginal( String abstractOriginal )
+	public void setAbstractText( String abstractText )
 	{
-		this.abstractOriginal = abstractOriginal;
+		this.abstractText = abstractText;
 	}
 
 	public String getAbstractTokenized()
@@ -194,14 +181,14 @@ public class Publication extends PersistableResource
 		this.abstractTokenized = abstractTokenized;
 	}
 
-	public String getFulltextOriginal()
+	public String getFulltext()
 	{
-		return fulltextOriginal;
+		return fulltext;
 	}
 
-	public void setFulltextOriginal( String fulltextOriginal )
+	public void setFulltext( String fulltext )
 	{
-		this.fulltextOriginal = fulltextOriginal;
+		this.fulltext = fulltext;
 	}
 
 	public String getFulltextTokenized()
@@ -214,32 +201,22 @@ public class Publication extends PersistableResource
 		this.fulltextTokenized = fulltextTokenized;
 	}
 
-	public Date getCreatedAt()
+	public List<Subject> getKeywords()
 	{
-		return createdAt;
+		return subjects;
 	}
 
-	public void setCreatedAt( Date createdAt )
+	public void setKeywords( List<Subject> subjects )
 	{
-		this.createdAt = createdAt;
+		this.subjects = subjects;
 	}
 
-	public List<Keyword> getKeywords()
+	public Publication addKeyword( final Subject subject )
 	{
-		return keywords;
-	}
+		if ( this.subjects == null )
+			this.subjects = new ArrayList<Subject>();
 
-	public void setKeywords( List<Keyword> keywords )
-	{
-		this.keywords = keywords;
-	}
-
-	public Publication addKeyword( final Keyword keyword )
-	{
-		if ( this.keywords == null )
-			this.keywords = new ArrayList<Keyword>();
-
-		keywords.add( keyword );
+		subjects.add( subject );
 		return this;
 	}
 
@@ -329,26 +306,6 @@ public class Publication extends PersistableResource
 		return this;
 	}
 
-	public String getType()
-	{
-		return type;
-	}
-
-	public void setType( String type )
-	{
-		this.type = type;
-	}
-
-	public Date getFetchAt()
-	{
-		return fetchAt;
-	}
-
-	public void setFetchAt( Date fetchAt )
-	{
-		this.fetchAt = fetchAt;
-	}
-
 	public String getAuthorString()
 	{
 		return authorString;
@@ -357,25 +314,6 @@ public class Publication extends PersistableResource
 	public void setAuthorString( String authorString )
 	{
 		this.authorString = authorString;
-	}
-
-	public List<Tag> getTags()
-	{
-		return tags;
-	}
-
-	public void setTags( List<Tag> tags )
-	{
-		this.tags = tags;
-	}
-
-	public Publication addTag( final Tag tag )
-	{
-		if ( this.tags == null )
-			this.tags = new ArrayList<Tag>();
-
-		this.tags.add( tag );
-		return this;
 	}
 
 	public int getNumberOfCitation()
@@ -408,14 +346,60 @@ public class Publication extends PersistableResource
 		this.language = language;
 	}
 
-	public String getAuthorInformation()
+	public List<Subject> getSubjects()
 	{
-		return authorInformation;
+		return subjects;
 	}
 
-	public void setAuthorInformation( String authorInformation )
+	public void setSubjects( List<Subject> subjects )
 	{
-		this.authorInformation = authorInformation;
+		this.subjects = subjects;
+	}
+
+	public Publication adddSubject( Subject subject )
+	{
+		if ( this.subjects == null )
+			this.subjects = new ArrayList<Subject>();
+
+		this.subjects.add( subject );
+
+		return this;
+	}
+
+	public List<PublicationHistory> getPublicationHistories()
+	{
+		return publicationHistories;
+	}
+
+	public void setPublicationHistories( List<PublicationHistory> publicationHistories )
+	{
+		this.publicationHistories = publicationHistories;
+	}
+
+	public Publication addPublicationHistory( PublicationHistory publicationHistory )
+	{
+		if ( this.publicationHistories == null )
+			this.publicationHistories = new ArrayList<PublicationHistory>();
+		this.publicationHistories.add( publicationHistory );
+		return this;
+	}
+
+	public List<PublicationSource> getPublicationSources()
+	{
+		return publicationSources;
+	}
+
+	public void setPublicationSources( List<PublicationSource> publicationSources )
+	{
+		this.publicationSources = publicationSources;
+	}
+
+	public Publication addPublicationSource( PublicationSource publicationSource )
+	{
+		if ( this.publicationSources == null )
+			this.publicationSources = new ArrayList<PublicationSource>();
+		this.publicationSources.add( publicationSource );
+		return this;
 	}
 
 }
