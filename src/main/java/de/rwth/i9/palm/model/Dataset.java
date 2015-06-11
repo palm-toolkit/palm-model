@@ -6,7 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -48,8 +48,7 @@ public class Dataset extends PersistableResource
 	}
 
 	// relations
-	@OneToMany( cascade = CascadeType.ALL )
-	@JoinColumn( name = "dataset_id" )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "dataset" )
 	private List<Publication> publications;
 
 	public List<Publication> getPublications()

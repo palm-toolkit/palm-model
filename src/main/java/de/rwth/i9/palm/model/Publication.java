@@ -100,6 +100,10 @@ public class Publication extends PersistableResource
 	@JoinColumn( name = "conference_id" )
 	private Conference conference;
 	
+	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@JoinColumn( name = "dataset_id" )
+	private Dataset dataset;
+
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_author", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "author_id" ) )
 	private List<Author> coAuthors;
@@ -355,7 +359,7 @@ public class Publication extends PersistableResource
 		this.subjects = subjects;
 	}
 
-	public Publication adddSubject( Subject subject )
+	public Publication addSubject( Subject subject )
 	{
 		if ( this.subjects == null )
 			this.subjects = new ArrayList<Subject>();
@@ -399,6 +403,34 @@ public class Publication extends PersistableResource
 			this.publicationSources = new ArrayList<PublicationSource>();
 		this.publicationSources.add( publicationSource );
 		return this;
+	}
+
+	public List<PublicationTopic> getPublicationTopics()
+	{
+		return publicationTopics;
+	}
+
+	public void setPublicationTopics( List<PublicationTopic> publicationTopics )
+	{
+		this.publicationTopics = publicationTopics;
+	}
+
+	public Publication addPublicationTopic( PublicationTopic publicationTopic )
+	{
+		if ( this.publicationTopics == null )
+			this.publicationTopics = new ArrayList<PublicationTopic>();
+		this.publicationTopics.add( publicationTopic );
+		return this;
+	}
+
+	public Dataset getDataset()
+	{
+		return dataset;
+	}
+
+	public void setDataset( Dataset dataset )
+	{
+		this.dataset = dataset;
 	}
 
 }

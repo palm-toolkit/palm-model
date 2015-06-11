@@ -55,6 +55,14 @@ public class PublicationSource extends PersistableResource
 	@Column
 	private Date createdAt;
 
+	@Column
+	@Lob
+	private String keyword;
+
+	@Column
+	@Lob
+	private String tag;
+
 	// relations
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinColumn( name = "source_id" )
@@ -198,5 +206,34 @@ public class PublicationSource extends PersistableResource
 		this.user = user;
 	}
 
-}
+	public Source getSource()
+	{
+		return source;
+	}
 
+	public void setSource( Source source )
+	{
+		this.source = source;
+	}
+
+	public String getKeyword()
+	{
+		return keyword;
+	}
+
+	public void setKeyword( String keyword )
+	{
+		this.keyword = keyword;
+	}
+
+	public String getTag()
+	{
+		return tag;
+	}
+
+	public void setTag( String tag )
+	{
+		this.tag = tag;
+	}
+
+}
