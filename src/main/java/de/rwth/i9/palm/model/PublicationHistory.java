@@ -34,7 +34,7 @@ public class PublicationHistory extends PersistableResource
 
 	@Column
 	@Lob
-	private String fulltext;
+	private String contentText;
 
 	@Column
 	@Lob
@@ -84,14 +84,14 @@ public class PublicationHistory extends PersistableResource
 		this.abstractText = abstractText;
 	}
 
-	public String getFulltext()
+	public String getContentText()
 	{
-		return fulltext;
+		return contentText;
 	}
 
-	public void setFulltext( String fulltext )
+	public void setContentText( String contentText )
 	{
-		this.fulltext = fulltext;
+		this.contentText = contentText;
 	}
 
 	public String getAuthorString()

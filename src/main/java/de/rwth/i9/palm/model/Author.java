@@ -87,7 +87,7 @@ public class Author extends PersistableResource
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "author_interest", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "topic_id" ) )
-	private List<Topic> topics;
+	private List<PublicationTopic> publicationTopics;
 
 	public String getName()
 	{
@@ -138,22 +138,22 @@ public class Author extends PersistableResource
 		this.institutions = institutions;
 	}
 
-	public List<Topic> getTopics()
+	public List<PublicationTopic> getTopics()
 	{
-		return topics;
+		return publicationTopics;
 	}
 
-	public void setTopics( List<Topic> topics )
+	public void setTopics( List<PublicationTopic> publicationTopics )
 	{
-		this.topics = topics;
+		this.publicationTopics = publicationTopics;
 	}
 
-	public Author addTopic( Topic topic )
+	public Author addTopic( PublicationTopic publicationTopic )
 	{
-		if ( this.topics == null )
-			this.topics = new ArrayList<Topic>();
+		if ( this.publicationTopics == null )
+			this.publicationTopics = new ArrayList<PublicationTopic>();
 
-		this.topics.add( topic );
+		this.publicationTopics.add( publicationTopic );
 		return this;
 	}
 

@@ -7,13 +7,23 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
 
-@Entity( name = "subject" )
+@Entity
+@Table( name = "subject" )
+@Indexed
 public class Subject extends PersistableResource
 {
 	@Column
+	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	private String label;
 
 	@Column( columnDefinition = "bit default 1" )

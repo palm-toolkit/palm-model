@@ -69,13 +69,13 @@ public class Publication extends PersistableResource
 	@Column
 	@Lob
 	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
-	private String fulltext;
+	private String contentText;
 
 	@Column
 	@Lob
 	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
 	@Analyzer( definition = "customanalyzer" )
-	private String fulltextTokenized;
+	private String contentTextTokenized;
 
 	@Column
 	@Lob
@@ -93,9 +93,8 @@ public class Publication extends PersistableResource
 	@JoinTable( name = "publication_keyword", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "keyword_id" ) )
 	private List<Subject> subjects;
 
-	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinTable( name = "publication_topic", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "publication_topic" ) )
-	private List<Topic> topics;
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication" )
+	private List<PublicationTopic> publicationTopics;
 	
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinColumn( name = "conference_id" )
@@ -116,10 +115,10 @@ public class Publication extends PersistableResource
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication" )
 	private List<Reference> references;
 
-	@OneToMany( cascade = CascadeType.ALL, mappedBy = "publication" )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication" )
 	private List<PublicationHistory> publicationHistories;
 
-	@OneToMany( cascade = CascadeType.ALL, mappedBy = "publication" )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication" )
 	private List<PublicationSource> publicationSources;
 
 	public Conference getConference()
@@ -181,24 +180,24 @@ public class Publication extends PersistableResource
 		this.abstractTokenized = abstractTokenized;
 	}
 
-	public String getFulltext()
+	public String getContentText()
 	{
-		return fulltext;
+		return contentText;
 	}
 
-	public void setFulltext( String fulltext )
+	public void setContentText( String contentText )
 	{
-		this.fulltext = fulltext;
+		this.contentText = contentText;
 	}
 
-	public String getFulltextTokenized()
+	public String getContentTextTokenized()
 	{
-		return fulltextTokenized;
+		return contentTextTokenized;
 	}
 
-	public void setFulltextTokenized( String fulltextTokenized )
+	public void setContentTextTokenized( String contentTextTokenized )
 	{
-		this.fulltextTokenized = fulltextTokenized;
+		this.contentTextTokenized = contentTextTokenized;
 	}
 
 	public List<Subject> getKeywords()
@@ -220,22 +219,22 @@ public class Publication extends PersistableResource
 		return this;
 	}
 
-	public List<Topic> getTopics()
+	public List<PublicationTopic> getTopics()
 	{
-		return topics;
+		return publicationTopics;
 	}
 
-	public void setTopics( List<Topic> topics )
+	public void setTopics( List<PublicationTopic> publicationTopics )
 	{
-		this.topics = topics;
+		this.publicationTopics = publicationTopics;
 	}
 
-	public Publication addTopic( final Topic topic )
+	public Publication addTopic( final PublicationTopic publicationTopic )
 	{
-		if ( this.topics == null )
-			this.topics = new ArrayList<Topic>();
+		if ( this.publicationTopics == null )
+			this.publicationTopics = new ArrayList<PublicationTopic>();
 
-		topics.add( topic );
+		publicationTopics.add( publicationTopic );
 		return this;
 	}
 

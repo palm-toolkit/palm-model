@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -14,8 +13,8 @@ import javax.persistence.Table;
 import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
-@Table( name = "algorithm" )
-public class Algorithm extends PersistableResource
+@Table( name = "extraction_service" )
+public class ExtractionService extends PersistableResource
 {
 	@Column( length = 32 )
 	private String name;
@@ -28,9 +27,8 @@ public class Algorithm extends PersistableResource
 	private String description;
 
 	// relations
-	@OneToMany( cascade = CascadeType.ALL )
-	@JoinColumn( name = "algorithm_id" )
-	List<RunTime> runTimes;
+	@OneToMany( cascade = CascadeType.ALL, mappedBy = "extractionService" )
+	List<ExtractionRuntime> extractionRuntimes;
 
 	// getter & setter
 
@@ -64,22 +62,22 @@ public class Algorithm extends PersistableResource
 		this.description = description;
 	}
 
-	public List<RunTime> getRunTimes()
+	public List<ExtractionRuntime> getExtractionRuntimes()
 	{
-		return runTimes;
+		return extractionRuntimes;
 	}
 
-	public void setRunTimes( List<RunTime> runTimes )
+	public void setExtractionRuntimes( List<ExtractionRuntime> extractionRuntimes )
 	{
-		this.runTimes = runTimes;
+		this.extractionRuntimes = extractionRuntimes;
 	}
 
-	public Algorithm addRunTime( final RunTime runtime )
+	public ExtractionService addExtractionRuntime( final ExtractionRuntime extractionRuntime )
 	{
-		if ( this.runTimes == null )
-			this.runTimes = new ArrayList<RunTime>();
+		if ( this.extractionRuntimes == null )
+			this.extractionRuntimes = new ArrayList<ExtractionRuntime>();
 
-		this.runTimes.add( runtime );
+		this.extractionRuntimes.add( extractionRuntime );
 		return this;
 	}
 }

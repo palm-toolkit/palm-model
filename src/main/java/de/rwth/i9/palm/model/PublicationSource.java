@@ -34,7 +34,7 @@ public class PublicationSource extends PersistableResource
 
 	@Column
 	@Lob
-	private String fulltext;
+	private String contentText;
 
 	@Column
 	@Lob
@@ -56,6 +56,10 @@ public class PublicationSource extends PersistableResource
 	private Date createdAt;
 
 	// relations
+	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@JoinColumn( name = "source_id" )
+	private Source source;
+
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinColumn( name = "user_id" )
 	private User user;
@@ -94,14 +98,14 @@ public class PublicationSource extends PersistableResource
 		this.abstractText = abstractText;
 	}
 
-	public String getFulltext()
+	public String getContentText()
 	{
-		return fulltext;
+		return contentText;
 	}
 
-	public void setFulltext( String fulltext )
+	public void setContentText( String contentText )
 	{
-		this.fulltext = fulltext;
+		this.contentText = contentText;
 	}
 
 	public String getAuthorAffiliation()
