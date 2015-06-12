@@ -22,6 +22,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
+import org.hibernate.search.annotations.Boost;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -49,6 +50,7 @@ public class Publication extends PersistableResource
 {
 	@Column( unique = true, nullable = false )
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
+	@Boost( 1.8f )
 	private String title;
 	
 	/* comma separated author list */
