@@ -19,9 +19,11 @@ import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
+import org.hibernate.search.annotations.Boost;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
@@ -54,6 +56,7 @@ public class Author extends PersistableResource
 	@Column
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
 	@Analyzer( definition = "authoranalyzer" )
+	@Boost( 3.0f )
 	private String lastName;
 
 	@Column
@@ -83,6 +86,7 @@ public class Author extends PersistableResource
 	/* few authors work for several institution */
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "author_institution", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "institution_id" ) )
+	@IndexedEmbedded
 	private List<Institution> institutions;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
