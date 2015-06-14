@@ -13,13 +13,24 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
+
 import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
 @Table( name = "conference_group" )
+@Indexed
 public class ConferenceGroup extends PersistableResource
 {
 	@Column
+	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
+	@Analyzer( definition = "customanalyzer" )
 	private String name;
 
 	@Column
@@ -36,6 +47,7 @@ public class ConferenceGroup extends PersistableResource
 	@Column
 	private String knowledgeGroup;
 
+	@ContainedIn
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "conferenceGroup" )
 	private List<Conference> conferences;
 

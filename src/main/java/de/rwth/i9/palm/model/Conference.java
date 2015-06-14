@@ -11,19 +11,30 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Boost;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Store;
+
 import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
 @Table( name = "conference" )
+@Indexed
 public class Conference extends PersistableResource
 {
 	@Column
 	private Date date;
 
 	@Column
+	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	private String thema;
 
 	@Column( length = 4 )
+	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	private String year;
 
 	public String getYear()
@@ -53,6 +64,8 @@ public class Conference extends PersistableResource
 
 	@ManyToOne
 	@JoinColumn( name = "conference_group_id" )
+	@IndexedEmbedded
+	@Boost( 2.0f )
 	private ConferenceGroup conferenceGroup;
 
 	@OneToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
