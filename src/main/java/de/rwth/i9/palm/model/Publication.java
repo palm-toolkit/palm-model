@@ -50,7 +50,7 @@ public class Publication extends PersistableResource
 {
 	@Column( unique = true, nullable = false )
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
-	@Boost( 1.8f )
+	@Boost( 3.0f )
 	private String title;
 	
 	/* comma separated author list */
