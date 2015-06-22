@@ -65,6 +65,9 @@ public class Author extends PersistableResource
 	@Column
 	private String email;
 
+	@Column( length = 24 )
+	private String googleScholarId;
+
 	// relations
 
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
@@ -260,4 +263,25 @@ public class Author extends PersistableResource
 	{
 		this.based_near = based_near;
 	}
+
+	public String getGoogleScholarId()
+	{
+		return googleScholarId;
+	}
+
+	public void setGoogleScholarId( String googleScholarId )
+	{
+		this.googleScholarId = googleScholarId;
+	}
+
+	public List<PublicationTopic> getPublicationTopics()
+	{
+		return publicationTopics;
+	}
+
+	public void setPublicationTopics( List<PublicationTopic> publicationTopics )
+	{
+		this.publicationTopics = publicationTopics;
+	}
+
 }
