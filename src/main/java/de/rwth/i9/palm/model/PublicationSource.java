@@ -49,7 +49,7 @@ public class PublicationSource extends PersistableResource
 	@Column( length = 10 )
 	private String month;
 	
-	@Column( length = 10 )
+	@Column
 	private int citationNumber;
 
 	@Column
