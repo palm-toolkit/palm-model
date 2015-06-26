@@ -60,10 +60,16 @@ public class Author extends PersistableResource
 	private String lastName;
 
 	@Column
+	private String otherDetail;
+
+	@Column
 	private String department;
 
 	@Column
 	private String email;
+
+	@Column
+	private String photoUrl;
 
 	@Column( length = 24 )
 	private String googleScholarId;
@@ -282,6 +288,26 @@ public class Author extends PersistableResource
 	public void setPublicationTopics( List<PublicationTopic> publicationTopics )
 	{
 		this.publicationTopics = publicationTopics;
+	}
+
+	public String getOtherDetail()
+	{
+		return otherDetail;
+	}
+
+	public void setOtherDetail( String otherDetail )
+	{
+		this.otherDetail = otherDetail;
+	}
+
+	public String getPhotoUrl()
+	{
+		return photoUrl;
+	}
+
+	public void setPhotoUrl( String photoUrl )
+	{
+		this.photoUrl = photoUrl;
 	}
 
 }

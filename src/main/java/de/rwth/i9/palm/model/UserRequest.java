@@ -1,7 +1,5 @@
 package de.rwth.i9.palm.model;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,7 +14,7 @@ public class UserRequest extends PersistableResource
 {
 
 	@Column
-	private Date requestDate;
+	private java.sql.Timestamp requestDate;
 
 	@Column
 	private String queryString;
@@ -37,16 +35,6 @@ public class UserRequest extends PersistableResource
 		this.requestType = requestType;
 	}
 
-	public Date getRequestDate()
-	{
-		return requestDate;
-	}
-
-	public void setRequestDate( Date requestDate )
-	{
-		this.requestDate = requestDate;
-	}
-
 	public String getQueryString()
 	{
 		return queryString;
@@ -65,6 +53,16 @@ public class UserRequest extends PersistableResource
 	public void setRequestType( RequestType requestType )
 	{
 		this.requestType = requestType;
+	}
+
+	public java.sql.Timestamp getRequestDate()
+	{
+		return requestDate;
+	}
+
+	public void setRequestDate( java.sql.Timestamp requestDate )
+	{
+		this.requestDate = requestDate;
 	}
 
 }
