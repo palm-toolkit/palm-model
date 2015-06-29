@@ -102,6 +102,9 @@ public class Author extends PersistableResource
 	@JoinTable( name = "author_interest", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "topic_id" ) )
 	private List<PublicationTopic> publicationTopics;
 
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author" )
+	private List<AuthorSource> authorSources;
+
 	public String getName()
 	{
 		return name;
@@ -120,16 +123,6 @@ public class Author extends PersistableResource
 	public void setEmail( String email )
 	{
 		this.email = email;
-	}
-
-	public List<Institution> getInstitution()
-	{
-		return institutions;
-	}
-
-	public void setInstitution( List<Institution> institutions )
-	{
-		this.institutions = institutions;
 	}
 
 	public Author addInstitution( final Institution institution )
@@ -308,6 +301,24 @@ public class Author extends PersistableResource
 	public void setPhotoUrl( String photoUrl )
 	{
 		this.photoUrl = photoUrl;
+	}
+
+	public List<AuthorSource> getAuthorSources()
+	{
+		return authorSources;
+	}
+
+	public void setAuthorSources( List<AuthorSource> authorSources )
+	{
+		this.authorSources = authorSources;
+	}
+
+	public Author addAuthorSource( AuthorSource auhtorSource )
+	{
+		if ( this.authorSources == null )
+			this.authorSources = new ArrayList<AuthorSource>();
+		this.authorSources.add( auhtorSource );
+		return this;
 	}
 
 }

@@ -19,7 +19,7 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 @Table( name = "source" )
 public class Source extends PersistableResource
 {
-	@Column( unique = true, nullable = false )
+	@Column( nullable = false )
 	private String name;
 	
 	@Column
