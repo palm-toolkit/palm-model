@@ -1,10 +1,10 @@
 package de.rwth.i9.palm.model;
 
-import java.util.Date;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -53,7 +53,14 @@ public class PublicationSource extends PersistableResource
 	private int citationNumber;
 
 	@Column
-	private Date createdAt;
+	private java.sql.Timestamp lastNetworkUpdate;
+
+	@Column( nullable = false )
+	private String sourceUrl;
+
+	@Enumerated( EnumType.STRING )
+	@Column( length = 16 )
+	private SourceType SourceType;
 
 	@Column
 	@Lob
@@ -62,11 +69,6 @@ public class PublicationSource extends PersistableResource
 	@Column
 	@Lob
 	private String tag;
-
-	// relations
-	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinColumn( name = "source_id" )
-	private Source source;
 
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinColumn( name = "user_id" )
@@ -176,16 +178,6 @@ public class PublicationSource extends PersistableResource
 		this.citationNumber = citationNumber;
 	}
 
-	public Date getCreatedAt()
-	{
-		return createdAt;
-	}
-
-	public void setCreatedAt( Date createdAt )
-	{
-		this.createdAt = createdAt;
-	}
-
 	public String getAuthorString()
 	{
 		return authorString;
@@ -206,16 +198,6 @@ public class PublicationSource extends PersistableResource
 		this.user = user;
 	}
 
-	public Source getSource()
-	{
-		return source;
-	}
-
-	public void setSource( Source source )
-	{
-		this.source = source;
-	}
-
 	public String getKeyword()
 	{
 		return keyword;
@@ -234,6 +216,36 @@ public class PublicationSource extends PersistableResource
 	public void setTag( String tag )
 	{
 		this.tag = tag;
+	}
+
+	public java.sql.Timestamp getLastNetworkUpdate()
+	{
+		return lastNetworkUpdate;
+	}
+
+	public void setLastNetworkUpdate( java.sql.Timestamp lastNetworkUpdate )
+	{
+		this.lastNetworkUpdate = lastNetworkUpdate;
+	}
+
+	public String getSourceUrl()
+	{
+		return sourceUrl;
+	}
+
+	public void setSourceUrl( String sourceUrl )
+	{
+		this.sourceUrl = sourceUrl;
+	}
+
+	public SourceType getSourceType()
+	{
+		return SourceType;
+	}
+
+	public void setSourceType( SourceType sourceType )
+	{
+		SourceType = sourceType;
 	}
 
 }

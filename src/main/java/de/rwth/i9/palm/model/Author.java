@@ -23,7 +23,6 @@ import org.hibernate.search.annotations.Boost;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
@@ -60,6 +59,9 @@ public class Author extends PersistableResource
 	private String lastName;
 
 	@Column
+	private String alias;
+
+	@Column
 	private String otherDetail;
 
 	@Column
@@ -74,6 +76,9 @@ public class Author extends PersistableResource
 	@Column( length = 24 )
 	private String googleScholarId;
 
+	@Column
+	private java.sql.Timestamp requestDate;
+
 	// relations
 
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
@@ -83,19 +88,14 @@ public class Author extends PersistableResource
 	@ManyToMany( mappedBy = "coAuthors", cascade = CascadeType.ALL )
 	private List<Publication> publications;
 
-	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinTable( name = "author_coauthor", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "author_coauthor_id" ) )
-	private List<Author> coAuthors;
-
-	/* other name of the author */
-	@OneToMany( cascade = CascadeType.ALL )
-	@JoinColumn( name = "author_id" )
-	private List<AuthorAlias> aliases;
+//	@ManyToMany( fetch = FetchType.LAZY )
+//	@JoinTable( name = "author_coauthor", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "author_coauthor_id" ) )
+//	private List<Author> coAuthors;
 
 	/* few authors work for several institution */
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "author_institution", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "institution_id" ) )
-	@IndexedEmbedded
+	//@IndexedEmbedded
 	private List<Institution> institutions;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
@@ -144,45 +144,6 @@ public class Author extends PersistableResource
 		this.institutions = institutions;
 	}
 
-	public List<PublicationTopic> getTopics()
-	{
-		return publicationTopics;
-	}
-
-	public void setTopics( List<PublicationTopic> publicationTopics )
-	{
-		this.publicationTopics = publicationTopics;
-	}
-
-	public Author addTopic( PublicationTopic publicationTopic )
-	{
-		if ( this.publicationTopics == null )
-			this.publicationTopics = new ArrayList<PublicationTopic>();
-
-		this.publicationTopics.add( publicationTopic );
-		return this;
-	}
-
-	public List<AuthorAlias> getAliases()
-	{
-		return aliases;
-	}
-
-	public void setAliases( List<AuthorAlias> aliases )
-	{
-		this.aliases = aliases;
-	}
-
-	public Author addAlias( final AuthorAlias aliasName )
-	{
-		if ( this.aliases == null )
-			this.aliases = new ArrayList<AuthorAlias>();
-
-		this.aliases.add( aliasName );
-
-		return this;
-	}
-
 	public String getFirstName()
 	{
 		return firstName;
@@ -203,25 +164,25 @@ public class Author extends PersistableResource
 		this.lastName = lastName;
 	}
 
-	public List<Author> getCoAuthors()
-	{
-		return coAuthors;
-	}
-
-	public void setCoAuthors( List<Author> coAuthors )
-	{
-		this.coAuthors = coAuthors;
-	}
-
-	public Author addCoAuthor( final Author coAuthor )
-	{
-		if ( this.coAuthors == null )
-			this.coAuthors = new ArrayList<Author>();
-
-		this.coAuthors.add( coAuthor );
-
-		return this;
-	}
+//	public List<Author> getCoAuthors()
+//	{
+//		return coAuthors;
+//	}
+//
+//	public void setCoAuthors( List<Author> coAuthors )
+//	{
+//		this.coAuthors = coAuthors;
+//	}
+//
+//	public Author addCoAuthor( final Author coAuthor )
+//	{
+//		if ( this.coAuthors == null )
+//			this.coAuthors = new ArrayList<Author>();
+//
+//		this.coAuthors.add( coAuthor );
+//
+//		return this;
+//	}
 
 	public String getDepartment()
 	{
@@ -283,6 +244,15 @@ public class Author extends PersistableResource
 		this.publicationTopics = publicationTopics;
 	}
 
+	public Author addPublicationTopic( PublicationTopic publicationTopic )
+	{
+		if ( this.publicationTopics == null )
+			this.publicationTopics = new ArrayList<PublicationTopic>();
+
+		this.publicationTopics.add( publicationTopic );
+		return this;
+	}
+
 	public String getOtherDetail()
 	{
 		return otherDetail;
@@ -320,5 +290,27 @@ public class Author extends PersistableResource
 		this.authorSources.add( auhtorSource );
 		return this;
 	}
+
+	public java.sql.Timestamp getRequestDate()
+	{
+		return requestDate;
+	}
+
+	public void setRequestDate( java.sql.Timestamp requestDate )
+	{
+		this.requestDate = requestDate;
+	}
+
+	public String getAlias()
+	{
+		return alias;
+	}
+
+	public void setAlias( String alias )
+	{
+		this.alias = alias;
+	}
+	
+	
 
 }

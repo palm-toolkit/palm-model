@@ -15,7 +15,6 @@ import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
-import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -41,11 +40,11 @@ public class Institution extends PersistableResource
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
 	@Analyzer( definition = "institutionanalyzer" )
 	private String name;
-
-	@OneToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	
+	@OneToOne( cascade = CascadeType.ALL, orphanRemoval = true )
 	private Location location;
 
-	@ContainedIn
+	// @ContainedIn
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "institutions" )
 	private List<Author> authors;
 

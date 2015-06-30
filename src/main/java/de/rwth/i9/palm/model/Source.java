@@ -1,16 +1,10 @@
 package de.rwth.i9.palm.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.Lob;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
@@ -34,10 +28,6 @@ public class Source extends PersistableResource
 	{
 		this.description = description;
 	}
-
-	// relations
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "source" )
-	private List<PublicationSource> publicationSources;
 
 	public String getName()
 	{
@@ -64,17 +54,4 @@ public class Source extends PersistableResource
 		SourceType = sourceType;
 	}
 
-	public void setPublicationSources( List<PublicationSource> publicationSources )
-	{
-		this.publicationSources = publicationSources;
-	}
-
-	public Source addPublicationSource( final PublicationSource publicationSource )
-	{
-		if ( this.publicationSources == null )
-			this.publicationSources = new ArrayList<PublicationSource>();
-
-		this.publicationSources.add( publicationSource );
-		return this;
-	}
 }
