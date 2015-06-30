@@ -23,6 +23,7 @@ import org.hibernate.search.annotations.Boost;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
@@ -85,24 +86,24 @@ public class Author extends PersistableResource
 	@JoinColumn( name = "location_id" )
 	private Location based_near;
 
-	@ManyToMany( mappedBy = "coAuthors", cascade = CascadeType.ALL )
+	@ManyToMany( mappedBy = "coAuthors" )
 	private List<Publication> publications;
 
-//	@ManyToMany( fetch = FetchType.LAZY )
-//	@JoinTable( name = "author_coauthor", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "author_coauthor_id" ) )
-//	private List<Author> coAuthors;
+	@ManyToMany( fetch = FetchType.LAZY )
+	@JoinTable( name = "author_coauthor", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "author_coauthor_id" ) )
+	private List<Author> coAuthors;
 
 	/* few authors work for several institution */
-	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinTable( name = "author_institution", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "institution_id" ) )
-	//@IndexedEmbedded
-	private List<Institution> institutions;
+	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@JoinColumn( name = "institution_id" )
+	@IndexedEmbedded
+	private Institution institution;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "author_interest", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "topic_id" ) )
 	private List<PublicationTopic> publicationTopics;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author" )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
 	private List<AuthorSource> authorSources;
 
 	public String getName()
@@ -125,25 +126,6 @@ public class Author extends PersistableResource
 		this.email = email;
 	}
 
-	public Author addInstitution( final Institution institution )
-	{
-		if ( this.institutions == null )
-			this.institutions = new ArrayList<Institution>();
-
-		institutions.add( institution );
-		return this;
-	}
-
-	public List<Institution> getInstitutions()
-	{
-		return institutions;
-	}
-
-	public void setInstitutions( List<Institution> institutions )
-	{
-		this.institutions = institutions;
-	}
-
 	public String getFirstName()
 	{
 		return firstName;
@@ -164,25 +146,25 @@ public class Author extends PersistableResource
 		this.lastName = lastName;
 	}
 
-//	public List<Author> getCoAuthors()
-//	{
-//		return coAuthors;
-//	}
-//
-//	public void setCoAuthors( List<Author> coAuthors )
-//	{
-//		this.coAuthors = coAuthors;
-//	}
-//
-//	public Author addCoAuthor( final Author coAuthor )
-//	{
-//		if ( this.coAuthors == null )
-//			this.coAuthors = new ArrayList<Author>();
-//
-//		this.coAuthors.add( coAuthor );
-//
-//		return this;
-//	}
+	public List<Author> getCoAuthors()
+	{
+		return coAuthors;
+	}
+
+	public void setCoAuthors( List<Author> coAuthors )
+	{
+		this.coAuthors = coAuthors;
+	}
+
+	public Author addCoAuthor( final Author coAuthor )
+	{
+		if ( this.coAuthors == null )
+			this.coAuthors = new ArrayList<Author>();
+
+		this.coAuthors.add( coAuthor );
+
+		return this;
+	}
 
 	public String getDepartment()
 	{
@@ -280,7 +262,10 @@ public class Author extends PersistableResource
 
 	public void setAuthorSources( List<AuthorSource> authorSources )
 	{
-		this.authorSources = authorSources;
+		if ( this.authorSources == null )
+			this.authorSources = new ArrayList<AuthorSource>();
+		this.authorSources.clear();
+		this.authorSources.addAll( authorSources );
 	}
 
 	public Author addAuthorSource( AuthorSource auhtorSource )
@@ -309,6 +294,16 @@ public class Author extends PersistableResource
 	public void setAlias( String alias )
 	{
 		this.alias = alias;
+	}
+
+	public Institution getInstitution()
+	{
+		return institution;
+	}
+
+	public void setInstitution( Institution institution )
+	{
+		this.institution = institution;
 	}
 	
 	

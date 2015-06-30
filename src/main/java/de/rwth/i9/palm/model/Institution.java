@@ -6,7 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -15,6 +15,7 @@ import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
+import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -44,8 +45,8 @@ public class Institution extends PersistableResource
 	@OneToOne( cascade = CascadeType.ALL, orphanRemoval = true )
 	private Location location;
 
-	// @ContainedIn
-	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "institutions" )
+	@ContainedIn
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "institution" )
 	private List<Author> authors;
 
 

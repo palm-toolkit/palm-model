@@ -1,11 +1,9 @@
 package de.rwth.i9.palm.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -26,7 +24,7 @@ public class AuthorSource extends PersistableResource
 	@Column( length = 16 )
 	private SourceType SourceType;
 
-	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@ManyToOne
 	@JoinColumn( name = "author_id" )
 	private Author author;
 
