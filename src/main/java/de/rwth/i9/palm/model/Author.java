@@ -73,12 +73,12 @@ public class Author extends PersistableResource
 
 	@Column
 	private String photoUrl;
-
-	@Column( length = 24 )
-	private String googleScholarId;
-
+	
 	@Column
 	private java.sql.Timestamp requestDate;
+	
+	@Column(columnDefinition = "int default 0")
+	private int citedBy;
 
 	// relations
 
@@ -206,16 +206,6 @@ public class Author extends PersistableResource
 		this.based_near = based_near;
 	}
 
-	public String getGoogleScholarId()
-	{
-		return googleScholarId;
-	}
-
-	public void setGoogleScholarId( String googleScholarId )
-	{
-		this.googleScholarId = googleScholarId;
-	}
-
 	public List<PublicationTopic> getPublicationTopics()
 	{
 		return publicationTopics;
@@ -304,6 +294,16 @@ public class Author extends PersistableResource
 	public void setInstitution( Institution institution )
 	{
 		this.institution = institution;
+	}
+
+	public int getCitedBy()
+	{
+		return citedBy;
+	}
+
+	public void setCitedBy( int citedBy )
+	{
+		this.citedBy = citedBy;
 	}
 	
 	
