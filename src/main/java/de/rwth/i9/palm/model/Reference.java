@@ -19,6 +19,19 @@ public class Reference extends PersistableResource
 	
 	@Column
 	private String sameAsUri;
+	
+	@Column
+	private String author;
+	
+	@Column( length = 4 )
+	private String year;
+	
+	@Column(columnDefinition = "int default 0")
+	private int citedBy;
+	
+	@Column
+	@Lob 
+	private String citationContext;
 
 	@ManyToOne
 	@JoinColumn( name = "publication_id" )

@@ -39,7 +39,7 @@ public class ConferenceGroup extends PersistableResource
 
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
-	private ConferenceType conferenceType;
+	private PublicationType publicationType;
 
 	@Column( length = 24 )
 	private String notation;
@@ -51,14 +51,14 @@ public class ConferenceGroup extends PersistableResource
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "conferenceGroup" )
 	private List<Conference> conferences;
 
-	public ConferenceType getConferenceType()
+	public PublicationType getConferenceType()
 	{
-		return conferenceType;
+		return publicationType;
 	}
 
-	public void setConferenceType( ConferenceType conferenceType )
+	public void setConferenceType( PublicationType publicationType )
 	{
-		this.conferenceType = conferenceType;
+		this.publicationType = publicationType;
 	}
 
 	public String getDescription()

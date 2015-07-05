@@ -37,11 +37,10 @@ public class PublicationSource extends PersistableResource
 	private String contentText;
 
 	@Column
-	@Lob
-	private String citation;
-
+	private String publicationType;
+	
 	@Column
-	private String venue;
+	private String publicationEvent;
 
 	@Column( length = 4 )
 	private String year;
@@ -49,11 +48,23 @@ public class PublicationSource extends PersistableResource
 	@Column( length = 10 )
 	private String month;
 	
+	@Column( length = 20 )
+	private String date;
+	
 	@Column
-	private int citationNumber;
-
+	private String publisher;
+	
+	@Column( length = 5 )
+	private String volume;
+	
+	@Column( length = 20 )
+	private String issue;
+	
+	@Column( length = 20 )
+	private String pages;
+	
 	@Column
-	private java.sql.Timestamp lastNetworkUpdate;
+	private int citedBy;
 
 	@Column( nullable = false )
 	private String sourceUrl;
@@ -70,11 +81,7 @@ public class PublicationSource extends PersistableResource
 	@Lob
 	private String tag;
 
-	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinColumn( name = "user_id" )
-	private User user;
-
-	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@ManyToOne
 	@JoinColumn( name = "publication_id" )
 	private Publication publication;
 
@@ -127,27 +134,7 @@ public class PublicationSource extends PersistableResource
 	{
 		this.authorAffiliation = authorAffiliation;
 	}
-
-	public String getCitation()
-	{
-		return citation;
-	}
-
-	public void setCitation( String citation )
-	{
-		this.citation = citation;
-	}
-
-	public String getVenue()
-	{
-		return venue;
-	}
-
-	public void setVenue( String venue )
-	{
-		this.venue = venue;
-	}
-
+	
 	public String getYear()
 	{
 		return year;
@@ -168,16 +155,6 @@ public class PublicationSource extends PersistableResource
 		this.month = month;
 	}
 
-	public int getCitationNumber()
-	{
-		return citationNumber;
-	}
-
-	public void setCitationNumber( int citationNumber )
-	{
-		this.citationNumber = citationNumber;
-	}
-
 	public String getAuthorString()
 	{
 		return authorString;
@@ -186,16 +163,6 @@ public class PublicationSource extends PersistableResource
 	public void setAuthorString( String authorString )
 	{
 		this.authorString = authorString;
-	}
-
-	public User getUser()
-	{
-		return user;
-	}
-
-	public void setUser( User user )
-	{
-		this.user = user;
 	}
 
 	public String getKeyword()
@@ -218,16 +185,6 @@ public class PublicationSource extends PersistableResource
 		this.tag = tag;
 	}
 
-	public java.sql.Timestamp getLastNetworkUpdate()
-	{
-		return lastNetworkUpdate;
-	}
-
-	public void setLastNetworkUpdate( java.sql.Timestamp lastNetworkUpdate )
-	{
-		this.lastNetworkUpdate = lastNetworkUpdate;
-	}
-
 	public String getSourceUrl()
 	{
 		return sourceUrl;
@@ -248,4 +205,84 @@ public class PublicationSource extends PersistableResource
 		SourceType = sourceType;
 	}
 
+	public String getPublicationType()
+	{
+		return publicationType;
+	}
+
+	public void setPublicationType( String publicationType )
+	{
+		this.publicationType = publicationType;
+	}
+
+	public String getPublicationEvent()
+	{
+		return publicationEvent;
+	}
+
+	public void setPublicationEvent( String publicationEvent )
+	{
+		this.publicationEvent = publicationEvent;
+	}
+
+	public String getDate()
+	{
+		return date;
+	}
+
+	public void setDate( String date )
+	{
+		this.date = date;
+	}
+
+	public String getPublisher()
+	{
+		return publisher;
+	}
+
+	public void setPublisher( String publisher )
+	{
+		this.publisher = publisher;
+	}
+
+	public String getVolume()
+	{
+		return volume;
+	}
+
+	public void setVolume( String volume )
+	{
+		this.volume = volume;
+	}
+
+	public String getIssue()
+	{
+		return issue;
+	}
+
+	public void setIssue( String issue )
+	{
+		this.issue = issue;
+	}
+
+	public String getPages()
+	{
+		return pages;
+	}
+
+	public void setPages( String pages )
+	{
+		this.pages = pages;
+	}
+
+	public int getCitedBy()
+	{
+		return citedBy;
+	}
+
+	public void setCitedBy( int citedBy )
+	{
+		this.citedBy = citedBy;
+	}
+		
 }

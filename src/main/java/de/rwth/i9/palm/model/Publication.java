@@ -1,11 +1,14 @@
 package de.rwth.i9.palm.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -53,31 +56,32 @@ public class Publication extends PersistableResource
 	@Boost( 3.0f )
 	private String title;
 	
-	/* comma separated author list */
 	@Column
-	private String authorString;
+	private Date publicationDate;
+	
+	@Column
+	private String publisher;
+	
+	@Column( length = 5 )
+	private String volume;
+	
+	@Column( length = 20 )
+	private String issue;
+	
+	@Column( length = 20 )
+	private String pages;
 
 	@Column
 	@Lob
 	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
+	@Analyzer( definition = "customanalyzer" )
 	private String abstractText;
 
 	@Column
 	@Lob
 	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
 	@Analyzer( definition = "customanalyzer" )
-	private String abstractTokenized;
-
-	@Column
-	@Lob
-	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
 	private String contentText;
-
-	@Column
-	@Lob
-	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
-	@Analyzer( definition = "customanalyzer" )
-	private String contentTextTokenized;
 
 	@Column
 	@Lob
@@ -85,7 +89,7 @@ public class Publication extends PersistableResource
 	private String citationText;
 
 	@Column( columnDefinition = "int default 0" )
-	private int numberOfCitation;
+	private int citedBy;
 
 	@Column( columnDefinition = "varchar(15) default 'english'" )
 	private String language;
@@ -118,13 +122,13 @@ public class Publication extends PersistableResource
 	@JoinTable( name = "publication_citedby", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "publication_citedby_id" ) )
 	private List<Publication> publicationCitedBys;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication" )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true  )
 	private List<Reference> references;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication" )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
 	private List<PublicationHistory> publicationHistories;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication" )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
 	private List<PublicationSource> publicationSources;
 
 	public Conference getConference()
@@ -176,16 +180,6 @@ public class Publication extends PersistableResource
 		this.abstractText = abstractText;
 	}
 
-	public String getAbstractTokenized()
-	{
-		return abstractTokenized;
-	}
-
-	public void setAbstractTokenized( String abstractTokenized )
-	{
-		this.abstractTokenized = abstractTokenized;
-	}
-
 	public String getContentText()
 	{
 		return contentText;
@@ -194,16 +188,6 @@ public class Publication extends PersistableResource
 	public void setContentText( String contentText )
 	{
 		this.contentText = contentText;
-	}
-
-	public String getContentTextTokenized()
-	{
-		return contentTextTokenized;
-	}
-
-	public void setContentTextTokenized( String contentTextTokenized )
-	{
-		this.contentTextTokenized = contentTextTokenized;
 	}
 
 	public List<Subject> getKeywords()
@@ -269,7 +253,9 @@ public class Publication extends PersistableResource
 		if ( this.coAuthors == null )
 			this.coAuthors = new ArrayList<Author>();
 
-		this.coAuthors.add( author );
+		if( !this.coAuthors.contains( author ))
+			this.coAuthors.add( author );
+		
 		return this;
 	}
 
@@ -309,26 +295,6 @@ public class Publication extends PersistableResource
 
 		this.publicationCitedBys.add( publicationCiteBy );
 		return this;
-	}
-
-	public String getAuthorString()
-	{
-		return authorString;
-	}
-
-	public void setAuthorString( String authorString )
-	{
-		this.authorString = authorString;
-	}
-
-	public int getNumberOfCitation()
-	{
-		return numberOfCitation;
-	}
-
-	public void setNumberOfCitation( int numberOfCitation )
-	{
-		this.numberOfCitation = numberOfCitation;
 	}
 
 	public String getCitationText()
@@ -435,5 +401,65 @@ public class Publication extends PersistableResource
 		this.dataset = dataset;
 	}
 
+	public Date getPublicationDate()
+	{
+		return publicationDate;
+	}
+
+	public void setPublicationDate( Date publicationDate )
+	{
+		this.publicationDate = publicationDate;
+	}
+
+	public String getPublisher()
+	{
+		return publisher;
+	}
+
+	public void setPublisher( String publisher )
+	{
+		this.publisher = publisher;
+	}
+
+	public String getVolume()
+	{
+		return volume;
+	}
+
+	public void setVolume( String volume )
+	{
+		this.volume = volume;
+	}
+
+	public String getIssue()
+	{
+		return issue;
+	}
+
+	public void setIssue( String issue )
+	{
+		this.issue = issue;
+	}
+
+	public String getPages()
+	{
+		return pages;
+	}
+
+	public void setPages( String pages )
+	{
+		this.pages = pages;
+	}
+
+	public int getCitedBy()
+	{
+		return citedBy;
+	}
+
+	public void setCitedBy( int citedBy )
+	{
+		this.citedBy = citedBy;
+	}
+	
 }
 
