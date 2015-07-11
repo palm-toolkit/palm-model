@@ -1,11 +1,9 @@
 package de.rwth.i9.palm.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -22,6 +20,7 @@ public class PublicationSource extends PersistableResource
 
 	/* comma separated author list */
 	@Column
+	@Lob
 	private String authorString;
 
 	/* comma separated author list */
@@ -72,6 +71,16 @@ public class PublicationSource extends PersistableResource
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
 	private SourceType SourceType;
+	
+	@Enumerated( EnumType.STRING )
+	@Column( length = 16 )
+	private SourceMethod sourceMethod;
+
+	@Column
+	private String pdfSource;
+
+	@Column
+	private String pdfSourceUrl;
 
 	@Column
 	@Lob
@@ -284,5 +293,35 @@ public class PublicationSource extends PersistableResource
 	{
 		this.citedBy = citedBy;
 	}
-		
+
+	public SourceMethod getSourceMethod()
+	{
+		return sourceMethod;
+	}
+
+	public void setSourceMethod( SourceMethod sourceMethod )
+	{
+		this.sourceMethod = sourceMethod;
+	}
+
+	public String getPdfSource()
+	{
+		return pdfSource;
+	}
+
+	public void setPdfSource( String pdfSource )
+	{
+		this.pdfSource = pdfSource;
+	}
+
+	public String getPdfSourceUrl()
+	{
+		return pdfSourceUrl;
+	}
+
+	public void setPdfSourceUrl( String pdfSourceUrl )
+	{
+		this.pdfSourceUrl = pdfSourceUrl;
+	}
+	
 }

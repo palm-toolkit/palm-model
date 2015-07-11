@@ -161,7 +161,8 @@ public class Author extends PersistableResource
 		if ( this.coAuthors == null )
 			this.coAuthors = new ArrayList<Author>();
 
-		this.coAuthors.add( coAuthor );
+		if ( !this.coAuthors.contains( coAuthor ) )
+			this.coAuthors.add( coAuthor );
 
 		return this;
 	}
@@ -191,7 +192,8 @@ public class Author extends PersistableResource
 		if ( this.publications == null )
 			this.publications = new ArrayList<Publication>();
 
-		this.publications.add( publication );
+		if ( !this.publications.contains( publication ) )
+			this.publications.add( publication );
 
 		return this;
 	}

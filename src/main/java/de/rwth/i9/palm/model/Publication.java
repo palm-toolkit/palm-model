@@ -51,7 +51,7 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 		)
 public class Publication extends PersistableResource
 {
-	@Column( unique = true, nullable = false )
+	@Column( nullable = false )
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
 	@Boost( 3.0f )
 	private String title;
@@ -70,6 +70,16 @@ public class Publication extends PersistableResource
 	
 	@Column( length = 20 )
 	private String pages;
+
+	@Column
+	private String pdfSource;
+
+	@Column
+	private String pdfSourceUrl;
+
+	@Enumerated( EnumType.STRING )
+	@Column( length = 16 )
+	private PublicationType publicationType;
 
 	@Column
 	@Lob
@@ -460,6 +470,36 @@ public class Publication extends PersistableResource
 	{
 		this.citedBy = citedBy;
 	}
-	
+
+	public String getPdfSource()
+	{
+		return pdfSource;
+	}
+
+	public void setPdfSource( String pdfSource )
+	{
+		this.pdfSource = pdfSource;
+	}
+
+	public String getPdfSourceUrl()
+	{
+		return pdfSourceUrl;
+	}
+
+	public void setPdfSourceUrl( String pdfSourceUrl )
+	{
+		this.pdfSourceUrl = pdfSourceUrl;
+	}
+
+	public PublicationType getPublicationType()
+	{
+		return publicationType;
+	}
+
+	public void setPublicationType( PublicationType publicationType )
+	{
+		this.publicationType = publicationType;
+	}
+
 }
 

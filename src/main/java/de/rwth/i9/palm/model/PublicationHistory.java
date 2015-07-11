@@ -22,6 +22,7 @@ public class PublicationHistory extends PersistableResource
 
 	/* comma separated author list */
 	@Column
+	@Lob
 	private String authorString;
 
 	/* comma separated author list */
