@@ -1,7 +1,11 @@
 package de.rwth.i9.palm.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.Normalizer;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -43,24 +47,21 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 public class Author extends PersistableResource
 {
 	/* the full name of the author, most commonly used */
-	@Column
+	@Column( length = 50 )
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
 	@Analyzer( definition = "authoranalyzer" )
 	private String name;
 
-	@Column
+	@Column( length = 30 )
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
 	@Analyzer( definition = "authoranalyzer" )
 	private String firstName;
 
-	@Column
+	@Column( length = 20 )
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
 	@Analyzer( definition = "authoranalyzer" )
 	@Boost( 3.0f )
 	private String lastName;
-
-	@Column
-	private String alias;
 
 	@Column
 	private String otherDetail;
@@ -82,16 +83,16 @@ public class Author extends PersistableResource
 
 	// relations
 
+	/* other name of the author */
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
+	private Set<AuthorAlias> aliases;
+
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinColumn( name = "location_id" )
 	private Location based_near;
 
 	@ManyToMany( mappedBy = "coAuthors" )
-	private List<Publication> publications;
-
-	@ManyToMany( fetch = FetchType.LAZY )
-	@JoinTable( name = "author_coauthor", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "author_coauthor_id" ) )
-	private List<Author> coAuthors;
+	private Set<Publication> publications;
 
 	/* few authors work for several institution */
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
@@ -101,10 +102,10 @@ public class Author extends PersistableResource
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "author_interest", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "topic_id" ) )
-	private List<PublicationTopic> publicationTopics;
+	private Set<PublicationTopic> publicationTopics;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
-	private List<AuthorSource> authorSources;
+	private Set<AuthorSource> authorSources;
 
 	public String getName()
 	{
@@ -119,6 +120,17 @@ public class Author extends PersistableResource
 	public String getEmail()
 	{
 		return email;
+	}
+
+	public void setCompleteName( String name )
+	{
+		this.setName( name );
+		String[] splitName = name.split( " " );
+		this.setLastName( splitName[splitName.length - 1] );
+
+		String firstName = name.substring( 0, name.length() - lastName.length() ).trim();
+		if ( !firstName.equals( "" ) )
+			this.setFirstName( firstName );
 	}
 
 	public void setEmail( String email )
@@ -146,27 +158,6 @@ public class Author extends PersistableResource
 		this.lastName = lastName;
 	}
 
-	public List<Author> getCoAuthors()
-	{
-		return coAuthors;
-	}
-
-	public void setCoAuthors( List<Author> coAuthors )
-	{
-		this.coAuthors = coAuthors;
-	}
-
-	public Author addCoAuthor( final Author coAuthor )
-	{
-		if ( this.coAuthors == null )
-			this.coAuthors = new ArrayList<Author>();
-
-		if ( !this.coAuthors.contains( coAuthor ) )
-			this.coAuthors.add( coAuthor );
-
-		return this;
-	}
-
 	public String getDepartment()
 	{
 		return department;
@@ -177,12 +168,12 @@ public class Author extends PersistableResource
 		this.department = department;
 	}
 
-	public List<Publication> getPublications()
+	public Set<Publication> getPublications()
 	{
 		return publications;
 	}
 
-	public void setPublications( List<Publication> publications )
+	public void setPublications( Set<Publication> publications )
 	{
 		this.publications = publications;
 	}
@@ -190,10 +181,9 @@ public class Author extends PersistableResource
 	public Author addPublication( final Publication publication )
 	{
 		if ( this.publications == null )
-			this.publications = new ArrayList<Publication>();
+			this.publications = new LinkedHashSet<Publication>();
 
-		if ( !this.publications.contains( publication ) )
-			this.publications.add( publication );
+		this.publications.add( publication );
 
 		return this;
 	}
@@ -208,12 +198,12 @@ public class Author extends PersistableResource
 		this.based_near = based_near;
 	}
 
-	public List<PublicationTopic> getPublicationTopics()
+	public Set<PublicationTopic> getPublicationTopics()
 	{
 		return publicationTopics;
 	}
 
-	public void setPublicationTopics( List<PublicationTopic> publicationTopics )
+	public void setPublicationTopics( Set<PublicationTopic> publicationTopics )
 	{
 		this.publicationTopics = publicationTopics;
 	}
@@ -221,7 +211,7 @@ public class Author extends PersistableResource
 	public Author addPublicationTopic( PublicationTopic publicationTopic )
 	{
 		if ( this.publicationTopics == null )
-			this.publicationTopics = new ArrayList<PublicationTopic>();
+			this.publicationTopics = new LinkedHashSet<PublicationTopic>();
 
 		this.publicationTopics.add( publicationTopic );
 		return this;
@@ -247,15 +237,15 @@ public class Author extends PersistableResource
 		this.photoUrl = photoUrl;
 	}
 
-	public List<AuthorSource> getAuthorSources()
+	public Set<AuthorSource> getAuthorSources()
 	{
 		return authorSources;
 	}
 
-	public void setAuthorSources( List<AuthorSource> authorSources )
+	public void setAuthorSources( Set<AuthorSource> authorSources )
 	{
 		if ( this.authorSources == null )
-			this.authorSources = new ArrayList<AuthorSource>();
+			this.authorSources = new LinkedHashSet<AuthorSource>();
 		this.authorSources.clear();
 		this.authorSources.addAll( authorSources );
 	}
@@ -263,7 +253,7 @@ public class Author extends PersistableResource
 	public Author addAuthorSource( AuthorSource auhtorSource )
 	{
 		if ( this.authorSources == null )
-			this.authorSources = new ArrayList<AuthorSource>();
+			this.authorSources = new LinkedHashSet<AuthorSource>();
 		this.authorSources.add( auhtorSource );
 		return this;
 	}
@@ -276,16 +266,6 @@ public class Author extends PersistableResource
 	public void setRequestDate( java.sql.Timestamp requestDate )
 	{
 		this.requestDate = requestDate;
-	}
-
-	public String getAlias()
-	{
-		return alias;
-	}
-
-	public void setAlias( String alias )
-	{
-		this.alias = alias;
 	}
 
 	public Institution getInstitution()
@@ -307,7 +287,149 @@ public class Author extends PersistableResource
 	{
 		this.citedBy = citedBy;
 	}
+
+	public Set<AuthorAlias> getAliases()
+	{
+		return aliases;
+	}
+
+	public void setAliases( Set<AuthorAlias> aliases )
+	{
+		this.aliases = aliases;
+	}
 	
-	
+	public Author addAlias( AuthorAlias authorAlias )
+	{
+		if ( this.aliases == null )
+			this.aliases = new LinkedHashSet<AuthorAlias>();
+
+		this.aliases.add( authorAlias );
+
+		return this;
+	}
+
+	public boolean hasCoAuthorWith( Publication publication, Author coAuthor )
+	{
+		if ( this.publications.contains( publication ) )
+		{
+			for ( Publication pub : this.publications )
+			{
+				if ( pub.equals( publication ) )
+				{
+					if ( pub.getCoAuthors().contains( coAuthor ) )
+						return true;
+					break;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean isAliasNameFromFirstName( String[] firstNameSplit )
+	{
+		if ( firstNameSplit == null || firstNameSplit.length == 0 )
+			return false;
+
+		String[] coAuthorDbFirstNameSplit = this.getFirstName().split( " " );
+		int maxIndex = ( coAuthorDbFirstNameSplit.length > firstNameSplit.length ) ? firstNameSplit.length : coAuthorDbFirstNameSplit.length;
+		boolean firstWordMatch = false;
+		boolean firstWordStartWithMatch = false;
+		for ( int i = 0; i < maxIndex; i++ )
+		{
+			if ( i == 0 )
+			{
+				if ( coAuthorDbFirstNameSplit[0].startsWith( firstNameSplit[0] ) && firstNameSplit[0].startsWith( coAuthorDbFirstNameSplit[0] ) )
+					firstWordMatch = true;
+				if ( coAuthorDbFirstNameSplit[0].startsWith( firstNameSplit[0] ) || firstNameSplit[0].startsWith( coAuthorDbFirstNameSplit[0] ) )
+					firstWordStartWithMatch = true;
+			}
+			// TODO: for now only check first word/letter
+			break;
+		}
+		if ( firstWordMatch || firstWordStartWithMatch )
+			return true;
+
+		return false;
+	}
+
+	public void setPossibleNames( String name )
+	{
+		// check name length after normalization to ASCII
+		String nameAscii = name.replaceAll( "[^a-zA-Z ]", "" );
+		
+		if ( nameAscii.length() == name.length() )
+		{
+			this.setCompleteName( name );
+		}
+		else
+		{
+
+			@SuppressWarnings( "serial" )
+			Map<Character, String> LIGATURES = new HashMap<Character, String>()
+			{
+				{
+					put( 'ä', "ae" );
+					put( 'ü', "ue" );
+					put( 'ö', "oe" );
+					put( 'ß', "ss" );
+					put( 'Æ', "AE" );
+					put( 'æ', "ae" );
+					put( 'œ', "oe" );
+					put( 'þ', "th" );
+					put( 'ĳ', "ij" );
+					put( 'ð', "dh" );
+					put( 'Æ', "AE" );
+					put( 'Œ', "OE" );
+					put( 'Þ', "TH" );
+					put( 'Ð', "DH" );
+					put( 'Ĳ', "IJ" );
+				}
+			};
+
+			// name combination 1
+			StringBuilder sb = new StringBuilder();
+			for ( int i = 0; i < name.length(); i++ )
+			{
+				char c = name.charAt( i );
+				String l = LIGATURES.get( c );
+				if ( l != null )
+				{
+					sb.append( l );
+				}
+				else if ( c < 0xc0 )
+				{
+					sb.append( c ); // ASCII and C1 control codes
+				}
+				else
+				{
+					// anything else, including diacritics
+					l = Normalizer.normalize( Character.toString( c ), Normalizer.Form.NFKD ).replaceAll( "[\\p{InCombiningDiacriticalMarks}]+", "" );
+					sb.append( l );
+				}
+			}
+			String aliasName = sb.toString();
+
+			// name combination 2
+			String nfdNormalizedString = Normalizer.normalize( name, Normalizer.Form.NFD );
+			Pattern pattern = Pattern.compile( "\\p{InCombiningDiacriticalMarks}+" );
+			String mainName = pattern.matcher( nfdNormalizedString ).replaceAll( "" );
+
+			this.setCompleteName( mainName.replaceAll( "[^a-zA-Z ]", "" ) );
+
+			AuthorAlias authorAlias1 = new AuthorAlias();
+			authorAlias1.setCompleteName( name );
+			authorAlias1.setAuthor( this );
+			this.addAlias( authorAlias1 );
+
+			if ( !mainName.equals( aliasName ) )
+			{
+				AuthorAlias authorAlias2 = new AuthorAlias();
+				authorAlias2.setCompleteName( aliasName );
+				authorAlias2.setAuthor( this );
+				this.addAlias( authorAlias2 );
+			}
+
+		}
+	}
 
 }
