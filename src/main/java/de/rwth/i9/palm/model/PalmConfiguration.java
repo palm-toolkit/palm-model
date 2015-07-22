@@ -11,8 +11,8 @@ import javax.persistence.MapKeyColumn;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
 
-@Entity( name = "configuration" )
-public class Configuration extends PersistableResource
+@Entity( name = "config" )
+public class PalmConfiguration extends PersistableResource
 {
 	@Column( unique = true )
 	String name;
@@ -43,7 +43,7 @@ public class Configuration extends PersistableResource
 		this.configurationMap = configurationMap;
 	}
 
-	public Configuration addConfigurationMap( String key, String value )
+	public PalmConfiguration addConfigurationMap( String key, String value )
 	{
 		if ( configurationMap == null )
 			configurationMap = new LinkedHashMap<String, String>();
