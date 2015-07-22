@@ -1,7 +1,11 @@
 package de.rwth.i9.palm.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.Normalizer;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,49 +14,98 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.AnalyzerDef;
+import org.hibernate.search.annotations.Boost;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
+import org.hibernate.search.annotations.TokenFilterDef;
+import org.hibernate.search.annotations.TokenizerDef;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
 @Table( name = "author" )
+@Indexed
+@AnalyzerDef( 
+		name = "authoranalyzer", 
+		tokenizer = @TokenizerDef( factory = StandardTokenizerFactory.class ), 
+		filters = { 
+			@TokenFilterDef( factory = LowerCaseFilterFactory.class ) 
+			} 
+		)
 public class Author extends PersistableResource
 {
 	/* the full name of the author, most commonly used */
-	@Column
-	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
+	@Column( length = 50 )
+	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
+	@Analyzer( definition = "authoranalyzer" )
 	private String name;
+
+	@Column( length = 30 )
+	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
+	@Analyzer( definition = "authoranalyzer" )
+	private String firstName;
+
+	@Column( length = 20 )
+	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
+	@Analyzer( definition = "authoranalyzer" )
+	@Boost( 3.0f )
+	private String lastName;
+
+	@Column
+	private String otherDetail;
+
+	@Column
+	private String department;
 
 	@Column
 	private String email;
 
-	// relations
-	@ManyToMany( mappedBy = "coAuthors", cascade = CascadeType.ALL )
-	private List<Publication> publications;
+	@Column
+	private String photoUrl;
+	
+	@Column
+	private java.sql.Timestamp requestDate;
+	
+	@Column(columnDefinition = "int default 0")
+	private int citedBy;
 
-	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinTable( name = "author_coauthor", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "author_coauthor_id" ) )
-	private List<Author> coAuthors;
+	// relations
 
 	/* other name of the author */
-	@OneToMany( cascade = CascadeType.ALL )
-	@JoinColumn( name = "author_id" )
-	private List<AuthorAlias> aliases;
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
+	private Set<AuthorAlias> aliases;
+
+	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@JoinColumn( name = "location_id" )
+	private Location based_near;
+
+	@ManyToMany( mappedBy = "coAuthors" )
+	private Set<Publication> publications;
 
 	/* few authors work for several institution */
-	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinTable( name = "author_institution", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "institution_id" ) )
-	private List<Institution> institutions;
+	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@JoinColumn( name = "institution_id" )
+	@IndexedEmbedded
+	private Institution institution;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "author_interest", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "topic_id" ) )
-	private List<Topic> topics;
+	private Set<PublicationTopic> publicationTopics;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
+	private Set<AuthorSource> authorSources;
 
 	public String getName()
 	{
@@ -69,117 +122,314 @@ public class Author extends PersistableResource
 		return email;
 	}
 
+	public void setCompleteName( String name )
+	{
+		this.setName( name );
+		String[] splitName = name.split( " " );
+		this.setLastName( splitName[splitName.length - 1] );
+
+		String firstName = name.substring( 0, name.length() - lastName.length() ).trim();
+		if ( !firstName.equals( "" ) )
+			this.setFirstName( firstName );
+	}
+
 	public void setEmail( String email )
 	{
 		this.email = email;
 	}
 
-	public List<Institution> getInstitution()
+	public String getFirstName()
 	{
-		return institutions;
+		return firstName;
 	}
 
-	public void setInstitution( List<Institution> institutions )
+	public void setFirstName( String firstName )
 	{
-		this.institutions = institutions;
+		this.firstName = firstName;
 	}
 
-	public Author addInstitution( final Institution institution )
+	public String getLastName()
 	{
-		if ( this.institutions == null )
-			this.institutions = new ArrayList<Institution>();
+		return lastName;
+	}
 
-		institutions.add( institution );
+	public void setLastName( String lastName )
+	{
+		this.lastName = lastName;
+	}
+
+	public String getDepartment()
+	{
+		return department;
+	}
+
+	public void setDepartment( String department )
+	{
+		this.department = department;
+	}
+
+	public Set<Publication> getPublications()
+	{
+		return publications;
+	}
+
+	public void setPublications( Set<Publication> publications )
+	{
+		this.publications = publications;
+	}
+
+	public Author addPublication( final Publication publication )
+	{
+		if ( this.publications == null )
+			this.publications = new LinkedHashSet<Publication>();
+
+		this.publications.add( publication );
+
 		return this;
 	}
 
-	public List<Institution> getInstitutions()
+	public Location getBased_near()
 	{
-		return institutions;
+		return based_near;
 	}
 
-	public void setInstitutions( List<Institution> institutions )
+	public void setBased_near( Location based_near )
 	{
-		this.institutions = institutions;
+		this.based_near = based_near;
 	}
 
-	public List<Topic> getTopics()
+	public Set<PublicationTopic> getPublicationTopics()
 	{
-		return topics;
+		return publicationTopics;
 	}
 
-	public void setTopics( List<Topic> topics )
+	public void setPublicationTopics( Set<PublicationTopic> publicationTopics )
 	{
-		this.topics = topics;
+		this.publicationTopics = publicationTopics;
 	}
 
-	public Author addTopic( Topic topic )
+	public Author addPublicationTopic( PublicationTopic publicationTopic )
 	{
-		if ( this.topics == null )
-			this.topics = new ArrayList<Topic>();
+		if ( this.publicationTopics == null )
+			this.publicationTopics = new LinkedHashSet<PublicationTopic>();
 
-		this.topics.add( topic );
+		this.publicationTopics.add( publicationTopic );
 		return this;
 	}
 
-	public List<AuthorAlias> getAliases()
+	public String getOtherDetail()
+	{
+		return otherDetail;
+	}
+
+	public void setOtherDetail( String otherDetail )
+	{
+		this.otherDetail = otherDetail;
+	}
+
+	public String getPhotoUrl()
+	{
+		return photoUrl;
+	}
+
+	public void setPhotoUrl( String photoUrl )
+	{
+		this.photoUrl = photoUrl;
+	}
+
+	public Set<AuthorSource> getAuthorSources()
+	{
+		return authorSources;
+	}
+
+	public void setAuthorSources( Set<AuthorSource> authorSources )
+	{
+		if ( this.authorSources == null )
+			this.authorSources = new LinkedHashSet<AuthorSource>();
+		this.authorSources.clear();
+		this.authorSources.addAll( authorSources );
+	}
+
+	public Author addAuthorSource( AuthorSource auhtorSource )
+	{
+		if ( this.authorSources == null )
+			this.authorSources = new LinkedHashSet<AuthorSource>();
+		this.authorSources.add( auhtorSource );
+		return this;
+	}
+
+	public java.sql.Timestamp getRequestDate()
+	{
+		return requestDate;
+	}
+
+	public void setRequestDate( java.sql.Timestamp requestDate )
+	{
+		this.requestDate = requestDate;
+	}
+
+	public Institution getInstitution()
+	{
+		return institution;
+	}
+
+	public void setInstitution( Institution institution )
+	{
+		this.institution = institution;
+	}
+
+	public int getCitedBy()
+	{
+		return citedBy;
+	}
+
+	public void setCitedBy( int citedBy )
+	{
+		this.citedBy = citedBy;
+	}
+
+	public Set<AuthorAlias> getAliases()
 	{
 		return aliases;
 	}
 
-	public void setAliases( List<AuthorAlias> aliases )
+	public void setAliases( Set<AuthorAlias> aliases )
 	{
 		this.aliases = aliases;
 	}
-
-	public Author addAlias( final AuthorAlias aliasName )
+	
+	public Author addAlias( AuthorAlias authorAlias )
 	{
 		if ( this.aliases == null )
-			this.aliases = new ArrayList<AuthorAlias>();
+			this.aliases = new LinkedHashSet<AuthorAlias>();
 
-		this.aliases.add( aliasName );
-
-		return this;
-	}
-
-//	public List<Publication> getPublications()
-//	{
-//		return publications;
-//	}
-//
-//	public void setPublications( List<Publication> publications )
-//	{
-//		this.publications = publications;
-//	}
-//
-//	public Author addPublication( final Publication publication )
-//	{
-//		if ( this.publications == null )
-//			this.publications = new ArrayList<Publication>();
-//
-//		this.publications.add( publication );
-//
-//		return this;
-//	}
-
-	public List<Author> getCoAuthors()
-	{
-		return coAuthors;
-	}
-
-	public void setCoAuthors( List<Author> coAuthors )
-	{
-		this.coAuthors = coAuthors;
-	}
-
-	public Author addCoAuthor( final Author coAuthor )
-	{
-		if ( this.coAuthors == null )
-			this.coAuthors = new ArrayList<Author>();
-
-		this.coAuthors.add( coAuthor );
+		this.aliases.add( authorAlias );
 
 		return this;
+	}
+
+	public boolean hasCoAuthorWith( Publication publication, Author coAuthor )
+	{
+		if ( this.publications.contains( publication ) )
+		{
+			for ( Publication pub : this.publications )
+			{
+				if ( pub.equals( publication ) )
+				{
+					if ( pub.getCoAuthors().contains( coAuthor ) )
+						return true;
+					break;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean isAliasNameFromFirstName( String[] firstNameSplit )
+	{
+		if ( firstNameSplit == null || firstNameSplit.length == 0 )
+			return false;
+
+		String[] coAuthorDbFirstNameSplit = this.getFirstName().split( " " );
+		int maxIndex = ( coAuthorDbFirstNameSplit.length > firstNameSplit.length ) ? firstNameSplit.length : coAuthorDbFirstNameSplit.length;
+		boolean firstWordMatch = false;
+		boolean firstWordStartWithMatch = false;
+		for ( int i = 0; i < maxIndex; i++ )
+		{
+			if ( i == 0 )
+			{
+				if ( coAuthorDbFirstNameSplit[0].startsWith( firstNameSplit[0] ) && firstNameSplit[0].startsWith( coAuthorDbFirstNameSplit[0] ) )
+					firstWordMatch = true;
+				if ( coAuthorDbFirstNameSplit[0].startsWith( firstNameSplit[0] ) || firstNameSplit[0].startsWith( coAuthorDbFirstNameSplit[0] ) )
+					firstWordStartWithMatch = true;
+			}
+			// TODO: for now only check first word/letter
+			break;
+		}
+		if ( firstWordMatch || firstWordStartWithMatch )
+			return true;
+
+		return false;
+	}
+
+	public void setPossibleNames( String name )
+	{
+		// check name length after normalization to ASCII
+		String nameAscii = name.replaceAll( "[^a-zA-Z ]", "" );
+		
+		if ( nameAscii.length() == name.length() )
+		{
+			this.setCompleteName( name );
+		}
+		else
+		{
+
+			@SuppressWarnings( "serial" )
+			Map<Character, String> LIGATURES = new HashMap<Character, String>()
+			{
+				{
+					put( 'ä', "ae" );
+					put( 'ü', "ue" );
+					put( 'ö', "oe" );
+					put( 'ß', "ss" );
+					put( 'Æ', "AE" );
+					put( 'æ', "ae" );
+					put( 'œ', "oe" );
+					put( 'þ', "th" );
+					put( 'ĳ', "ij" );
+					put( 'ð', "dh" );
+					put( 'Æ', "AE" );
+					put( 'Œ', "OE" );
+					put( 'Þ', "TH" );
+					put( 'Ð', "DH" );
+					put( 'Ĳ', "IJ" );
+				}
+			};
+
+			// name combination 1
+			StringBuilder sb = new StringBuilder();
+			for ( int i = 0; i < name.length(); i++ )
+			{
+				char c = name.charAt( i );
+				String l = LIGATURES.get( c );
+				if ( l != null )
+				{
+					sb.append( l );
+				}
+				else if ( c < 0xc0 )
+				{
+					sb.append( c ); // ASCII and C1 control codes
+				}
+				else
+				{
+					// anything else, including diacritics
+					l = Normalizer.normalize( Character.toString( c ), Normalizer.Form.NFKD ).replaceAll( "[\\p{InCombiningDiacriticalMarks}]+", "" );
+					sb.append( l );
+				}
+			}
+			String aliasName = sb.toString();
+
+			// name combination 2
+			String nfdNormalizedString = Normalizer.normalize( name, Normalizer.Form.NFD );
+			Pattern pattern = Pattern.compile( "\\p{InCombiningDiacriticalMarks}+" );
+			String mainName = pattern.matcher( nfdNormalizedString ).replaceAll( "" );
+
+			this.setCompleteName( mainName.replaceAll( "[^a-zA-Z ]", "" ) );
+
+			AuthorAlias authorAlias1 = new AuthorAlias();
+			authorAlias1.setCompleteName( name );
+			authorAlias1.setAuthor( this );
+			this.addAlias( authorAlias1 );
+
+			if ( !mainName.equals( aliasName ) )
+			{
+				AuthorAlias authorAlias2 = new AuthorAlias();
+				authorAlias2.setCompleteName( aliasName );
+				authorAlias2.setAuthor( this );
+				this.addAlias( authorAlias2 );
+			}
+
+		}
 	}
 
 }

@@ -13,6 +13,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -24,6 +25,9 @@ public class User extends PersistableResource
 {
 	@Column( length = 80 )
 	private String name;
+
+	@Column( unique = true, length = 80 )
+	private String username;
 
 	@Column( length = 80 )
 	private String email;
@@ -56,7 +60,49 @@ public class User extends PersistableResource
 	@JoinColumn( name = "user_id" )
 	private List<Dataset> datasets;
 
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@JoinColumn( name = "user_id" )
+	private List<UserWidget> userWidgets;
+
+	@OneToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@JoinColumn( name = "author_id" )
+	private Author author;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user" )
+	private List<PublicationHistory> publicationHistories;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user" )
+	private List<ExtractionRuntime> extractionRuntimes;
+
 	// getter and setter
+
+	public Author getAuthor()
+	{
+		return author;
+	}
+
+	public void setAuthor( Author author )
+	{
+		this.author = author;
+	}
+
+	public List<UserWidget> getUserWidgets()
+	{
+		return userWidgets;
+	}
+
+	public void setUserWidgets( List<UserWidget> userWidgets )
+	{
+		this.userWidgets = userWidgets;
+	}
+
+	public User addUserWidget( UserWidget userWidget )
+	{
+		if ( this.userWidgets == null )
+			this.userWidgets = new ArrayList<UserWidget>();
+		this.userWidgets.add( userWidget );
+		return this;
+	}
 
 	public String getName()
 	{
@@ -76,6 +122,16 @@ public class User extends PersistableResource
 	public void setEmail( String email )
 	{
 		this.email = email;
+	}
+
+	public String getUsername()
+	{
+		return username;
+	}
+
+	public void setUsername( String username )
+	{
+		this.username = username;
 	}
 
 	public Role getRole()
@@ -174,6 +230,46 @@ public class User extends PersistableResource
 			this.datasets = new ArrayList<Dataset>();
 
 		this.datasets.add( dataset );
+
+		return this;
+	}
+
+	public List<PublicationHistory> getPublicationHistories()
+	{
+		return publicationHistories;
+	}
+
+	public void setPublicationHistories( List<PublicationHistory> publicationHistories )
+	{
+		this.publicationHistories = publicationHistories;
+	}
+
+	public User addPublicationHistory( PublicationHistory publicationHistory )
+	{
+		if ( this.publicationHistories == null )
+			this.publicationHistories = new ArrayList<PublicationHistory>();
+
+		this.publicationHistories.add( publicationHistory );
+
+		return this;
+	}
+
+	public List<ExtractionRuntime> getExtractionRuntimes()
+	{
+		return extractionRuntimes;
+	}
+
+	public void setExtractionRuntimes( List<ExtractionRuntime> extractionRuntimes )
+	{
+		this.extractionRuntimes = extractionRuntimes;
+	}
+
+	public User addExtractionRuntime( ExtractionRuntime extractionRuntime )
+	{
+		if ( this.extractionRuntimes == null )
+			this.extractionRuntimes = new ArrayList<ExtractionRuntime>();
+
+		this.extractionRuntimes.add( extractionRuntime );
 
 		return this;
 	}

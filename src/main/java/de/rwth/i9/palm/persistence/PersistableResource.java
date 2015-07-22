@@ -28,7 +28,7 @@ public abstract class PersistableResource extends PersistableType
 		return uri;
 	}
 
-	public void setURN( final String uri )
+	public void setURI( final String uri )
 	{
 		this.uri = uri;
 	}
