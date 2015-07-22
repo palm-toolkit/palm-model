@@ -7,6 +7,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
@@ -18,10 +19,10 @@ public class PalmConfiguration extends PersistableResource
 	String name;
 
 	@ElementCollection
-	@MapKeyColumn( name = "key" )
+	@MapKeyColumn( name = "name" )
 	@Column( name = "value" )
-	@CollectionTable( name = "configuration_map" )
-	Map<String, String> configurationMap;
+	@CollectionTable( name = "config_map", joinColumns = @JoinColumn( name = "palm_configuration_id" ) )
+	Map<String, String> configMap = new LinkedHashMap<String, String>();
 
 	public String getName()
 	{
@@ -33,22 +34,22 @@ public class PalmConfiguration extends PersistableResource
 		this.name = name;
 	}
 
-	public Map<String, String> getConfigurationMap()
+	public Map<String, String> getConfigMap()
 	{
-		return configurationMap;
+		return configMap;
 	}
 
-	public void setConfigurationMap( Map<String, String> configurationMap )
+	public void setConfigMap( Map<String, String> configMap )
 	{
-		this.configurationMap = configurationMap;
+		this.configMap = configMap;
 	}
 
-	public PalmConfiguration addConfigurationMap( String key, String value )
+	public PalmConfiguration addConfigMap( String key, String value )
 	{
-		if ( configurationMap == null )
-			configurationMap = new LinkedHashMap<String, String>();
+		if ( configMap == null )
+			configMap = new LinkedHashMap<String, String>();
 
-		configurationMap.put( key, value );
+		configMap.put( key, value );
 
 		return this;
 	}
