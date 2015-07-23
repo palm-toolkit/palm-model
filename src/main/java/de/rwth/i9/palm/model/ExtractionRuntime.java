@@ -41,8 +41,8 @@ public class ExtractionRuntime extends PersistableResource
 	@JoinColumn( name = "user_id" )
 	private User user;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "extractionRuntime" )
-	List<PublicationTopic> publicationTopics;
+//	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "extractionRuntime" )
+//	List<PublicationTopic> publicationTopics;
 
 //	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 //	@JoinTable( name = "extraction_runtime_publication", joinColumns = @JoinColumn( name = "extraction_runtime_id" ), inverseJoinColumns = @JoinColumn( name = "publication_id" ) )
@@ -78,15 +78,15 @@ public class ExtractionRuntime extends PersistableResource
 		this.rundate = rundate;
 	}
 
-	public List<PublicationTopic> getTopics()
-	{
-		return publicationTopics;
-	}
-
-	public void setTopics( List<PublicationTopic> publicationTopics )
-	{
-		this.publicationTopics = publicationTopics;
-	}
+//	public List<PublicationTopic> getTopics()
+//	{
+//		return publicationTopics;
+//	}
+//
+//	public void setTopics( List<PublicationTopic> publicationTopics )
+//	{
+//		this.publicationTopics = publicationTopics;
+//	}
 
 	public String getNotes()
 	{
@@ -98,14 +98,14 @@ public class ExtractionRuntime extends PersistableResource
 		this.notes = notes;
 	}
 
-	public ExtractionRuntime addTopic( PublicationTopic publicationTopic )
-	{
-		if ( this.publicationTopics == null )
-			publicationTopics = new ArrayList<PublicationTopic>();
-
-		publicationTopics.add( publicationTopic );
-		return this;
-	}
+//	public ExtractionRuntime addTopic( PublicationTopic publicationTopic )
+//	{
+//		if ( this.publicationTopics == null )
+//			publicationTopics = new ArrayList<PublicationTopic>();
+//
+//		publicationTopics.add( publicationTopic );
+//		return this;
+//	}
 
 	public String getOutputPath()
 	{

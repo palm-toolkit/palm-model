@@ -1,8 +1,9 @@
 package de.rwth.i9.palm.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -101,16 +102,19 @@ public class Publication extends PersistableResource
 	@Column( columnDefinition = "int default 0" )
 	private int citedBy;
 
+	@Column( columnDefinition = "bit default 1" )
+	private boolean contentUpdated = true;
+
 	@Column( columnDefinition = "varchar(15) default 'english'" )
 	private String language;
 
 	// relations
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_keyword", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "keyword_id" ) )
-	private List<Subject> subjects;
+	private Set<Subject> subjects;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication" )
-	private List<PublicationTopic> publicationTopics;
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
+	private Set<PublicationTopic> publicationTopics;
 	
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinColumn( name = "conference_id" )
@@ -122,24 +126,24 @@ public class Publication extends PersistableResource
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_author", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "author_id" ) )
-	private List<Author> coAuthors;
+	private Set<Author> coAuthors;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_cites", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "publication_cites_id" ) )
-	private List<Publication> publicationCitess;
+	private Set<Publication> publicationCitess;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_citedby", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "publication_citedby_id" ) )
-	private List<Publication> publicationCitedBys;
+	private Set<Publication> publicationCitedBys;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true  )
-	private List<Reference> references;
+	private Set<Reference> references;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
-	private List<PublicationHistory> publicationHistories;
+	private Set<PublicationHistory> publicationHistories;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
-	private List<PublicationSource> publicationSources;
+	private Set<PublicationSource> publicationSources;
 
 	public Conference getConference()
 	{
@@ -151,12 +155,12 @@ public class Publication extends PersistableResource
 		this.conference = conference;
 	}
 
-	public List<Reference> getReferences()
+	public Set<Reference> getReferences()
 	{
 		return references;
 	}
 
-	public void setReferences( List<Reference> references )
+	public void setReferences( Set<Reference> references )
 	{
 		this.references = references;
 	}
@@ -164,7 +168,7 @@ public class Publication extends PersistableResource
 	public Publication addReference( Reference reference )
 	{
 		if ( this.references == null )
-			this.references = new ArrayList<Reference>();
+			this.references = new LinkedHashSet<Reference>();
 		this.references.add( reference );
 
 		return this;
@@ -200,12 +204,12 @@ public class Publication extends PersistableResource
 		this.contentText = contentText;
 	}
 
-	public List<Subject> getKeywords()
+	public Set<Subject> getKeywords()
 	{
 		return subjects;
 	}
 
-	public void setKeywords( List<Subject> subjects )
+	public void setKeywords( Set<Subject> subjects )
 	{
 		this.subjects = subjects;
 	}
@@ -213,18 +217,18 @@ public class Publication extends PersistableResource
 	public Publication addKeyword( final Subject subject )
 	{
 		if ( this.subjects == null )
-			this.subjects = new ArrayList<Subject>();
+			this.subjects = new LinkedHashSet<Subject>();
 
 		subjects.add( subject );
 		return this;
 	}
 
-	public List<PublicationTopic> getTopics()
+	public Set<PublicationTopic> getTopics()
 	{
 		return publicationTopics;
 	}
 
-	public void setTopics( List<PublicationTopic> publicationTopics )
+	public void setTopics( Set<PublicationTopic> publicationTopics )
 	{
 		this.publicationTopics = publicationTopics;
 	}
@@ -232,7 +236,7 @@ public class Publication extends PersistableResource
 	public Publication addTopic( final PublicationTopic publicationTopic )
 	{
 		if ( this.publicationTopics == null )
-			this.publicationTopics = new ArrayList<PublicationTopic>();
+			this.publicationTopics = new LinkedHashSet<PublicationTopic>();
 
 		publicationTopics.add( publicationTopic );
 		return this;
@@ -248,12 +252,12 @@ public class Publication extends PersistableResource
 		this.conference = conference;
 	}
 
-	public List<Author> getCoAuthors()
+	public Set<Author> getCoAuthors()
 	{
 		return coAuthors;
 	}
 
-	public void setCoAuthors( List<Author> coAuthors )
+	public void setCoAuthors( Set<Author> coAuthors )
 	{
 		this.coAuthors = coAuthors;
 	}
@@ -261,7 +265,7 @@ public class Publication extends PersistableResource
 	public Publication addCoAuthor( final Author author )
 	{
 		if ( this.coAuthors == null )
-			this.coAuthors = new ArrayList<Author>();
+			this.coAuthors = new LinkedHashSet<Author>();
 
 		if( !this.coAuthors.contains( author ))
 			this.coAuthors.add( author );
@@ -269,12 +273,12 @@ public class Publication extends PersistableResource
 		return this;
 	}
 
-	public List<Publication> getPublicationCitess()
+	public Set<Publication> getPublicationCitess()
 	{
 		return publicationCitess;
 	}
 
-	public void setPublicationCitess( List<Publication> publicationCitess )
+	public void setPublicationCitess( Set<Publication> publicationCitess )
 	{
 		this.publicationCitess = publicationCitess;
 	}
@@ -282,18 +286,18 @@ public class Publication extends PersistableResource
 	public Publication addPublicationCites( final Publication publicationCites )
 	{
 		if ( this.publicationCitess == null )
-			this.publicationCitess = new ArrayList<Publication>();
+			this.publicationCitess = new LinkedHashSet<Publication>();
 
 		this.publicationCitess.add( publicationCites );
 		return this;
 	}
 
-	public List<Publication> getPublicationCitedBys()
+	public Set<Publication> getPublicationCitedBys()
 	{
 		return publicationCitedBys;
 	}
 
-	public void setPublicationCitedBys( List<Publication> publicationCitedBys )
+	public void setPublicationCitedBys( Set<Publication> publicationCitedBys )
 	{
 		this.publicationCitedBys = publicationCitedBys;
 	}
@@ -301,7 +305,7 @@ public class Publication extends PersistableResource
 	public Publication addPublicationCiteBy( final Publication publicationCiteBy )
 	{
 		if ( this.publicationCitedBys == null )
-			this.publicationCitedBys = new ArrayList<Publication>();
+			this.publicationCitedBys = new LinkedHashSet<Publication>();
 
 		this.publicationCitedBys.add( publicationCiteBy );
 		return this;
@@ -327,12 +331,12 @@ public class Publication extends PersistableResource
 		this.language = language;
 	}
 
-	public List<Subject> getSubjects()
+	public Set<Subject> getSubjects()
 	{
 		return subjects;
 	}
 
-	public void setSubjects( List<Subject> subjects )
+	public void setSubjects( Set<Subject> subjects )
 	{
 		this.subjects = subjects;
 	}
@@ -340,19 +344,19 @@ public class Publication extends PersistableResource
 	public Publication addSubject( Subject subject )
 	{
 		if ( this.subjects == null )
-			this.subjects = new ArrayList<Subject>();
+			this.subjects = new LinkedHashSet<Subject>();
 
 		this.subjects.add( subject );
 
 		return this;
 	}
 
-	public List<PublicationHistory> getPublicationHistories()
+	public Set<PublicationHistory> getPublicationHistories()
 	{
 		return publicationHistories;
 	}
 
-	public void setPublicationHistories( List<PublicationHistory> publicationHistories )
+	public void setPublicationHistories( Set<PublicationHistory> publicationHistories )
 	{
 		this.publicationHistories = publicationHistories;
 	}
@@ -360,17 +364,17 @@ public class Publication extends PersistableResource
 	public Publication addPublicationHistory( PublicationHistory publicationHistory )
 	{
 		if ( this.publicationHistories == null )
-			this.publicationHistories = new ArrayList<PublicationHistory>();
+			this.publicationHistories = new LinkedHashSet<PublicationHistory>();
 		this.publicationHistories.add( publicationHistory );
 		return this;
 	}
 
-	public List<PublicationSource> getPublicationSources()
+	public Set<PublicationSource> getPublicationSources()
 	{
 		return publicationSources;
 	}
 
-	public void setPublicationSources( List<PublicationSource> publicationSources )
+	public void setPublicationSources( Set<PublicationSource> publicationSources )
 	{
 		this.publicationSources = publicationSources;
 	}
@@ -378,17 +382,30 @@ public class Publication extends PersistableResource
 	public Publication addPublicationSource( PublicationSource publicationSource )
 	{
 		if ( this.publicationSources == null )
-			this.publicationSources = new ArrayList<PublicationSource>();
+			this.publicationSources = new LinkedHashSet<PublicationSource>();
 		this.publicationSources.add( publicationSource );
 		return this;
 	}
 
-	public List<PublicationTopic> getPublicationTopics()
+	public void removeNonUserInputPublicationSource()
+	{
+		if ( this.publicationSources != null )
+		{
+			for ( Iterator<PublicationSource> ps = this.publicationSources.iterator(); ps.hasNext(); )
+			{
+				PublicationSource publicationSource = ps.next();
+				if ( publicationSource.getSourceType() != SourceType.USER )
+					ps.remove();
+			}
+		}
+	}
+
+	public Set<PublicationTopic> getPublicationTopics()
 	{
 		return publicationTopics;
 	}
 
-	public void setPublicationTopics( List<PublicationTopic> publicationTopics )
+	public void setPublicationTopics( Set<PublicationTopic> publicationTopics )
 	{
 		this.publicationTopics = publicationTopics;
 	}
@@ -396,9 +413,14 @@ public class Publication extends PersistableResource
 	public Publication addPublicationTopic( PublicationTopic publicationTopic )
 	{
 		if ( this.publicationTopics == null )
-			this.publicationTopics = new ArrayList<PublicationTopic>();
+			this.publicationTopics = new LinkedHashSet<PublicationTopic>();
 		this.publicationTopics.add( publicationTopic );
 		return this;
+	}
+
+	public void removeAllPublicationTopic()
+	{
+		this.publicationTopics = null;
 	}
 
 	public Dataset getDataset()
@@ -499,6 +521,16 @@ public class Publication extends PersistableResource
 	public void setPublicationType( PublicationType publicationType )
 	{
 		this.publicationType = publicationType;
+	}
+
+	public boolean isContentUpdated()
+	{
+		return contentUpdated;
+	}
+
+	public void setContentUpdated( boolean contentUpdated )
+	{
+		this.contentUpdated = contentUpdated;
 	}
 
 }
