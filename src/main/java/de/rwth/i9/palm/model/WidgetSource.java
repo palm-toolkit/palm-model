@@ -4,7 +4,7 @@ package de.rwth.i9.palm.model;
  * 
  * <b>Documentation:</b>
  * {@code INCLUDE}
- *		The widget content is from internal template file, included with Freemarker <#include [FILE_NAME]>
+ *		The widget content is from internal template file, included with Freemarker &lt;#include [FILE_NAME]&gt;
  * {@code AJAX}
  *		The widget content is from internal source and requested using ajax.
  * {@code EXTERNAL}
