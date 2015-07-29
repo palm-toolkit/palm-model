@@ -1,17 +1,17 @@
 package de.rwth.i9.palm.model;
 
 /**
- * <b>Documentation:</b><br/>
- * {@code CONFERENCE}<br/>
- *		The widget is intended to be use on Conference page.<br/>
- * {@code PUBLICATION}<br/>
- *		The widget is intended to be use on Publication page.<br/>
- * {@code RESEARCHER}<br/>
- *		The widget is intended to be use on Researcher page.<br/>
- * {@code ADMINISTRATION}<br/>
- *		The widget is intended to be use on Administration page.<br/><br/>
+ * <b>Documentation:</b>
+ * {@code CONFERENCE}
+ *		The widget is intended to be use on Conference page.
+ * {@code PUBLICATION}
+ *		The widget is intended to be use on Publication page.
+ * {@code RESEARCHER}
+ *		The widget is intended to be use on Researcher page.
+ * {@code ADMINISTRATION}
+ *		The widget is intended to be use on Administration page.
  *
- * @author sigit <br/>
+ * @author sigit 
  */
 public enum WidgetType
 {
