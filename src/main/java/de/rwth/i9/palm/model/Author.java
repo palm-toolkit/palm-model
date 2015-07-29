@@ -47,17 +47,17 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 public class Author extends PersistableResource
 {
 	/* the full name of the author, most commonly used */
-	@Column( length = 50 )
+	@Column( length = 100 )
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
 	@Analyzer( definition = "authoranalyzer" )
 	private String name;
 
-	@Column( length = 30 )
+	@Column( length = 70 )
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
 	@Analyzer( definition = "authoranalyzer" )
 	private String firstName;
 
-	@Column( length = 20 )
+	@Column( length = 30 )
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
 	@Analyzer( definition = "authoranalyzer" )
 	@Boost( 3.0f )

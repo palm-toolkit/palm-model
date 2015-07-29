@@ -73,6 +73,7 @@ public class Publication extends PersistableResource
 	private String pages;
 
 	@Column
+	@Lob
 	private String pdfSource;
 
 	@Column
@@ -94,6 +95,12 @@ public class Publication extends PersistableResource
 	@Analyzer( definition = "customanalyzer" )
 	private String contentText;
 
+	@Lob
+	private String keywordText;
+
+	@Lob
+	private String referenceText;
+
 	@Column
 	@Lob
 	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
@@ -104,6 +111,9 @@ public class Publication extends PersistableResource
 
 	@Column( columnDefinition = "bit default 1" )
 	private boolean contentUpdated = true;
+
+	@Column( columnDefinition = "bit default 0" )
+	private boolean pdfExtracted = false;
 
 	@Column( columnDefinition = "varchar(15) default 'english'" )
 	private String language;
@@ -531,6 +541,36 @@ public class Publication extends PersistableResource
 	public void setContentUpdated( boolean contentUpdated )
 	{
 		this.contentUpdated = contentUpdated;
+	}
+
+	public boolean isPdfExtracted()
+	{
+		return pdfExtracted;
+	}
+
+	public void setPdfExtracted( boolean pdfExtracted )
+	{
+		this.pdfExtracted = pdfExtracted;
+	}
+
+	public String getKeywordText()
+	{
+		return keywordText;
+	}
+
+	public void setKeywordText( String keywordText )
+	{
+		this.keywordText = keywordText;
+	}
+
+	public String getReferenceText()
+	{
+		return referenceText;
+	}
+
+	public void setReferenceText( String referenceText )
+	{
+		this.referenceText = referenceText;
 	}
 
 }
