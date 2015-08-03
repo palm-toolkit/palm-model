@@ -24,6 +24,9 @@ public class Source extends PersistableResource
 	@Column( length = 16 )
 	private SourceType SourceType;
 
+	@Column( columnDefinition = "bit default 1" )
+	private boolean active = true;
+
 	public void setDescription( String description )
 	{
 		this.description = description;
@@ -53,5 +56,16 @@ public class Source extends PersistableResource
 	{
 		SourceType = sourceType;
 	}
+
+	public boolean isActive()
+	{
+		return active;
+	}
+
+	public void setActive( boolean active )
+	{
+		this.active = active;
+	}
+
 
 }

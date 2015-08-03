@@ -55,6 +55,7 @@ public class Publication extends PersistableResource
 	@Column( nullable = false )
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
 	@Boost( 3.0f )
+	@Lob
 	private String title;
 	
 	@Column
@@ -77,6 +78,7 @@ public class Publication extends PersistableResource
 	private String pdfSource;
 
 	@Column
+	@Lob
 	private String pdfSourceUrl;
 
 	@Enumerated( EnumType.STRING )

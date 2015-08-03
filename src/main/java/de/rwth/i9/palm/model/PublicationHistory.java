@@ -18,6 +18,7 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 public class PublicationHistory extends PersistableResource
 {
 	@Column
+	@Lob
 	private String title;
 
 	/* comma separated author list */

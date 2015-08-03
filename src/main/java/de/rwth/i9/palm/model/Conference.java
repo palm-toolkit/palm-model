@@ -37,30 +37,9 @@ public class Conference extends PersistableResource
 	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	private String year;
 
-	public String getYear()
-	{
-		return year;
-	}
-
-	public void setYear( String year )
-	{
-		this.year = year;
-	}
-
-	public void setThema( String thema )
-	{
-		this.thema = thema;
-	}
-
-	public ConferenceGroup getConferenceGroup()
-	{
-		return conferenceGroup;
-	}
-
-	public void setConferenceGroup( ConferenceGroup conferenceGroup )
-	{
-		this.conferenceGroup = conferenceGroup;
-	}
+	/* from citeseer */
+	@Column
+	private String url;
 
 	@ManyToOne
 	@JoinColumn( name = "conference_group_id" )
@@ -100,4 +79,40 @@ public class Conference extends PersistableResource
 	{
 		this.thema = thema;
 	}
+
+	public String getYear()
+	{
+		return year;
+	}
+
+	public void setYear( String year )
+	{
+		this.year = year;
+	}
+
+	public void setThema( String thema )
+	{
+		this.thema = thema;
+	}
+
+	public ConferenceGroup getConferenceGroup()
+	{
+		return conferenceGroup;
+	}
+
+	public void setConferenceGroup( ConferenceGroup conferenceGroup )
+	{
+		this.conferenceGroup = conferenceGroup;
+	}
+
+	public String getUrl()
+	{
+		return url;
+	}
+
+	public void setUrl( String url )
+	{
+		this.url = url;
+	}
+
 }
