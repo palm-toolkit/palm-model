@@ -235,25 +235,6 @@ public class Publication extends PersistableResource
 		return this;
 	}
 
-	public Set<PublicationTopic> getTopics()
-	{
-		return publicationTopics;
-	}
-
-	public void setTopics( Set<PublicationTopic> publicationTopics )
-	{
-		this.publicationTopics = publicationTopics;
-	}
-
-	public Publication addTopic( final PublicationTopic publicationTopic )
-	{
-		if ( this.publicationTopics == null )
-			this.publicationTopics = new LinkedHashSet<PublicationTopic>();
-
-		publicationTopics.add( publicationTopic );
-		return this;
-	}
-
 	public Conference getVenue()
 	{
 		return conference;
