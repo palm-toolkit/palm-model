@@ -71,9 +71,6 @@ public class User extends PersistableResource
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user" )
 	private List<PublicationHistory> publicationHistories;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user" )
-	private List<ExtractionRuntime> extractionRuntimes;
-
 	// getter and setter
 
 	public Author getAuthor()
@@ -254,23 +251,4 @@ public class User extends PersistableResource
 		return this;
 	}
 
-	public List<ExtractionRuntime> getExtractionRuntimes()
-	{
-		return extractionRuntimes;
-	}
-
-	public void setExtractionRuntimes( List<ExtractionRuntime> extractionRuntimes )
-	{
-		this.extractionRuntimes = extractionRuntimes;
-	}
-
-	public User addExtractionRuntime( ExtractionRuntime extractionRuntime )
-	{
-		if ( this.extractionRuntimes == null )
-			this.extractionRuntimes = new ArrayList<ExtractionRuntime>();
-
-		this.extractionRuntimes.add( extractionRuntime );
-
-		return this;
-	}
 }
