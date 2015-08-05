@@ -93,6 +93,9 @@ public class Author extends PersistableResource
 	@ManyToMany( mappedBy = "coAuthors" )
 	private Set<Publication> publications;
 
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author" )
+	private Set<InterestAuthor> interestAuthors;
+
 	/* few authors work for several institution */
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinColumn( name = "institution_id" )
@@ -307,6 +310,15 @@ public class Author extends PersistableResource
 		return this;
 	}
 
+	public Set<InterestAuthor> getInterestAuthors()
+	{
+		return interestAuthors;
+	}
+
+	public void setInterestAuthors( Set<InterestAuthor> interestAuthors )
+	{
+		this.interestAuthors = interestAuthors;
+	}
 
 	public boolean hasCoAuthorWith( Publication publication, Author coAuthor )
 	{

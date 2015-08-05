@@ -21,7 +21,7 @@ public class AuthorInterest extends PersistableResource
 	@MapKeyColumn( name = "term" )
 	@Column( name = "weight" )
 	@CollectionTable( name = "term_weight" )
-	Map<String, Double> termWeights;
+	Map<Interest, Double> termWeights;
 
 	@Column
 	Date year;
@@ -36,20 +36,20 @@ public class AuthorInterest extends PersistableResource
 
 	// getter & setter
 
-	public Map<String, Double> getTermWeights()
+	public Map<Interest, Double> getTermWeights()
 	{
 		return termWeights;
 	}
 
-	public void setTermWeights( Map<String, Double> termWeights )
+	public void setTermWeights( Map<Interest, Double> termWeights )
 	{
 		this.termWeights = termWeights;
 	}
 
-	public AuthorInterest addTerm( String term, double weight )
+	public AuthorInterest addTerm( Interest term, double weight )
 	{
 		if ( termWeights == null )
-			termWeights = new LinkedHashMap<String, Double>();
+			termWeights = new LinkedHashMap<Interest, Double>();
 
 		termWeights.put( term, weight );
 

@@ -24,7 +24,10 @@ public class AuthorInterestProfile extends PersistableResource
 	private String name;
 
 	@Column
-	Date created;
+	private String language;
+
+	@Column
+	private Date created;
 
 	@Column
 	@Lob
@@ -40,8 +43,6 @@ public class AuthorInterestProfile extends PersistableResource
 
 	// getter & setter
 
-
-
 	public AuthorInterestProfile addAuthorInterest( AuthorInterest authorInterest )
 	{
 		if ( this.authorInterests == null )
@@ -49,5 +50,65 @@ public class AuthorInterestProfile extends PersistableResource
 
 		authorInterests.add( authorInterest );
 		return this;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName( String name )
+	{
+		this.name = name;
+	}
+
+	public String getLanguage()
+	{
+		return language;
+	}
+
+	public void setLanguage( String language )
+	{
+		this.language = language;
+	}
+
+	public Date getCreated()
+	{
+		return created;
+	}
+
+	public void setCreated( Date created )
+	{
+		this.created = created;
+	}
+
+	public String getDescription()
+	{
+		return description;
+	}
+
+	public void setDescription( String description )
+	{
+		this.description = description;
+	}
+
+	public Author getAuthor()
+	{
+		return author;
+	}
+
+	public void setAuthor( Author author )
+	{
+		this.author = author;
+	}
+
+	public List<AuthorInterest> getAuthorInterests()
+	{
+		return authorInterests;
+	}
+
+	public void setAuthorInterests( List<AuthorInterest> authorInterests )
+	{
+		this.authorInterests = authorInterests;
 	}
 }
