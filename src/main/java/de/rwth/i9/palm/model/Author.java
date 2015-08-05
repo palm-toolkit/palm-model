@@ -12,7 +12,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -100,12 +99,11 @@ public class Author extends PersistableResource
 	@IndexedEmbedded
 	private Institution institution;
 
-	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinTable( name = "author_interest", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "topic_id" ) )
-	private Set<PublicationTopic> publicationTopics;
-
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
 	private Set<AuthorSource> authorSources;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
+	private Set<AuthorInterestProfile> authorInterestProfiles;
 
 	public String getName()
 	{
@@ -198,25 +196,6 @@ public class Author extends PersistableResource
 		this.based_near = based_near;
 	}
 
-	public Set<PublicationTopic> getPublicationTopics()
-	{
-		return publicationTopics;
-	}
-
-	public void setPublicationTopics( Set<PublicationTopic> publicationTopics )
-	{
-		this.publicationTopics = publicationTopics;
-	}
-
-	public Author addPublicationTopic( PublicationTopic publicationTopic )
-	{
-		if ( this.publicationTopics == null )
-			this.publicationTopics = new LinkedHashSet<PublicationTopic>();
-
-		this.publicationTopics.add( publicationTopic );
-		return this;
-	}
-
 	public String getOtherDetail()
 	{
 		return otherDetail;
@@ -307,6 +286,27 @@ public class Author extends PersistableResource
 
 		return this;
 	}
+
+	public Set<AuthorInterestProfile> getAuthorInterestProfiles()
+	{
+		return authorInterestProfiles;
+	}
+
+	public void setAuthorInterestProfiles( Set<AuthorInterestProfile> authorInterestProfiles )
+	{
+		this.authorInterestProfiles = authorInterestProfiles;
+	}
+
+	public Author addAuthorInterestProfiles( AuthorInterestProfile authorInterestProfile )
+	{
+		if ( this.authorInterestProfiles == null )
+			this.authorInterestProfiles = new LinkedHashSet<AuthorInterestProfile>();
+
+		this.authorInterestProfiles.add( authorInterestProfile );
+
+		return this;
+	}
+
 
 	public boolean hasCoAuthorWith( Publication publication, Author coAuthor )
 	{

@@ -41,10 +41,6 @@ public class ExtractionService extends PersistableResource
 	@Column( columnDefinition = "int default 5000" )
 	private int maxTextLength;
 
-	// relations
-//	@OneToMany( cascade = CascadeType.ALL, mappedBy = "extractionService" )
-//	List<ExtractionRuntime> extractionRuntimes;
-
 	// getter & setter
 
 	public String getPurpose()
