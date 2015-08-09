@@ -1,8 +1,8 @@
 package de.rwth.i9.palm.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,10 +24,13 @@ public class AuthorInterestProfile extends PersistableResource
 	private String name;
 
 	@Column
-	private String language;
-
-	@Column
 	private Date created;
+
+	@Column( columnDefinition = "bit default 0" )
+	private boolean defaultProfile = false;
+
+	@Column( columnDefinition = "bit default 1" )
+	private boolean valid = true;
 
 	@Column
 	@Lob
@@ -39,14 +42,14 @@ public class AuthorInterestProfile extends PersistableResource
 	private Author author;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "authorInterestProfile", orphanRemoval = true )
-	List<AuthorInterest> authorInterests;
+	Set<AuthorInterest> authorInterests;
 
 	// getter & setter
 
 	public AuthorInterestProfile addAuthorInterest( AuthorInterest authorInterest )
 	{
 		if ( this.authorInterests == null )
-			authorInterests = new ArrayList<AuthorInterest>();
+			authorInterests = new HashSet<AuthorInterest>();
 
 		authorInterests.add( authorInterest );
 		return this;
@@ -60,16 +63,6 @@ public class AuthorInterestProfile extends PersistableResource
 	public void setName( String name )
 	{
 		this.name = name;
-	}
-
-	public String getLanguage()
-	{
-		return language;
-	}
-
-	public void setLanguage( String language )
-	{
-		this.language = language;
 	}
 
 	public Date getCreated()
@@ -102,13 +95,37 @@ public class AuthorInterestProfile extends PersistableResource
 		this.author = author;
 	}
 
-	public List<AuthorInterest> getAuthorInterests()
+	public Set<AuthorInterest> getAuthorInterests()
 	{
 		return authorInterests;
 	}
 
-	public void setAuthorInterests( List<AuthorInterest> authorInterests )
+	public void setAuthorInterests( Set<AuthorInterest> authorInterests )
 	{
-		this.authorInterests = authorInterests;
+		if ( this.authorInterests == null )
+			this.authorInterests = new HashSet<AuthorInterest>();
+		this.authorInterests.clear();
+		this.authorInterests.addAll( authorInterests );
 	}
+
+	public boolean isDefaultProfile()
+	{
+		return defaultProfile;
+	}
+
+	public void setDefaultProfile( boolean defaultProfile )
+	{
+		this.defaultProfile = defaultProfile;
+	}
+
+	public boolean isValid()
+	{
+		return valid;
+	}
+
+	public void setValid( boolean valid )
+	{
+		this.valid = valid;
+	}
+
 }

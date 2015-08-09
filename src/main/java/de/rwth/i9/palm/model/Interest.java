@@ -1,5 +1,6 @@
 package de.rwth.i9.palm.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -15,7 +16,7 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 @Table( name = "interest" )
 public class Interest extends PersistableResource
 {
-	@Column
+	@Column( unique = true, nullable = false, length = 50 )
 	private String term;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "interest" )
@@ -41,5 +42,12 @@ public class Interest extends PersistableResource
 		this.interestAuthors = interestAuthors;
 	}
 
+	public Interest addInterestAuthor( InterestAuthor interestAuthor )
+	{
+		if ( this.interestAuthors == null )
+			this.interestAuthors = new HashSet<InterestAuthor>();
+		this.interestAuthors.add( interestAuthor );
 
+		return this;
+	}
 }

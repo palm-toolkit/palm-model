@@ -2,6 +2,7 @@ package de.rwth.i9.palm.model;
 
 import java.text.Normalizer;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -318,6 +319,16 @@ public class Author extends PersistableResource
 	public void setInterestAuthors( Set<InterestAuthor> interestAuthors )
 	{
 		this.interestAuthors = interestAuthors;
+	}
+
+	public Author addInterestAuthor( InterestAuthor interestAuthor )
+	{
+		if ( this.interestAuthors == null )
+			this.interestAuthors = new HashSet<InterestAuthor>();
+
+		this.interestAuthors.add( interestAuthor );
+
+		return this;
 	}
 
 	public boolean hasCoAuthorWith( Publication publication, Author coAuthor )

@@ -29,6 +29,9 @@ public class AuthorInterest extends PersistableResource
 	@Column( columnDefinition = "bit default 1" )
 	private boolean valid = true;
 
+	@Column
+	private String language;
+
 	// relation
 	@ManyToOne
 	@JoinColumn( name = "author_interest_profile_id" )
@@ -54,6 +57,46 @@ public class AuthorInterest extends PersistableResource
 		termWeights.put( term, weight );
 
 		return this;
+	}
+
+	public Date getYear()
+	{
+		return year;
+	}
+
+	public void setYear( Date year )
+	{
+		this.year = year;
+	}
+
+	public boolean isValid()
+	{
+		return valid;
+	}
+
+	public void setValid( boolean valid )
+	{
+		this.valid = valid;
+	}
+
+	public String getLanguage()
+	{
+		return language;
+	}
+
+	public void setLanguage( String language )
+	{
+		this.language = language;
+	}
+
+	public AuthorInterestProfile getAuthorInterestProfile()
+	{
+		return authorInterestProfile;
+	}
+
+	public void setAuthorInterestProfile( AuthorInterestProfile authorInterestProfile )
+	{
+		this.authorInterestProfile = authorInterestProfile;
 	}
 
 }
