@@ -129,8 +129,8 @@ public class Publication extends PersistableResource
 	private Set<PublicationTopic> publicationTopics;
 	
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinColumn( name = "conference_id" )
-	private Conference conference;
+	@JoinColumn( name = "event_id" )
+	private Event event;
 	
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinColumn( name = "dataset_id" )
@@ -157,14 +157,14 @@ public class Publication extends PersistableResource
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
 	private Set<PublicationSource> publicationSources;
 
-	public Conference getConference()
+	public Event getEvent()
 	{
-		return conference;
+		return event;
 	}
 
-	public void setConference( Conference conference )
+	public void setEvent( Event event )
 	{
-		this.conference = conference;
+		this.event = event;
 	}
 
 	public Set<Reference> getReferences()
@@ -235,14 +235,14 @@ public class Publication extends PersistableResource
 		return this;
 	}
 
-	public Conference getVenue()
+	public Event getVenue()
 	{
-		return conference;
+		return event;
 	}
 
-	public void setVenue( Conference conference )
+	public void setVenue( Event event )
 	{
-		this.conference = conference;
+		this.event = event;
 	}
 
 	public Set<Author> getCoAuthors()

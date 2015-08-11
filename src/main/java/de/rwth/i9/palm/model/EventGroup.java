@@ -24,9 +24,9 @@ import org.hibernate.search.annotations.Store;
 import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
-@Table( name = "conference_group" )
+@Table( name = "academic_event_group" )
 @Indexed
-public class ConferenceGroup extends PersistableResource
+public class EventGroup extends PersistableResource
 {
 	@Column
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
@@ -48,15 +48,15 @@ public class ConferenceGroup extends PersistableResource
 	private String knowledgeGroup;
 
 	@ContainedIn
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "conferenceGroup" )
-	private List<Conference> conferences;
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "eventGroup" )
+	private List<Event> events;
 
-	public PublicationType getConferenceType()
+	public PublicationType getPublicationType()
 	{
 		return publicationType;
 	}
 
-	public void setConferenceType( PublicationType publicationType )
+	public void setPublicationType( PublicationType publicationType )
 	{
 		this.publicationType = publicationType;
 	}
@@ -71,21 +71,22 @@ public class ConferenceGroup extends PersistableResource
 		this.description = description;
 	}
 
-	public List<Conference> getConferences()
+	public List<Event> getEvents()
 	{
-		return conferences;
+		return events;
 	}
 
-	public void setConferences( List<Conference> conferences )
+	public void setEvents( List<Event> events )
 	{
-		this.conferences = conferences;
+		this.events = events;
 	}
 
-	public ConferenceGroup addConference( Conference conference )
+
+	public EventGroup addEvent( Event event )
 	{
-		if ( this.conferences == null )
-			this.conferences = new ArrayList<Conference>();
-		this.conferences.add( conference );
+		if ( this.events == null )
+			this.events = new ArrayList<Event>();
+		this.events.add( event );
 		return this;
 	}
 

@@ -22,9 +22,9 @@ import org.hibernate.search.annotations.Store;
 import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
-@Table( name = "conference" )
+@Table( name = "academic_event" )
 @Indexed
-public class Conference extends PersistableResource
+public class Event extends PersistableResource
 {
 	@Column
 	private Date date;
@@ -42,10 +42,10 @@ public class Conference extends PersistableResource
 	private String url;
 
 	@ManyToOne
-	@JoinColumn( name = "conference_group_id" )
+	@JoinColumn( name = "academic_event_group_id" )
 	@IndexedEmbedded
 	@Boost( 2.0f )
-	private ConferenceGroup conferenceGroup;
+	private EventGroup eventGroup;
 
 	@OneToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	private Location location;
@@ -95,14 +95,14 @@ public class Conference extends PersistableResource
 		this.thema = thema;
 	}
 
-	public ConferenceGroup getConferenceGroup()
+	public EventGroup getEventGroup()
 	{
-		return conferenceGroup;
+		return eventGroup;
 	}
 
-	public void setConferenceGroup( ConferenceGroup conferenceGroup )
+	public void setEventGroup( EventGroup eventGroup )
 	{
-		this.conferenceGroup = conferenceGroup;
+		this.eventGroup = eventGroup;
 	}
 
 	public String getUrl()
