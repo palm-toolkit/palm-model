@@ -1,6 +1,7 @@
 package de.rwth.i9.palm.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,8 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -27,6 +30,13 @@ public class PublicationTopic extends PersistableResource
 	@Column( name = "value" )
 	@CollectionTable( name = "term_value" )
 	Map<String, Double> termValues;
+	
+	@Column
+	private Date extractionDate;
+	
+	@Enumerated( EnumType.STRING )
+	@Column( length = 20 )
+	private ExtractionServiceType extractionServiceType;
 
 	/* collection of term with comma separated value */
 	@Column
@@ -45,11 +55,14 @@ public class PublicationTopic extends PersistableResource
 	@JoinTable( name = "publication_topic_narrower", joinColumns = @JoinColumn( name = "publication_topic_id", referencedColumnName = "id" ), inverseJoinColumns = @JoinColumn( name = "narrower_id" ) )
 	private List<PublicationTopic> narrowers;
 
-	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinColumn( name = "extraction_runtime_id" )
-	private ExtractionRuntime extractionRuntime;
+//	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+//	@JoinColumn( name = "extraction_runtime_id" )
+//	private ExtractionRuntime extractionRuntime;
 
-	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@Column( columnDefinition = "bit default 1" )
+	private boolean valid = true;
+
+	@ManyToOne
 	@JoinColumn( name = "publication_id" )
 	private Publication publication;
 
@@ -135,15 +148,15 @@ public class PublicationTopic extends PersistableResource
 		this.narrowers = narrowers;
 	}
 
-	public ExtractionRuntime getExtractionRuntime()
-	{
-		return extractionRuntime;
-	}
-
-	public void setExtractionRuntime( ExtractionRuntime extractionRuntime )
-	{
-		this.extractionRuntime = extractionRuntime;
-	}
+//	public ExtractionRuntime getExtractionRuntime()
+//	{
+//		return extractionRuntime;
+//	}
+//
+//	public void setExtractionRuntime( ExtractionRuntime extractionRuntime )
+//	{
+//		this.extractionRuntime = extractionRuntime;
+//	}
 
 	public Publication getPublication()
 	{
@@ -153,6 +166,36 @@ public class PublicationTopic extends PersistableResource
 	public void setPublication( Publication publication )
 	{
 		this.publication = publication;
+	}
+
+	public Date getExtractionDate()
+	{
+		return extractionDate;
+	}
+
+	public void setExtractionDate( Date extractionDate )
+	{
+		this.extractionDate = extractionDate;
+	}
+
+	public ExtractionServiceType getExtractionServiceType()
+	{
+		return extractionServiceType;
+	}
+
+	public void setExtractionServiceType( ExtractionServiceType extractionServiceType )
+	{
+		this.extractionServiceType = extractionServiceType;
+	}
+
+	public boolean isValid()
+	{
+		return valid;
+	}
+
+	public void setValid( boolean valid )
+	{
+		this.valid = valid;
 	}
 
 }

@@ -22,9 +22,9 @@ import org.hibernate.search.annotations.Store;
 import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
-@Table( name = "conference" )
+@Table( name = "academic_event" )
 @Indexed
-public class Conference extends PersistableResource
+public class Event extends PersistableResource
 {
 	@Column
 	private Date date;
@@ -37,36 +37,15 @@ public class Conference extends PersistableResource
 	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	private String year;
 
-	public String getYear()
-	{
-		return year;
-	}
-
-	public void setYear( String year )
-	{
-		this.year = year;
-	}
-
-	public void setThema( String thema )
-	{
-		this.thema = thema;
-	}
-
-	public ConferenceGroup getConferenceGroup()
-	{
-		return conferenceGroup;
-	}
-
-	public void setConferenceGroup( ConferenceGroup conferenceGroup )
-	{
-		this.conferenceGroup = conferenceGroup;
-	}
+	/* from citeseer */
+	@Column
+	private String url;
 
 	@ManyToOne
-	@JoinColumn( name = "conference_group_id" )
+	@JoinColumn( name = "academic_event_group_id" )
 	@IndexedEmbedded
 	@Boost( 2.0f )
-	private ConferenceGroup conferenceGroup;
+	private EventGroup eventGroup;
 
 	@OneToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	private Location location;
@@ -100,4 +79,40 @@ public class Conference extends PersistableResource
 	{
 		this.thema = thema;
 	}
+
+	public String getYear()
+	{
+		return year;
+	}
+
+	public void setYear( String year )
+	{
+		this.year = year;
+	}
+
+	public void setThema( String thema )
+	{
+		this.thema = thema;
+	}
+
+	public EventGroup getEventGroup()
+	{
+		return eventGroup;
+	}
+
+	public void setEventGroup( EventGroup eventGroup )
+	{
+		this.eventGroup = eventGroup;
+	}
+
+	public String getUrl()
+	{
+		return url;
+	}
+
+	public void setUrl( String url )
+	{
+		this.url = url;
+	}
+
 }

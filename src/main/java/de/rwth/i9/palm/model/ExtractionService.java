@@ -1,13 +1,12 @@
 package de.rwth.i9.palm.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Lob;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
@@ -16,31 +15,33 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 @Table( name = "extraction_service" )
 public class ExtractionService extends PersistableResource
 {
-	@Column( length = 32 )
-	private String name;
+	@Enumerated( EnumType.STRING )
+	@Column( length = 20 )
+	private ExtractionServiceType extractionServiceType;
 
 	@Column
 	private String purpose;
 
 	@Column
+	private Date lastQueryDate;
+
+	@Column
 	@Lob
 	private String description;
 
-	// relations
-	@OneToMany( cascade = CascadeType.ALL, mappedBy = "extractionService" )
-	List<ExtractionRuntime> extractionRuntimes;
+	@Column( columnDefinition = "bit default 1" )
+	private boolean active = true;
+
+	@Column( columnDefinition = "int default 0" )
+	private int countQueryThisDay;
+
+	@Column( columnDefinition = "int default 1000" )
+	private int maxQueryPerDay;
+
+	@Column( columnDefinition = "int default 5000" )
+	private int maxTextLength;
 
 	// getter & setter
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName( String name )
-	{
-		this.name = name;
-	}
 
 	public String getPurpose()
 	{
@@ -62,22 +63,84 @@ public class ExtractionService extends PersistableResource
 		this.description = description;
 	}
 
-	public List<ExtractionRuntime> getExtractionRuntimes()
+	public ExtractionServiceType getExtractionServiceType()
 	{
-		return extractionRuntimes;
+		return extractionServiceType;
 	}
 
-	public void setExtractionRuntimes( List<ExtractionRuntime> extractionRuntimes )
+	public void setExtractionServiceType( ExtractionServiceType extractionServiceType )
 	{
-		this.extractionRuntimes = extractionRuntimes;
+		this.extractionServiceType = extractionServiceType;
 	}
 
-	public ExtractionService addExtractionRuntime( final ExtractionRuntime extractionRuntime )
+	public boolean isActive()
 	{
-		if ( this.extractionRuntimes == null )
-			this.extractionRuntimes = new ArrayList<ExtractionRuntime>();
-
-		this.extractionRuntimes.add( extractionRuntime );
-		return this;
+		return active;
 	}
+
+	public void setActive( boolean active )
+	{
+		this.active = active;
+	}
+
+	public int getCountQueryThisDay()
+	{
+		return countQueryThisDay;
+	}
+
+	public void setCountQueryThisDay( int countQueryThisDay )
+	{
+		this.countQueryThisDay = countQueryThisDay;
+	}
+
+	public int getMaxQueryPerDay()
+	{
+		return maxQueryPerDay;
+	}
+
+	public void setMaxQueryPerDay( int maxQueryPerDay )
+	{
+		this.maxQueryPerDay = maxQueryPerDay;
+	}
+
+	public int getMaxTextLength()
+	{
+		return maxTextLength;
+	}
+
+	public void setMaxTextLength( int maxTextLength )
+	{
+		this.maxTextLength = maxTextLength;
+	}
+
+	public Date getLastQueryDate()
+	{
+		return lastQueryDate;
+	}
+
+	public void setLastQueryDate( Date lastQueryDate )
+	{
+		this.lastQueryDate = lastQueryDate;
+	}
+
+//	public List<ExtractionRuntime> getExtractionRuntimes()
+//	{
+//		return extractionRuntimes;
+//	}
+//
+//	public void setExtractionRuntimes( List<ExtractionRuntime> extractionRuntimes )
+//	{
+//		this.extractionRuntimes = extractionRuntimes;
+//	}
+//
+//	public ExtractionService addExtractionRuntime( final ExtractionRuntime extractionRuntime )
+//	{
+//		if ( this.extractionRuntimes == null )
+//			this.extractionRuntimes = new ArrayList<ExtractionRuntime>();
+//
+//		this.extractionRuntimes.add( extractionRuntime );
+//		return this;
+//	}
+	
+	
 }

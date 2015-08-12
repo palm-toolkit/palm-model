@@ -2,6 +2,7 @@ package de.rwth.i9.palm.model;
 
 import java.text.Normalizer;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -12,7 +13,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -47,17 +47,17 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 public class Author extends PersistableResource
 {
 	/* the full name of the author, most commonly used */
-	@Column( length = 50 )
+	@Column( length = 100 )
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
 	@Analyzer( definition = "authoranalyzer" )
 	private String name;
 
-	@Column( length = 30 )
+	@Column( length = 70 )
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
 	@Analyzer( definition = "authoranalyzer" )
 	private String firstName;
 
-	@Column( length = 20 )
+	@Column( length = 30 )
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
 	@Analyzer( definition = "authoranalyzer" )
 	@Boost( 3.0f )
@@ -94,18 +94,20 @@ public class Author extends PersistableResource
 	@ManyToMany( mappedBy = "coAuthors" )
 	private Set<Publication> publications;
 
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author" )
+	private Set<InterestAuthor> interestAuthors;
+
 	/* few authors work for several institution */
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinColumn( name = "institution_id" )
 	@IndexedEmbedded
 	private Institution institution;
 
-	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinTable( name = "author_interest", joinColumns = @JoinColumn( name = "author_id" ), inverseJoinColumns = @JoinColumn( name = "topic_id" ) )
-	private Set<PublicationTopic> publicationTopics;
-
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
 	private Set<AuthorSource> authorSources;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
+	private Set<AuthorInterestProfile> authorInterestProfiles;
 
 	public String getName()
 	{
@@ -198,25 +200,6 @@ public class Author extends PersistableResource
 		this.based_near = based_near;
 	}
 
-	public Set<PublicationTopic> getPublicationTopics()
-	{
-		return publicationTopics;
-	}
-
-	public void setPublicationTopics( Set<PublicationTopic> publicationTopics )
-	{
-		this.publicationTopics = publicationTopics;
-	}
-
-	public Author addPublicationTopic( PublicationTopic publicationTopic )
-	{
-		if ( this.publicationTopics == null )
-			this.publicationTopics = new LinkedHashSet<PublicationTopic>();
-
-		this.publicationTopics.add( publicationTopic );
-		return this;
-	}
-
 	public String getOtherDetail()
 	{
 		return otherDetail;
@@ -304,6 +287,46 @@ public class Author extends PersistableResource
 			this.aliases = new LinkedHashSet<AuthorAlias>();
 
 		this.aliases.add( authorAlias );
+
+		return this;
+	}
+
+	public Set<AuthorInterestProfile> getAuthorInterestProfiles()
+	{
+		return authorInterestProfiles;
+	}
+
+	public void setAuthorInterestProfiles( Set<AuthorInterestProfile> authorInterestProfiles )
+	{
+		this.authorInterestProfiles = authorInterestProfiles;
+	}
+
+	public Author addAuthorInterestProfiles( AuthorInterestProfile authorInterestProfile )
+	{
+		if ( this.authorInterestProfiles == null )
+			this.authorInterestProfiles = new LinkedHashSet<AuthorInterestProfile>();
+
+		this.authorInterestProfiles.add( authorInterestProfile );
+
+		return this;
+	}
+
+	public Set<InterestAuthor> getInterestAuthors()
+	{
+		return interestAuthors;
+	}
+
+	public void setInterestAuthors( Set<InterestAuthor> interestAuthors )
+	{
+		this.interestAuthors = interestAuthors;
+	}
+
+	public Author addInterestAuthor( InterestAuthor interestAuthor )
+	{
+		if ( this.interestAuthors == null )
+			this.interestAuthors = new HashSet<InterestAuthor>();
+
+		this.interestAuthors.add( interestAuthor );
 
 		return this;
 	}

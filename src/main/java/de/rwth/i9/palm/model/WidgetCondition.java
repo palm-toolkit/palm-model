@@ -2,15 +2,15 @@ package de.rwth.i9.palm.model;
 
 /**
  * 
- * <b>Documentation:</b><br/>
- * {@code NORMAL}<br/>
- *		As default value. The widget is set to its normal size.<br/>
- * {@code MAXIMIZE}<br/>
- *		The widget width is set to 100%.<br/>
- * {@code MINIMIZE}<br/>
- *		The widget content is hidden only its header visible.<br/><br/>
+ * <b>Documentation:</b>
+ * {@code NORMAL}
+ *		As default value. The widget is set to its normal size.
+ * {@code MAXIMIZE}
+ *		The widget width is set to 100%.
+ * {@code MINIMIZE}
+ *		The widget content is hidden only its header visible.
  *
- * @author sigit <br/>
+ * @author sigit 
  */
 public enum WidgetCondition
 {

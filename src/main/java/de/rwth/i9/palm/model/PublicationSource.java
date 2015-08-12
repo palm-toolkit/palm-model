@@ -16,6 +16,7 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 public class PublicationSource extends PersistableResource
 {
 	@Column
+	@Lob
 	private String title;
 
 	/* comma separated author list */
@@ -80,6 +81,7 @@ public class PublicationSource extends PersistableResource
 	private String pdfSource;
 
 	@Column
+	@Lob
 	private String pdfSourceUrl;
 
 	@Column
