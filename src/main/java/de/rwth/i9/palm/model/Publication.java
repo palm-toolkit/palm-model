@@ -1,6 +1,7 @@
 package de.rwth.i9.palm.model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -72,14 +73,6 @@ public class Publication extends PersistableResource
 	
 	@Column( length = 20 )
 	private String pages;
-
-	@Column
-	@Lob
-	private String pdfSource;
-
-	@Column
-	@Lob
-	private String pdfSourceUrl;
 
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
@@ -156,6 +149,9 @@ public class Publication extends PersistableResource
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
 	private Set<PublicationSource> publicationSources;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
+	private Set<PublicationFile> publicationFiles;
 
 	public Event getEvent()
 	{
@@ -486,26 +482,6 @@ public class Publication extends PersistableResource
 		this.citedBy = citedBy;
 	}
 
-	public String getPdfSource()
-	{
-		return pdfSource;
-	}
-
-	public void setPdfSource( String pdfSource )
-	{
-		this.pdfSource = pdfSource;
-	}
-
-	public String getPdfSourceUrl()
-	{
-		return pdfSourceUrl;
-	}
-
-	public void setPdfSourceUrl( String pdfSourceUrl )
-	{
-		this.pdfSourceUrl = pdfSourceUrl;
-	}
-
 	public PublicationType getPublicationType()
 	{
 		return publicationType;
@@ -554,6 +530,25 @@ public class Publication extends PersistableResource
 	public void setReferenceText( String referenceText )
 	{
 		this.referenceText = referenceText;
+	}
+
+	public Set<PublicationFile> getPublicationFiles()
+	{
+		return publicationFiles;
+	}
+
+	public void setPublicationFiles( Set<PublicationFile> publicationFiles )
+	{
+		this.publicationFiles = publicationFiles;
+	}
+
+	public Publication addPublicationFile( PublicationFile publicationFile )
+	{
+		if ( this.publicationFiles == null )
+			this.publicationFiles = new HashSet<PublicationFile>();
+
+		this.publicationFiles.add( publicationFile );
+		return this;
 	}
 
 }
