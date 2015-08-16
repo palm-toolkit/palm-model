@@ -13,7 +13,7 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 @Table( name = "source" )
 public class Source extends PersistableResource
 {
-	@Column( nullable = false )
+	@Column( nullable = false, unique = true )
 	private String name;
 	
 	@Column
@@ -21,7 +21,7 @@ public class Source extends PersistableResource
 	private String description;
 
 	@Enumerated( EnumType.STRING )
-	@Column( length = 16 )
+	@Column( length = 16, nullable = false, unique = true )
 	private SourceType SourceType;
 
 	@Column( columnDefinition = "bit default 1" )
