@@ -37,7 +37,7 @@ public class Event extends PersistableResource
 	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	private String year;
 
-	/* from citeseer */
+	/* from dblp */
 	@Column
 	private String url;
 
