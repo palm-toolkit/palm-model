@@ -92,6 +92,10 @@ public class PublicationSource extends PersistableResource
 	@Lob
 	private String tag;
 
+	@Column
+	@Lob
+	private String additionalInformation;
+
 	@ManyToOne
 	@JoinColumn( name = "publication_id" )
 	private Publication publication;
@@ -324,6 +328,16 @@ public class PublicationSource extends PersistableResource
 	public void setPdfSourceUrl( String pdfSourceUrl )
 	{
 		this.pdfSourceUrl = pdfSourceUrl;
+	}
+
+	public String getAdditionalInformation()
+	{
+		return additionalInformation;
+	}
+
+	public void setAdditionalInformation( String additionalInformation )
+	{
+		this.additionalInformation = additionalInformation;
 	}
 	
 }

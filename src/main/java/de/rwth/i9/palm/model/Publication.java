@@ -90,11 +90,17 @@ public class Publication extends PersistableResource
 	@Analyzer( definition = "customanalyzer" )
 	private String contentText;
 
+	@Column
 	@Lob
 	private String keywordText;
 
+	@Column
 	@Lob
 	private String referenceText;
+
+	@Column
+	@Lob
+	private String additionalInformation;
 
 	@Column
 	@Lob
@@ -549,6 +555,16 @@ public class Publication extends PersistableResource
 
 		this.publicationFiles.add( publicationFile );
 		return this;
+	}
+
+	public String getAdditionalInformation()
+	{
+		return additionalInformation;
+	}
+
+	public void setAdditionalInformation( String additionalInformation )
+	{
+		this.additionalInformation = additionalInformation;
 	}
 
 }
