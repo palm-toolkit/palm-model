@@ -62,7 +62,7 @@ public class Publication extends PersistableResource
 	@Column
 	private Date publicationDate;
 	
-	@Column
+	@Column( length = 10 )
 	private String publicationDateFormat;
 
 	@Column
