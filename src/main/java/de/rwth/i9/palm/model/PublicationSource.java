@@ -45,9 +45,6 @@ public class PublicationSource extends PersistableResource
 	
 	@Column( length = 20 )
 	private String date;
-	
-	@Column( length = 20 )
-	private String dateFormat;
 
 	@Column
 	private String venue;
@@ -277,6 +274,56 @@ public class PublicationSource extends PersistableResource
 	public void setAdditionalInformation( String additionalInformation )
 	{
 		this.additionalInformation = additionalInformation;
+	}
+
+	public String getVenue()
+	{
+		return venue;
+	}
+
+	public void setVenue( String venue )
+	{
+		this.venue = venue;
+	}
+
+	public String getVenueUrl()
+	{
+		return venueUrl;
+	}
+
+	public void setVenueUrl( String venueUrl )
+	{
+		this.venueUrl = venueUrl;
+	}
+
+	public SourceType getSourceType()
+	{
+		return sourceType;
+	}
+
+	public void setSourceType( SourceType sourceType )
+	{
+		this.sourceType = sourceType;
+	}
+
+	public String getMainSource()
+	{
+		return mainSource;
+	}
+
+	public void setMainSource( String mainSource )
+	{
+		this.mainSource = mainSource;
+	}
+
+	public String getMainSourceUrl()
+	{
+		return mainSourceUrl;
+	}
+
+	public void setMainSourceUrl( String mainSourceUrl )
+	{
+		this.mainSourceUrl = mainSourceUrl;
 	}
 	
 }

@@ -63,20 +63,7 @@ public class Publication extends PersistableResource
 	private Date publicationDate;
 	
 	@Column
-	private String publisher;
-	
-	@Column( length = 5 )
-	private String volume;
-	
-	@Column( length = 20 )
-	private String issue;
-	
-	@Column( length = 20 )
-	private String pages;
-
-	@Enumerated( EnumType.STRING )
-	@Column( length = 16 )
-	private PublicationType publicationType;
+	private String publicationDateFormat;
 
 	@Column
 	@Lob
@@ -97,6 +84,22 @@ public class Publication extends PersistableResource
 	@Column
 	@Lob
 	private String referenceText;
+
+	@Column
+	private String publisher;
+
+	@Column( length = 5 )
+	private String volume;
+
+	@Column( length = 20 )
+	private String issue;
+
+	@Column( length = 20 )
+	private String pages;
+
+	@Enumerated( EnumType.STRING )
+	@Column( length = 16 )
+	private PublicationType publicationType;
 
 	@Column
 	@Lob
@@ -565,6 +568,16 @@ public class Publication extends PersistableResource
 	public void setAdditionalInformation( String additionalInformation )
 	{
 		this.additionalInformation = additionalInformation;
+	}
+
+	public String getPublicationDateFormat()
+	{
+		return publicationDateFormat;
+	}
+
+	public void setPublicationDateFormat( String publicationDateFormat )
+	{
+		this.publicationDateFormat = publicationDateFormat;
 	}
 
 }
