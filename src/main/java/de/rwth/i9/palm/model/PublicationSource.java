@@ -37,19 +37,23 @@ public class PublicationSource extends PersistableResource
 	private String contentText;
 
 	@Column
-	private String publicationType;
+	@Lob
+	private String keyword;
 	
 	@Column
-	private String publicationEvent;
-
-	@Column( length = 4 )
-	private String year;
-	
-	@Column( length = 10 )
-	private String month;
+	private String tag;
 	
 	@Column( length = 20 )
 	private String date;
+	
+	@Column( length = 20 )
+	private String dateFormat;
+
+	@Column
+	private String venue;
+
+	@Column
+	private String publicationType;
 	
 	@Column
 	private String publisher;
@@ -66,31 +70,26 @@ public class PublicationSource extends PersistableResource
 	@Column
 	private int citedBy;
 
-	@Column( nullable = false )
+	@Column
 	private String sourceUrl;
+
+	@Column
+	private String venueUrl;
 
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
-	private SourceType SourceType;
+	private SourceType sourceType;
 	
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
 	private SourceMethod sourceMethod;
 
 	@Column
-	private String pdfSource;
+	private String mainSource;
 
 	@Column
 	@Lob
-	private String pdfSourceUrl;
-
-	@Column
-	@Lob
-	private String keyword;
-
-	@Column
-	@Lob
-	private String tag;
+	private String mainSourceUrl;
 
 	@Column
 	@Lob
@@ -149,26 +148,6 @@ public class PublicationSource extends PersistableResource
 	{
 		this.authorAffiliation = authorAffiliation;
 	}
-	
-	public String getYear()
-	{
-		return year;
-	}
-
-	public void setYear( String year )
-	{
-		this.year = year;
-	}
-
-	public String getMonth()
-	{
-		return month;
-	}
-
-	public void setMonth( String month )
-	{
-		this.month = month;
-	}
 
 	public String getAuthorString()
 	{
@@ -210,16 +189,6 @@ public class PublicationSource extends PersistableResource
 		this.sourceUrl = sourceUrl;
 	}
 
-	public SourceType getSourceType()
-	{
-		return SourceType;
-	}
-
-	public void setSourceType( SourceType sourceType )
-	{
-		SourceType = sourceType;
-	}
-
 	public String getPublicationType()
 	{
 		return publicationType;
@@ -228,16 +197,6 @@ public class PublicationSource extends PersistableResource
 	public void setPublicationType( String publicationType )
 	{
 		this.publicationType = publicationType;
-	}
-
-	public String getPublicationEvent()
-	{
-		return publicationEvent;
-	}
-
-	public void setPublicationEvent( String publicationEvent )
-	{
-		this.publicationEvent = publicationEvent;
 	}
 
 	public String getDate()
@@ -308,26 +267,6 @@ public class PublicationSource extends PersistableResource
 	public void setSourceMethod( SourceMethod sourceMethod )
 	{
 		this.sourceMethod = sourceMethod;
-	}
-
-	public String getPdfSource()
-	{
-		return pdfSource;
-	}
-
-	public void setPdfSource( String pdfSource )
-	{
-		this.pdfSource = pdfSource;
-	}
-
-	public String getPdfSourceUrl()
-	{
-		return pdfSourceUrl;
-	}
-
-	public void setPdfSourceUrl( String pdfSourceUrl )
-	{
-		this.pdfSourceUrl = pdfSourceUrl;
 	}
 
 	public String getAdditionalInformation()
