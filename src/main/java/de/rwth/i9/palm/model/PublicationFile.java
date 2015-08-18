@@ -26,6 +26,10 @@ public class PublicationFile extends PersistableResource
 	@Column( length = 16 )
 	private SourceType sourceType;
 
+	@Enumerated( EnumType.STRING )
+	@Column( length = 5 )
+	private FileType FileType;
+
 	@Column( columnDefinition = "bit default 0" )
 	private boolean checked = false;
 	
@@ -107,6 +111,16 @@ public class PublicationFile extends PersistableResource
 	public void setCorrectlyExtracted( boolean correctlyExtracted )
 	{
 		this.correctlyExtracted = correctlyExtracted;
+	}
+
+	public FileType getFileType()
+	{
+		return FileType;
+	}
+
+	public void setFileType( FileType fileType )
+	{
+		FileType = fileType;
 	}
 	
 }
