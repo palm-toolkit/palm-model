@@ -22,7 +22,12 @@ public class PublicationSource extends PersistableResource
 	/* comma separated author list */
 	@Column
 	@Lob
-	private String authorString;
+	private String coAuthors;
+
+	/* blank space separated author list */
+	@Column
+	@Lob
+	private String coAuthorsUrl;
 
 	/* comma separated author list */
 	@Column
@@ -144,16 +149,6 @@ public class PublicationSource extends PersistableResource
 	public void setAuthorAffiliation( String authorAffiliation )
 	{
 		this.authorAffiliation = authorAffiliation;
-	}
-
-	public String getAuthorString()
-	{
-		return authorString;
-	}
-
-	public void setAuthorString( String authorString )
-	{
-		this.authorString = authorString;
 	}
 
 	public String getKeyword()
@@ -325,5 +320,24 @@ public class PublicationSource extends PersistableResource
 	{
 		this.mainSourceUrl = mainSourceUrl;
 	}
-	
+
+	public String getCoAuthors()
+	{
+		return coAuthors;
+	}
+
+	public void setCoAuthors( String coAuthors )
+	{
+		this.coAuthors = coAuthors;
+	}
+
+	public String getCoAuthorsUrl()
+	{
+		return coAuthorsUrl;
+	}
+
+	public void setCoAuthorsUrl( String coAuthorsUrl )
+	{
+		this.coAuthorsUrl = coAuthorsUrl;
+	}
 }
