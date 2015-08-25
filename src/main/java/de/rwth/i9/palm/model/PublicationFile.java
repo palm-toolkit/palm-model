@@ -28,7 +28,7 @@ public class PublicationFile extends PersistableResource
 
 	@Enumerated( EnumType.STRING )
 	@Column( length = 5 )
-	private FileType FileType;
+	private FileType fileType;
 
 	@Column( columnDefinition = "bit default 0" )
 	private boolean checked = false;
@@ -115,12 +115,12 @@ public class PublicationFile extends PersistableResource
 
 	public FileType getFileType()
 	{
-		return FileType;
+		return fileType;
 	}
 
 	public void setFileType( FileType fileType )
 	{
-		FileType = fileType;
+		this.fileType = fileType;
 	}
 	
 }

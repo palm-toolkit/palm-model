@@ -29,8 +29,9 @@ public class PublicationSource extends PersistableResource
 	@Lob
 	private String coAuthorsUrl;
 
-	/* comma separated author list */
+	/* comma separated coauthor affiliation list */
 	@Column
+	@Lob
 	private String authorAffiliation;
 
 	@Column
@@ -87,6 +88,7 @@ public class PublicationSource extends PersistableResource
 	private SourceMethod sourceMethod;
 
 	@Column
+	@Lob
 	private String mainSource;
 
 	@Column
