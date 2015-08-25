@@ -5,5 +5,5 @@ package de.rwth.i9.palm.model;
  */
 public enum SourceMethod
 {
-	PARSEPAGE, API
+	PARSEPAGE, API, EXTRACTPAGE
 }
