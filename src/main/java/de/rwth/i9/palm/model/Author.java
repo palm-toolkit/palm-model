@@ -237,8 +237,25 @@ public class Author extends PersistableResource
 	public Author addAuthorSource( AuthorSource auhtorSource )
 	{
 		if ( this.authorSources == null )
+		{
 			this.authorSources = new LinkedHashSet<AuthorSource>();
-		this.authorSources.add( auhtorSource );
+			this.authorSources.add( auhtorSource );
+		}
+		else
+		{
+			boolean updateSourceUrl = false;
+			for ( AuthorSource eachAuhorSource : this.authorSources )
+			{
+				if ( eachAuhorSource.getSourceType().equals( auhtorSource.getSourceType() ) )
+				{
+					eachAuhorSource.setSourceUrl( auhtorSource.getSourceUrl() );
+					updateSourceUrl = true;
+				}
+			}
+			if ( !updateSourceUrl )
+				this.authorSources.add( auhtorSource );
+		}
+
 		return this;
 	}
 
@@ -297,6 +314,17 @@ public class Author extends PersistableResource
 		if ( this.aliases == null )
 			this.aliases = new LinkedHashSet<AuthorAlias>();
 
+		// check if alias already exist
+		else
+		{
+			for ( AuthorAlias eachAuthorAlias : this.aliases )
+			{
+				if ( eachAuthorAlias.getFirstName().equals( authorAlias.getFirstName() ) )
+					return this;
+			}
+		}
+
+		// new or not duplicated, then added to hashset
 		this.aliases.add( authorAlias );
 
 		return this;
