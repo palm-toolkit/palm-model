@@ -1,5 +1,6 @@
 package de.rwth.i9.palm.model;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -23,7 +24,6 @@ import javax.persistence.Table;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
@@ -41,7 +41,6 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
 @Table( name = "publication" )
-@JsonIgnoreProperties( { } )
 @Indexed
 @AnalyzerDef( 
 		name = "customanalyzer", 
@@ -156,10 +155,10 @@ public class Publication extends PersistableResource
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
 	private Set<PublicationHistory> publicationHistories;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "publication", orphanRemoval = true )
 	private Set<PublicationSource> publicationSources;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "publication", orphanRemoval = true )
 	private Set<PublicationFile> publicationFiles;
 
 	public Event getEvent()
@@ -374,7 +373,10 @@ public class Publication extends PersistableResource
 
 	public void setPublicationSources( Set<PublicationSource> publicationSources )
 	{
-		this.publicationSources = publicationSources;
+		if ( this.publicationSources == null )
+			this.publicationSources = new LinkedHashSet<PublicationSource>();
+		this.publicationSources.clear();
+		this.publicationSources.addAll( publicationSources );
 	}
 
 	public Publication addPublicationSource( PublicationSource publicationSource )
@@ -580,5 +582,50 @@ public class Publication extends PersistableResource
 		this.publicationDateFormat = publicationDateFormat;
 	}
 
+	public Set<String> getSourceFiles()
+	{
+		Set<String> sourceFileUrl = new HashSet<String>();
+		if ( this.publicationFiles == null || publicationFiles.isEmpty() )
+			return Collections.emptySet();
+		else
+			for ( PublicationFile pubFile : this.publicationFiles )
+			{
+				sourceFileUrl.add( pubFile.getUrl() );
+			}
+
+		return sourceFileUrl;
+	}
+
+	public Set<PublicationFile> getPublicationFilesPdf()
+	{
+		if ( this.publicationFiles == null || publicationFiles.isEmpty() )
+			return Collections.emptySet();
+		else
+		{
+			Set<PublicationFile> publicationFilePdf = new LinkedHashSet<>();
+			for ( PublicationFile publicationFile : this.publicationFiles )
+			{
+				if ( publicationFile.getFileType().equals( FileType.PDF ) )
+					publicationFilePdf.add( publicationFile );
+			}
+			return publicationFilePdf;
+		}
+	}
+
+	public Set<PublicationFile> getPublicationFilesHtml()
+	{
+		if ( this.publicationFiles == null || publicationFiles.isEmpty() )
+			return Collections.emptySet();
+		else
+		{
+			Set<PublicationFile> publicationFileHtml = new LinkedHashSet<>();
+			for ( PublicationFile publicationFile : this.publicationFiles )
+			{
+				if ( publicationFile.getFileType().equals( FileType.HTML ) )
+					publicationFileHtml.add( publicationFile );
+			}
+			return publicationFileHtml;
+		}
+	}
 }
 
