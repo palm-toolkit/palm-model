@@ -1,10 +1,15 @@
 package de.rwth.i9.palm.model;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
@@ -26,6 +31,9 @@ public class Source extends PersistableResource
 
 	@Column( columnDefinition = "bit default 1" )
 	private boolean active = true;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "source", orphanRemoval = true )
+	private Set<SourceProperty> sourceProperty;
 
 	public void setDescription( String description )
 	{
@@ -67,5 +75,14 @@ public class Source extends PersistableResource
 		this.active = active;
 	}
 
+	public Set<SourceProperty> getSourceProperty()
+	{
+		return sourceProperty;
+	}
+
+	public void setSourceProperty( Set<SourceProperty> sourceProperty )
+	{
+		this.sourceProperty = sourceProperty;
+	}
 
 }

@@ -67,6 +67,9 @@ public class Author extends PersistableResource
 	@Column
 	private String otherDetail;
 
+	@Column( length = 30 )
+	private String academicStatus;
+
 	@Column
 	private String department;
 
@@ -490,8 +493,18 @@ public class Author extends PersistableResource
 				authorAlias2.setAuthor( this );
 				this.addAlias( authorAlias2 );
 			}
-
 		}
 	}
+
+	public String getAcademicStatus()
+	{
+		return academicStatus;
+	}
+
+	public void setAcademicStatus( String academicStatus )
+	{
+		this.academicStatus = academicStatus;
+	}
+
 
 }
