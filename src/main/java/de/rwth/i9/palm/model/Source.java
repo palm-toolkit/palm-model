@@ -1,6 +1,7 @@
 package de.rwth.i9.palm.model;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,13 +28,13 @@ public class Source extends PersistableResource
 
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16, nullable = false, unique = true )
-	private SourceType SourceType;
+	private SourceType sourceType;
 
 	@Column( columnDefinition = "bit default 1" )
 	private boolean active = true;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "source", orphanRemoval = true )
-	private Set<SourceProperty> sourceProperty;
+	private List<SourceProperty> sourceProperties;
 
 	public void setDescription( String description )
 	{
@@ -57,12 +58,12 @@ public class Source extends PersistableResource
 
 	public SourceType getSourceType()
 	{
-		return SourceType;
+		return this.sourceType;
 	}
 
 	public void setSourceType( SourceType sourceType )
 	{
-		SourceType = sourceType;
+		this.sourceType = sourceType;
 	}
 
 	public boolean isActive()
@@ -75,14 +76,17 @@ public class Source extends PersistableResource
 		this.active = active;
 	}
 
-	public Set<SourceProperty> getSourceProperty()
+	public List<SourceProperty> getSourceProperties()
 	{
-		return sourceProperty;
+		return sourceProperties;
 	}
 
-	public void setSourceProperty( Set<SourceProperty> sourceProperty )
+	public void setSourceProperties( List<SourceProperty> sourceProperties )
 	{
-		this.sourceProperty = sourceProperty;
+		if ( this.sourceProperties == null )
+			this.sourceProperties = new ArrayList<SourceProperty>();
+		this.sourceProperties.clear();
+		this.sourceProperties.addAll( sourceProperties );
 	}
 
 }

@@ -16,20 +16,23 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 public class SourceProperty extends PersistableResource
 {
 	@Column( length = 20 )
-	String mainIdentifier;
+	private String mainIdentifier;
 
 	@Column( length = 20 )
-	String secondaryIdentifier;
+	private String secondaryIdentifier;
 
 	@Column
 	@Lob
-	String value;
+	private String value;
 
 	@Column
-	Date lastModified;
+	private Date lastModified;
 
 	@Column
-	String expiredEvery;
+	private String expiredEvery;
+
+	@Column( columnDefinition = "bit default 1" )
+	private boolean valid = true;
 
 	// relation
 	@ManyToOne
@@ -94,6 +97,16 @@ public class SourceProperty extends PersistableResource
 	public void setSource( Source source )
 	{
 		this.source = source;
+	}
+
+	public boolean isValid()
+	{
+		return valid;
+	}
+
+	public void setValid( boolean valid )
+	{
+		this.valid = valid;
 	}
 
 }
