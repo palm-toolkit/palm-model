@@ -15,10 +15,10 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 @Table( name = "source_property" )
 public class SourceProperty extends PersistableResource
 {
-	@Column( length = 20 )
+	@Column( length = 50 )
 	private String mainIdentifier;
 
-	@Column( length = 20 )
+	@Column( length = 50 )
 	private String secondaryIdentifier;
 
 	@Column
