@@ -1,7 +1,5 @@
 package de.rwth.i9.palm.model;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -26,7 +24,7 @@ public class SourceProperty extends PersistableResource
 	private String value;
 
 	@Column
-	private Date lastModified;
+	private java.sql.Timestamp lastModified;
 
 	@Column
 	private String expiredEvery;
@@ -69,12 +67,12 @@ public class SourceProperty extends PersistableResource
 		this.value = value;
 	}
 
-	public Date getLastModified()
+	public java.sql.Timestamp getLastModified()
 	{
 		return lastModified;
 	}
 
-	public void setLastModified( Date lastModified )
+	public void setLastModified( java.sql.Timestamp lastModified )
 	{
 		this.lastModified = lastModified;
 	}

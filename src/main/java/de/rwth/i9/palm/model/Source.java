@@ -1,7 +1,9 @@
 package de.rwth.i9.palm.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -87,6 +89,43 @@ public class Source extends PersistableResource
 			this.sourceProperties = new ArrayList<SourceProperty>();
 		this.sourceProperties.clear();
 		this.sourceProperties.addAll( sourceProperties );
+	}
+
+	public Source addSourceProperty( SourceProperty sourceProperty )
+	{
+		if ( this.sourceProperties == null )
+			this.sourceProperties = new ArrayList<SourceProperty>();
+		this.sourceProperties.add( sourceProperty );
+		return this;
+	}
+
+	public SourceProperty getSourcePropertyByIdentifiers( String identifier, String identifier2 )
+	{
+		if ( this.sourceProperties != null )
+		{
+			for ( SourceProperty sourceProperty : this.sourceProperties )
+			{
+				if ( sourceProperty.getMainIdentifier().equals( identifier ) && sourceProperty.getSecondaryIdentifier().equals( identifier2 ) )
+					return sourceProperty;
+			}
+		}
+		return null;
+	}
+
+	public Map<String, String> getValidSourcePropertyListByMainIdentifierMap( String identifier )
+	{
+		Map<String, String> validSourceProperties = new HashMap<String, String>();
+		if ( this.sourceProperties != null )
+		{
+			for ( SourceProperty sourceProperty : this.sourceProperties )
+			{
+				if ( sourceProperty.getMainIdentifier().equals( identifier ) && sourceProperty.isValid() )
+				{
+					validSourceProperties.put( sourceProperty.getSecondaryIdentifier(), sourceProperty.getValue() );
+				}
+			}
+		}
+		return validSourceProperties;
 	}
 
 }
