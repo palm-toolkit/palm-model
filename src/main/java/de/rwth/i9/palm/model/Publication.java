@@ -70,6 +70,10 @@ public class Publication extends PersistableResource
 	@Analyzer( definition = "customanalyzer" )
 	private String abstractText;
 
+	@Enumerated( EnumType.STRING )
+	@Column( length = 20, columnDefinition = "varchar(20) default 'NOT_COMPLETE'" )
+	private CompletionStatus abstractStatus;
+
 	@Column
 	@Lob
 	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
@@ -79,6 +83,10 @@ public class Publication extends PersistableResource
 	@Column
 	@Lob
 	private String keywordText;
+
+	@Enumerated( EnumType.STRING )
+	@Column( length = 20, columnDefinition = "varchar(20) default 'NOT_COMPLETE'" )
+	private CompletionStatus keywordStatus;
 
 	@Column
 	@Lob
@@ -627,5 +635,26 @@ public class Publication extends PersistableResource
 			return publicationFileHtml;
 		}
 	}
+
+	public CompletionStatus getAbstractStatus()
+	{
+		return abstractStatus;
+	}
+
+	public void setAbstractStatus( CompletionStatus abstractStatus )
+	{
+		this.abstractStatus = abstractStatus;
+	}
+
+	public CompletionStatus getKeywordStatus()
+	{
+		return keywordStatus;
+	}
+
+	public void setKeywordStatus( CompletionStatus keywordStatus )
+	{
+		this.keywordStatus = keywordStatus;
+	}
+
 }
 
