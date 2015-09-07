@@ -1,6 +1,8 @@
 package de.rwth.i9.palm.model;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -22,7 +24,6 @@ import javax.persistence.Table;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
@@ -40,7 +41,6 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
 @Table( name = "publication" )
-@JsonIgnoreProperties( { } )
 @Indexed
 @AnalyzerDef( 
 		name = "customanalyzer", 
@@ -61,29 +61,8 @@ public class Publication extends PersistableResource
 	@Column
 	private Date publicationDate;
 	
-	@Column
-	private String publisher;
-	
-	@Column( length = 5 )
-	private String volume;
-	
-	@Column( length = 20 )
-	private String issue;
-	
-	@Column( length = 20 )
-	private String pages;
-
-	@Column
-	@Lob
-	private String pdfSource;
-
-	@Column
-	@Lob
-	private String pdfSourceUrl;
-
-	@Enumerated( EnumType.STRING )
-	@Column( length = 16 )
-	private PublicationType publicationType;
+	@Column( length = 10 )
+	private String publicationDateFormat;
 
 	@Column
 	@Lob
@@ -91,17 +70,47 @@ public class Publication extends PersistableResource
 	@Analyzer( definition = "customanalyzer" )
 	private String abstractText;
 
+	@Enumerated( EnumType.STRING )
+	@Column( length = 20, columnDefinition = "varchar(20) default 'NOT_COMPLETE'" )
+	private CompletionStatus abstractStatus;
+
 	@Column
 	@Lob
 	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
 	@Analyzer( definition = "customanalyzer" )
 	private String contentText;
 
+	@Column
 	@Lob
 	private String keywordText;
 
+	@Enumerated( EnumType.STRING )
+	@Column( length = 20, columnDefinition = "varchar(20) default 'NOT_COMPLETE'" )
+	private CompletionStatus keywordStatus;
+
+	@Column
 	@Lob
 	private String referenceText;
+
+	@Column
+	private String publisher;
+
+	@Column( length = 5 )
+	private String volume;
+
+	@Column( length = 20 )
+	private String issue;
+
+	@Column( length = 20 )
+	private String pages;
+
+	@Enumerated( EnumType.STRING )
+	@Column( length = 16 )
+	private PublicationType publicationType;
+
+	@Column
+	@Lob
+	private String additionalInformation;
 
 	@Column
 	@Lob
@@ -154,8 +163,11 @@ public class Publication extends PersistableResource
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
 	private Set<PublicationHistory> publicationHistories;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "publication", orphanRemoval = true )
 	private Set<PublicationSource> publicationSources;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "publication", orphanRemoval = true )
+	private Set<PublicationFile> publicationFiles;
 
 	public Event getEvent()
 	{
@@ -369,7 +381,10 @@ public class Publication extends PersistableResource
 
 	public void setPublicationSources( Set<PublicationSource> publicationSources )
 	{
-		this.publicationSources = publicationSources;
+		if ( this.publicationSources == null )
+			this.publicationSources = new LinkedHashSet<PublicationSource>();
+		this.publicationSources.clear();
+		this.publicationSources.addAll( publicationSources );
 	}
 
 	public Publication addPublicationSource( PublicationSource publicationSource )
@@ -486,26 +501,6 @@ public class Publication extends PersistableResource
 		this.citedBy = citedBy;
 	}
 
-	public String getPdfSource()
-	{
-		return pdfSource;
-	}
-
-	public void setPdfSource( String pdfSource )
-	{
-		this.pdfSource = pdfSource;
-	}
-
-	public String getPdfSourceUrl()
-	{
-		return pdfSourceUrl;
-	}
-
-	public void setPdfSourceUrl( String pdfSourceUrl )
-	{
-		this.pdfSourceUrl = pdfSourceUrl;
-	}
-
 	public PublicationType getPublicationType()
 	{
 		return publicationType;
@@ -554,6 +549,111 @@ public class Publication extends PersistableResource
 	public void setReferenceText( String referenceText )
 	{
 		this.referenceText = referenceText;
+	}
+
+	public Set<PublicationFile> getPublicationFiles()
+	{
+		return publicationFiles;
+	}
+
+	public void setPublicationFiles( Set<PublicationFile> publicationFiles )
+	{
+		this.publicationFiles = publicationFiles;
+	}
+
+	public Publication addPublicationFile( PublicationFile publicationFile )
+	{
+		if ( this.publicationFiles == null )
+			this.publicationFiles = new HashSet<PublicationFile>();
+
+		this.publicationFiles.add( publicationFile );
+		return this;
+	}
+
+	public String getAdditionalInformation()
+	{
+		return additionalInformation;
+	}
+
+	public void setAdditionalInformation( String additionalInformation )
+	{
+		this.additionalInformation = additionalInformation;
+	}
+
+	public String getPublicationDateFormat()
+	{
+		return publicationDateFormat;
+	}
+
+	public void setPublicationDateFormat( String publicationDateFormat )
+	{
+		this.publicationDateFormat = publicationDateFormat;
+	}
+
+	public Set<String> getSourceFiles()
+	{
+		Set<String> sourceFileUrl = new HashSet<String>();
+		if ( this.publicationFiles == null || publicationFiles.isEmpty() )
+			return Collections.emptySet();
+		else
+			for ( PublicationFile pubFile : this.publicationFiles )
+			{
+				sourceFileUrl.add( pubFile.getUrl() );
+			}
+
+		return sourceFileUrl;
+	}
+
+	public Set<PublicationFile> getPublicationFilesPdf()
+	{
+		if ( this.publicationFiles == null || publicationFiles.isEmpty() )
+			return Collections.emptySet();
+		else
+		{
+			Set<PublicationFile> publicationFilePdf = new LinkedHashSet<>();
+			for ( PublicationFile publicationFile : this.publicationFiles )
+			{
+				if ( publicationFile.getFileType().equals( FileType.PDF ) )
+					publicationFilePdf.add( publicationFile );
+			}
+			return publicationFilePdf;
+		}
+	}
+
+	public Set<PublicationFile> getPublicationFilesHtml()
+	{
+		if ( this.publicationFiles == null || publicationFiles.isEmpty() )
+			return Collections.emptySet();
+		else
+		{
+			Set<PublicationFile> publicationFileHtml = new LinkedHashSet<>();
+			for ( PublicationFile publicationFile : this.publicationFiles )
+			{
+				if ( publicationFile.getFileType().equals( FileType.HTML ) )
+					publicationFileHtml.add( publicationFile );
+			}
+			return publicationFileHtml;
+		}
+	}
+
+	public CompletionStatus getAbstractStatus()
+	{
+		return abstractStatus;
+	}
+
+	public void setAbstractStatus( CompletionStatus abstractStatus )
+	{
+		this.abstractStatus = abstractStatus;
+	}
+
+	public CompletionStatus getKeywordStatus()
+	{
+		return keywordStatus;
+	}
+
+	public void setKeywordStatus( CompletionStatus keywordStatus )
+	{
+		this.keywordStatus = keywordStatus;
 	}
 
 }

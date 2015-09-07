@@ -6,7 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -46,7 +46,7 @@ public class Institution extends PersistableResource
 	private Location location;
 
 	@ContainedIn
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "institution" )
+	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "institutions" )
 	private List<Author> authors;
 
 

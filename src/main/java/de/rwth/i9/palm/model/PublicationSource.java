@@ -22,10 +22,16 @@ public class PublicationSource extends PersistableResource
 	/* comma separated author list */
 	@Column
 	@Lob
-	private String authorString;
+	private String coAuthors;
 
-	/* comma separated author list */
+	/* blank space separated author list */
 	@Column
+	@Lob
+	private String coAuthorsUrl;
+
+	/* comma separated coauthor affiliation list */
+	@Column
+	@Lob
 	private String authorAffiliation;
 
 	@Column
@@ -37,19 +43,20 @@ public class PublicationSource extends PersistableResource
 	private String contentText;
 
 	@Column
-	private String publicationType;
+	@Lob
+	private String keyword;
 	
 	@Column
-	private String publicationEvent;
-
-	@Column( length = 4 )
-	private String year;
-	
-	@Column( length = 10 )
-	private String month;
+	private String tag;
 	
 	@Column( length = 20 )
 	private String date;
+
+	@Column
+	private String venue;
+
+	@Column
+	private String publicationType;
 	
 	@Column
 	private String publisher;
@@ -66,31 +73,31 @@ public class PublicationSource extends PersistableResource
 	@Column
 	private int citedBy;
 
-	@Column( nullable = false )
+	@Column
 	private String sourceUrl;
+
+	@Column
+	private String venueUrl;
 
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
-	private SourceType SourceType;
+	private SourceType sourceType;
 	
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
 	private SourceMethod sourceMethod;
 
 	@Column
-	private String pdfSource;
+	@Lob
+	private String mainSource;
 
 	@Column
 	@Lob
-	private String pdfSourceUrl;
+	private String mainSourceUrl;
 
 	@Column
 	@Lob
-	private String keyword;
-
-	@Column
-	@Lob
-	private String tag;
+	private String additionalInformation;
 
 	@ManyToOne
 	@JoinColumn( name = "publication_id" )
@@ -145,36 +152,6 @@ public class PublicationSource extends PersistableResource
 	{
 		this.authorAffiliation = authorAffiliation;
 	}
-	
-	public String getYear()
-	{
-		return year;
-	}
-
-	public void setYear( String year )
-	{
-		this.year = year;
-	}
-
-	public String getMonth()
-	{
-		return month;
-	}
-
-	public void setMonth( String month )
-	{
-		this.month = month;
-	}
-
-	public String getAuthorString()
-	{
-		return authorString;
-	}
-
-	public void setAuthorString( String authorString )
-	{
-		this.authorString = authorString;
-	}
 
 	public String getKeyword()
 	{
@@ -206,16 +183,6 @@ public class PublicationSource extends PersistableResource
 		this.sourceUrl = sourceUrl;
 	}
 
-	public SourceType getSourceType()
-	{
-		return SourceType;
-	}
-
-	public void setSourceType( SourceType sourceType )
-	{
-		SourceType = sourceType;
-	}
-
 	public String getPublicationType()
 	{
 		return publicationType;
@@ -224,16 +191,6 @@ public class PublicationSource extends PersistableResource
 	public void setPublicationType( String publicationType )
 	{
 		this.publicationType = publicationType;
-	}
-
-	public String getPublicationEvent()
-	{
-		return publicationEvent;
-	}
-
-	public void setPublicationEvent( String publicationEvent )
-	{
-		this.publicationEvent = publicationEvent;
 	}
 
 	public String getDate()
@@ -306,24 +263,83 @@ public class PublicationSource extends PersistableResource
 		this.sourceMethod = sourceMethod;
 	}
 
-	public String getPdfSource()
+	public String getAdditionalInformation()
 	{
-		return pdfSource;
+		return additionalInformation;
 	}
 
-	public void setPdfSource( String pdfSource )
+	public void setAdditionalInformation( String additionalInformation )
 	{
-		this.pdfSource = pdfSource;
+		this.additionalInformation = additionalInformation;
 	}
 
-	public String getPdfSourceUrl()
+	public String getVenue()
 	{
-		return pdfSourceUrl;
+		return venue;
 	}
 
-	public void setPdfSourceUrl( String pdfSourceUrl )
+	public void setVenue( String venue )
 	{
-		this.pdfSourceUrl = pdfSourceUrl;
+		this.venue = venue;
 	}
-	
+
+	public String getVenueUrl()
+	{
+		return venueUrl;
+	}
+
+	public void setVenueUrl( String venueUrl )
+	{
+		this.venueUrl = venueUrl;
+	}
+
+	public SourceType getSourceType()
+	{
+		return sourceType;
+	}
+
+	public void setSourceType( SourceType sourceType )
+	{
+		this.sourceType = sourceType;
+	}
+
+	public String getMainSource()
+	{
+		return mainSource;
+	}
+
+	public void setMainSource( String mainSource )
+	{
+		this.mainSource = mainSource;
+	}
+
+	public String getMainSourceUrl()
+	{
+		return mainSourceUrl;
+	}
+
+	public void setMainSourceUrl( String mainSourceUrl )
+	{
+		this.mainSourceUrl = mainSourceUrl;
+	}
+
+	public String getCoAuthors()
+	{
+		return coAuthors;
+	}
+
+	public void setCoAuthors( String coAuthors )
+	{
+		this.coAuthors = coAuthors;
+	}
+
+	public String getCoAuthorsUrl()
+	{
+		return coAuthorsUrl;
+	}
+
+	public void setCoAuthorsUrl( String coAuthorsUrl )
+	{
+		this.coAuthorsUrl = coAuthorsUrl;
+	}
 }

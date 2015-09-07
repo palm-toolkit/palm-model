@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -66,6 +67,9 @@ public class Author extends PersistableResource
 	@Column
 	private String otherDetail;
 
+	@Column( length = 30 )
+	private String academicStatus;
+
 	@Column
 	private String department;
 
@@ -97,11 +101,11 @@ public class Author extends PersistableResource
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author" )
 	private Set<InterestAuthor> interestAuthors;
 
-	/* few authors work for several institution */
-	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinColumn( name = "institution_id" )
+	/* few authors probably work for several institutions */
+	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@JoinTable( name = "author_institution", joinColumns = @JoinColumn( name = "author_id" ) , inverseJoinColumns = @JoinColumn( name = "institution_id" ) )
 	@IndexedEmbedded
-	private Institution institution;
+	private Set<Institution> institutions;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
 	private Set<AuthorSource> authorSources;
@@ -236,8 +240,25 @@ public class Author extends PersistableResource
 	public Author addAuthorSource( AuthorSource auhtorSource )
 	{
 		if ( this.authorSources == null )
+		{
 			this.authorSources = new LinkedHashSet<AuthorSource>();
-		this.authorSources.add( auhtorSource );
+			this.authorSources.add( auhtorSource );
+		}
+		else
+		{
+			boolean updateSourceUrl = false;
+			for ( AuthorSource eachAuhorSource : this.authorSources )
+			{
+				if ( eachAuhorSource.getSourceType().equals( auhtorSource.getSourceType() ) )
+				{
+					eachAuhorSource.setSourceUrl( auhtorSource.getSourceUrl() );
+					updateSourceUrl = true;
+				}
+			}
+			if ( !updateSourceUrl )
+				this.authorSources.add( auhtorSource );
+		}
+
 		return this;
 	}
 
@@ -251,14 +272,24 @@ public class Author extends PersistableResource
 		this.requestDate = requestDate;
 	}
 
-	public Institution getInstitution()
+	public Set<Institution> getInstitutions()
 	{
-		return institution;
+		return institutions;
 	}
 
-	public void setInstitution( Institution institution )
+	public void setInstitutions( Set<Institution> institutions )
 	{
-		this.institution = institution;
+		this.institutions = institutions;
+	}
+
+	public Author addInstitution( Institution institution )
+	{
+		if ( this.institutions == null )
+			this.institutions = new HashSet<Institution>();
+
+		this.institutions.add( institution );
+
+		return this;
 	}
 
 	public int getCitedBy()
@@ -286,6 +317,17 @@ public class Author extends PersistableResource
 		if ( this.aliases == null )
 			this.aliases = new LinkedHashSet<AuthorAlias>();
 
+		// check if alias already exist
+		else
+		{
+			for ( AuthorAlias eachAuthorAlias : this.aliases )
+			{
+				if ( eachAuthorAlias.getFirstName().equals( authorAlias.getFirstName() ) )
+					return this;
+			}
+		}
+
+		// new or not duplicated, then added to hashset
 		this.aliases.add( authorAlias );
 
 		return this;
@@ -451,8 +493,18 @@ public class Author extends PersistableResource
 				authorAlias2.setAuthor( this );
 				this.addAlias( authorAlias2 );
 			}
-
 		}
 	}
+
+	public String getAcademicStatus()
+	{
+		return academicStatus;
+	}
+
+	public void setAcademicStatus( String academicStatus )
+	{
+		this.academicStatus = academicStatus;
+	}
+
 
 }
