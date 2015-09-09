@@ -26,9 +26,6 @@ public class AuthorInterestProfile extends PersistableResource
 	@Column
 	private Date created;
 
-	@Column( columnDefinition = "bit default 0" )
-	private boolean defaultProfile = false;
-
 	@Column( columnDefinition = "bit default 1" )
 	private boolean valid = true;
 
@@ -43,6 +40,10 @@ public class AuthorInterestProfile extends PersistableResource
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "authorInterestProfile", orphanRemoval = true )
 	Set<AuthorInterest> authorInterests;
+
+	@ManyToOne
+	@JoinColumn( name = "interest_profile_id" )
+	private InterestProfile interestProfile;
 
 	// getter & setter
 
@@ -108,16 +109,6 @@ public class AuthorInterestProfile extends PersistableResource
 		this.authorInterests.addAll( authorInterests );
 	}
 
-	public boolean isDefaultProfile()
-	{
-		return defaultProfile;
-	}
-
-	public void setDefaultProfile( boolean defaultProfile )
-	{
-		this.defaultProfile = defaultProfile;
-	}
-
 	public boolean isValid()
 	{
 		return valid;
@@ -126,6 +117,16 @@ public class AuthorInterestProfile extends PersistableResource
 	public void setValid( boolean valid )
 	{
 		this.valid = valid;
+	}
+
+	public InterestProfile getInterestProfile()
+	{
+		return interestProfile;
+	}
+
+	public void setInterestProfile( InterestProfile interestProfile )
+	{
+		this.interestProfile = interestProfile;
 	}
 
 }
