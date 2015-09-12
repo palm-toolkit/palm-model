@@ -30,7 +30,7 @@ public class InterestProfile extends PersistableResource
 	private boolean defaultProfile = false;
 
 	@Column( columnDefinition = "bit default 1" )
-	private boolean valid = true;
+	private boolean active = true;
 
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16, nullable = false, unique = true )
@@ -92,14 +92,14 @@ public class InterestProfile extends PersistableResource
 		this.defaultProfile = defaultProfile;
 	}
 
-	public boolean isValid()
+	public boolean isActive()
 	{
-		return valid;
+		return active;
 	}
 
-	public void setValid( boolean valid )
+	public void setActive( boolean active )
 	{
-		this.valid = valid;
+		this.active = active;
 	}
 
 	public InterestProfileType getInterestProfileType()
@@ -141,5 +141,6 @@ public class InterestProfile extends PersistableResource
 	{
 		this.authorInterestProfile = authorInterestProfile;
 	}
+
 
 }
