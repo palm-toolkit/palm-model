@@ -26,14 +26,11 @@ public class InterestProfile extends PersistableResource
 	@Column
 	private Date created;
 
-	@Column( columnDefinition = "bit default 0" )
-	private boolean defaultProfile = false;
-
 	@Column( columnDefinition = "bit default 1" )
 	private boolean active = true;
 
 	@Enumerated( EnumType.STRING )
-	@Column( length = 16, nullable = false, unique = true )
+	@Column( length = 16, nullable = false )
 	private InterestProfileType interestProfileType;
 
 	@Column
@@ -80,16 +77,6 @@ public class InterestProfile extends PersistableResource
 	public void setDescription( String description )
 	{
 		this.description = description;
-	}
-
-	public boolean isDefaultProfile()
-	{
-		return defaultProfile;
-	}
-
-	public void setDefaultProfile( boolean defaultProfile )
-	{
-		this.defaultProfile = defaultProfile;
 	}
 
 	public boolean isActive()
