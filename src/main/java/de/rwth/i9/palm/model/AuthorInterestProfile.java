@@ -20,7 +20,7 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 @Table( name = "author_interest_profile" )
 public class AuthorInterestProfile extends PersistableResource
 {
-	@Column( unique = true, nullable = false )
+	@Column( nullable = false )
 	private String name;
 
 	@Column
