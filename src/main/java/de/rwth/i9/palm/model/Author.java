@@ -506,5 +506,23 @@ public class Author extends PersistableResource
 		this.academicStatus = academicStatus;
 	}
 
+	public AuthorInterestProfile getSpecifitAuthorInterestProfile( String interestProfileName )
+	{
+		if ( interestProfileName == null || interestProfileName.equals( "" ) )
+			return null;
+
+		if ( this.authorInterestProfiles == null || this.authorInterestProfiles.isEmpty() )
+			return null;
+
+		for ( AuthorInterestProfile aip : this.authorInterestProfiles )
+		{
+			if ( aip.getName().equals( interestProfileName ) )
+			{
+				return aip;
+			}
+		}
+
+		return null;
+	}
 
 }

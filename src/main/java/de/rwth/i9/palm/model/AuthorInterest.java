@@ -49,7 +49,7 @@ public class AuthorInterest extends PersistableResource
 		this.termWeights = termWeights;
 	}
 
-	public AuthorInterest addTerm( Interest term, double weight )
+	public AuthorInterest addTermWeight( Interest term, double weight )
 	{
 		if ( termWeights == null )
 			termWeights = new LinkedHashMap<Interest, Double>();

@@ -1,12 +1,16 @@
 package de.rwth.i9.palm.model;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
@@ -40,6 +44,9 @@ public class ExtractionService extends PersistableResource
 
 	@Column( columnDefinition = "int default 5000" )
 	private int maxTextLength;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "extractionService", orphanRemoval = true )
+	private List<ExtractionServiceProperty> extractionServiceProperties;
 
 	// getter & setter
 
@@ -123,24 +130,14 @@ public class ExtractionService extends PersistableResource
 		this.lastQueryDate = lastQueryDate;
 	}
 
-//	public List<ExtractionRuntime> getExtractionRuntimes()
-//	{
-//		return extractionRuntimes;
-//	}
-//
-//	public void setExtractionRuntimes( List<ExtractionRuntime> extractionRuntimes )
-//	{
-//		this.extractionRuntimes = extractionRuntimes;
-//	}
-//
-//	public ExtractionService addExtractionRuntime( final ExtractionRuntime extractionRuntime )
-//	{
-//		if ( this.extractionRuntimes == null )
-//			this.extractionRuntimes = new ArrayList<ExtractionRuntime>();
-//
-//		this.extractionRuntimes.add( extractionRuntime );
-//		return this;
-//	}
-	
+	public List<ExtractionServiceProperty> getExtractionServiceProperties()
+	{
+		return extractionServiceProperties;
+	}
+
+	public void setExtractionServiceProperties( List<ExtractionServiceProperty> extractionServiceProperties )
+	{
+		this.extractionServiceProperties = extractionServiceProperties;
+	}
 	
 }
