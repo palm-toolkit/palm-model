@@ -395,6 +395,9 @@ public class Author extends PersistableResource
 		if ( firstNameSplit == null || firstNameSplit.length == 0 )
 			return false;
 
+		if ( this.getFirstName() == null )
+			return false;
+
 		String[] coAuthorDbFirstNameSplit = this.getFirstName().split( " " );
 		int maxIndex = ( coAuthorDbFirstNameSplit.length > firstNameSplit.length ) ? firstNameSplit.length : coAuthorDbFirstNameSplit.length;
 		boolean firstWordMatch = false;
