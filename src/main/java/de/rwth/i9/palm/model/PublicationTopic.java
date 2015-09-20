@@ -25,7 +25,7 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 @Entity( name = "publication_topic" )
 public class PublicationTopic extends PersistableResource
 {
-	@ElementCollection
+	@ElementCollection( fetch = FetchType.EAGER )
 	@MapKeyColumn( name = "term" )
 	@Column( name = "value" )
 	@CollectionTable( name = "term_value" )
