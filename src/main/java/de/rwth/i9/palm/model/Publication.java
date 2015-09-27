@@ -145,9 +145,8 @@ public class Publication extends PersistableResource
 	@JoinColumn( name = "dataset_id" )
 	private Dataset dataset;
 
-	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinTable( name = "publication_author", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "author_id" ) )
-	private Set<Author> coAuthors;
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication" )
+	private Set<PublicationAuthor> publicationAuthors;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_cites", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "publication_cites_id" ) )
@@ -257,23 +256,31 @@ public class Publication extends PersistableResource
 		this.event = event;
 	}
 
-	public Set<Author> getCoAuthors()
+	public Set<PublicationAuthor> getPublicationAuthors()
 	{
-		return coAuthors;
+		return publicationAuthors;
 	}
 
-	public void setCoAuthors( Set<Author> coAuthors )
+	public void setPublicationAuthors( Set<PublicationAuthor> publicationAuthors )
 	{
-		this.coAuthors = coAuthors;
+		this.publicationAuthors = publicationAuthors;
 	}
 
-	public Publication addCoAuthor( final Author author )
+	public Publication addPublicationAuthor( final PublicationAuthor publicationAuthor )
 	{
-		if ( this.coAuthors == null )
-			this.coAuthors = new LinkedHashSet<Author>();
+		if ( this.publicationAuthors == null )
+			this.publicationAuthors = new LinkedHashSet<PublicationAuthor>();
 
-		if( !this.coAuthors.contains( author ))
-			this.coAuthors.add( author );
+		// skip duplicated item
+		for ( PublicationAuthor eachPublicationAuthor : this.publicationAuthors )
+		{
+			if ( eachPublicationAuthor.getAuthor().equals( publicationAuthor.getAuthor() ) && eachPublicationAuthor.getPublication().equals( publicationAuthor.getPublication() ) )
+			{
+				return this;
+			}
+		}
+
+		this.publicationAuthors.add( publicationAuthor );
 		
 		return this;
 	}
@@ -391,8 +398,58 @@ public class Publication extends PersistableResource
 	{
 		if ( this.publicationSources == null )
 			this.publicationSources = new LinkedHashSet<PublicationSource>();
-		this.publicationSources.add( publicationSource );
+
+		// check for duplication source
+		PublicationSource existedPublicationSourceWithSameSourceType = this.getPublicationSourceBySourceType( publicationSource.getSourceType() );
+
+		if ( existedPublicationSourceWithSameSourceType != null )
+		{
+			// there are information from similar source, get the most complete
+			// one
+			// authors
+			if ( existedPublicationSourceWithSameSourceType.getCoAuthors() == null && publicationSource.getCoAuthors() != null )
+				existedPublicationSourceWithSameSourceType.setCoAuthors( publicationSource.getCoAuthors() );
+			else if ( existedPublicationSourceWithSameSourceType.getCoAuthors() != null && publicationSource.getCoAuthors() != null )
+			{
+				// choose longer text
+				if ( existedPublicationSourceWithSameSourceType.getCoAuthors().length() < publicationSource.getCoAuthors().length() )
+					existedPublicationSourceWithSameSourceType.setCoAuthors( publicationSource.getCoAuthors() );
+			}
+			// keyword
+			if ( existedPublicationSourceWithSameSourceType.getKeyword() == null && publicationSource.getKeyword() != null )
+				existedPublicationSourceWithSameSourceType.setKeyword( publicationSource.getKeyword() );
+			else if ( existedPublicationSourceWithSameSourceType.getKeyword() != null && publicationSource.getKeyword() != null )
+			{
+				// choose longer text
+				if ( existedPublicationSourceWithSameSourceType.getKeyword().length() < publicationSource.getKeyword().length() )
+					existedPublicationSourceWithSameSourceType.setKeyword( publicationSource.getKeyword() );
+			}
+			// abstract text
+			if ( existedPublicationSourceWithSameSourceType.getAbstractText() == null && publicationSource.getAbstractText() != null )
+				existedPublicationSourceWithSameSourceType.setAbstractText( publicationSource.getAbstractText() );
+			else if ( existedPublicationSourceWithSameSourceType.getAbstractText() != null && publicationSource.getAbstractText() != null )
+			{
+				// choose longer text
+				if ( existedPublicationSourceWithSameSourceType.getAbstractText().length() < publicationSource.getAbstractText().length() )
+					existedPublicationSourceWithSameSourceType.setAbstractText( publicationSource.getAbstractText() );
+			}
+		}
+		else
+			this.publicationSources.add( publicationSource );
 		return this;
+	}
+
+	public PublicationSource getPublicationSourceBySourceType( SourceType sourceType )
+	{
+		if ( this.publicationSources == null || this.publicationSources.isEmpty() )
+			return null;
+
+		for ( PublicationSource publicationSource : this.publicationSources )
+		{
+			if ( publicationSource.getSourceType().equals( sourceType ) )
+				return publicationSource;
+		}
+		return null;
 	}
 
 	public void removeNonUserInputPublicationSource()
@@ -654,6 +711,34 @@ public class Publication extends PersistableResource
 	public void setKeywordStatus( CompletionStatus keywordStatus )
 	{
 		this.keywordStatus = keywordStatus;
+	}
+
+//	public Publication addCoAuthor( Author author )
+//	{
+//		PublicationAuthor publicationAuthor = new PublicationAuthor();
+//		publicationAuthor.setPublication( this );
+//		publicationAuthor.setAuthor( author );
+//
+//		if ( this.publicationAuthors == null )
+//			this.publicationAuthors = new HashSet<PublicationAuthor>();
+//
+//		publicationAuthors.add( publicationAuthor );
+//
+//		return this;
+//	}
+
+	public Set<Author> getCoAuthors()
+	{
+		if ( this.publicationAuthors == null || publicationAuthors.isEmpty() )
+			return Collections.emptySet();
+
+		Set<Author> authors = new HashSet<Author>();
+		for ( PublicationAuthor publicationAuthor : this.publicationAuthors )
+		{
+			authors.add( publicationAuthor.getAuthor() );
+		}
+
+		return authors;
 	}
 
 }

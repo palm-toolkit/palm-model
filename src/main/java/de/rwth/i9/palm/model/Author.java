@@ -1,6 +1,7 @@
 package de.rwth.i9.palm.model;
 
 import java.text.Normalizer;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -95,8 +96,8 @@ public class Author extends PersistableResource
 	@JoinColumn( name = "location_id" )
 	private Location based_near;
 
-	@ManyToMany( mappedBy = "coAuthors" )
-	private Set<Publication> publications;
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author" )
+	private Set<PublicationAuthor> publicationAuthors;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author" )
 	private Set<InterestAuthor> interestAuthors;
@@ -174,22 +175,29 @@ public class Author extends PersistableResource
 		this.department = department;
 	}
 
-	public Set<Publication> getPublications()
+	public Set<PublicationAuthor> getPublicationAuthors()
 	{
-		return publications;
+		return publicationAuthors;
 	}
 
-	public void setPublications( Set<Publication> publications )
+	public void setPublicationAuthors( Set<PublicationAuthor> publicationAuthors )
 	{
-		this.publications = publications;
+		this.publicationAuthors = publicationAuthors;
 	}
 
-	public Author addPublication( final Publication publication )
+	public Author addPublicationAuthor( final PublicationAuthor publicationAuthor )
 	{
-		if ( this.publications == null )
-			this.publications = new LinkedHashSet<Publication>();
+		if ( this.publicationAuthors == null )
+			this.publicationAuthors = new LinkedHashSet<PublicationAuthor>();
 
-		this.publications.add( publication );
+		// skip duplicated item
+		for ( PublicationAuthor eachPublicationAuthor : this.publicationAuthors )
+		{
+			if ( eachPublicationAuthor.getAuthor().equals( publicationAuthor.getAuthor() ) && eachPublicationAuthor.getPublication().equals( publicationAuthor.getPublication() ) )
+				return this;
+		}
+
+		this.publicationAuthors.add( publicationAuthor );
 
 		return this;
 	}
@@ -322,13 +330,14 @@ public class Author extends PersistableResource
 		{
 			for ( AuthorAlias eachAuthorAlias : this.aliases )
 			{
-				if ( eachAuthorAlias.getFirstName().equals( authorAlias.getFirstName() ) )
+				if ( eachAuthorAlias.getName().equals( authorAlias.getName() ) )
 					return this;
 			}
 		}
 
 		// new or not duplicated, then added to hashset
 		this.aliases.add( authorAlias );
+		authorAlias.setAuthor( this );
 
 		return this;
 	}
@@ -375,46 +384,127 @@ public class Author extends PersistableResource
 
 	public boolean hasCoAuthorWith( Publication publication, Author coAuthor )
 	{
-		if ( this.publications.contains( publication ) )
+		if ( this.publicationAuthors == null || publicationAuthors.isEmpty() )
+			return false;
+
+		// Foreach publicationAuthor
+		for ( PublicationAuthor pubAuthor : this.publicationAuthors )
 		{
-			for ( Publication pub : this.publications )
+			// get the publication author
+			if ( pubAuthor.getPublication().equals( publication ) && pubAuthor.getAuthor().equals( coAuthor ) )
 			{
-				if ( pub.equals( publication ) )
-				{
-					if ( pub.getCoAuthors().contains( coAuthor ) )
-						return true;
-					break;
-				}
+				return true;
 			}
 		}
 		return false;
 	}
 
-	public boolean isAliasNameFromFirstName( String[] firstNameSplit )
+	/**
+	 * Check whether a name is the abbreviation of existing authors
+	 * 
+	 * @param firstNameSplit
+	 * @return
+	 */
+	public boolean isAliasNameFromFirstName( String firstName )
 	{
-		if ( firstNameSplit == null || firstNameSplit.length == 0 )
+		if ( firstName == null || firstName.equals( "" ) )
 			return false;
 
-		String[] coAuthorDbFirstNameSplit = this.getFirstName().split( " " );
-		int maxIndex = ( coAuthorDbFirstNameSplit.length > firstNameSplit.length ) ? firstNameSplit.length : coAuthorDbFirstNameSplit.length;
-		boolean firstWordMatch = false;
-		boolean firstWordStartWithMatch = false;
-		for ( int i = 0; i < maxIndex; i++ )
+		String shorterFirstName = null;
+		String longerFirstName = null;
+
+		if ( this.getFirstName().length() > firstName.length() )
 		{
-			if ( i == 0 )
-			{
-				if ( coAuthorDbFirstNameSplit[0].startsWith( firstNameSplit[0] ) && firstNameSplit[0].startsWith( coAuthorDbFirstNameSplit[0] ) )
-					firstWordMatch = true;
-				if ( coAuthorDbFirstNameSplit[0].startsWith( firstNameSplit[0] ) || firstNameSplit[0].startsWith( coAuthorDbFirstNameSplit[0] ) )
-					firstWordStartWithMatch = true;
-			}
-			// TODO: for now only check first word/letter
-			break;
+			longerFirstName = this.getFirstName();
+			shorterFirstName = firstName;
 		}
-		if ( firstWordMatch || firstWordStartWithMatch )
+		else
+		{
+			longerFirstName = firstName;
+			shorterFirstName = this.getFirstName();
+		}
+
+		String[] shorterFirstNameSplit = shorterFirstName.split( " " );
+		String[] longerFirstNameSplit = longerFirstName.split( " " );
+
+		// case :
+		// "mohamed amine" chatti
+		// aliass : "m" chatti, "m a" chatti, "ma" chatti, "mohamed" chatti
+
+		// create possible abbreviations
+		// abbr1 and abbr2 = use only first word of author name
+		// e.g. m and mohamed
+		String abbr1 = longerFirstNameSplit[0]; // e.g. mohamed
+		String abbr2 = longerFirstNameSplit[0].substring( 0, 1 ); // e.g. m
+
+		// abbr3 and abbr4 = use entire first name
+		// e.g. ma and m a and mohamed a
+		String abbr3 = "";
+		String abbr4 = "";
+		String abbr5 = "";
+
+		if ( longerFirstNameSplit.length > 1 )
+		{
+			for ( int i = 0; i < longerFirstNameSplit.length; i++ )
+			{
+				if ( i > 0 )
+				{
+					abbr4 += " ";
+					abbr5 += " ";
+				}
+				abbr3 += longerFirstNameSplit[i].substring( 0, 1 );
+				abbr4 += longerFirstNameSplit[i].substring( 0, 1 );
+
+				if ( i == 0 )
+					abbr5 += longerFirstNameSplit[i];
+				else
+					abbr5 += longerFirstNameSplit[i].substring( 0, 1 );
+			}
+		}
+
+		// check for alias name
+		if ( !abbr5.equals( "" ) && shorterFirstName.equalsIgnoreCase( abbr5 ) )
+		{
+			this.setAuthorNameAndAddAlias( longerFirstName, shorterFirstName );
 			return true;
+		}
+
+		if ( !abbr4.equals( "" ) && shorterFirstName.equalsIgnoreCase( abbr4 ) )
+		{
+			this.setAuthorNameAndAddAlias( longerFirstName, shorterFirstName );
+			return true;
+		}
+
+		if ( !abbr3.equals( "" ) && shorterFirstName.equalsIgnoreCase( abbr3 ) )
+		{
+			this.setAuthorNameAndAddAlias( longerFirstName, shorterFirstName );
+			return true;
+		}
+
+		if ( shorterFirstName.equalsIgnoreCase( abbr1 ) )
+		{
+			this.setAuthorNameAndAddAlias( longerFirstName, shorterFirstName );
+			return true;
+		}
+
+		if ( shorterFirstName.equalsIgnoreCase( abbr2 ) )
+		{
+			this.setAuthorNameAndAddAlias( longerFirstName, shorterFirstName );
+			return true;
+		}
+		// put other possibilities here
 
 		return false;
+	}
+
+	public void setAuthorNameAndAddAlias( String longerFirstName, String shorterFirstName )
+	{
+		if ( !this.getFirstName().equalsIgnoreCase( longerFirstName ) )
+			this.setLastName( longerFirstName );
+
+		AuthorAlias newAuthorAlias = new AuthorAlias();
+		newAuthorAlias.setCompleteName( shorterFirstName + " " + this.getLastName() );
+		this.addAlias( newAuthorAlias );
 	}
 
 	public void setPossibleNames( String name )
@@ -523,6 +613,34 @@ public class Author extends PersistableResource
 		}
 
 		return null;
+	}
+//
+//	public Author addPublication( Publication publication )
+//	{
+//		PublicationAuthor publicationAuthor = new PublicationAuthor();
+//		publicationAuthor.setPublication( publication );
+//		publicationAuthor.setAuthor( this );
+//
+//		if ( this.publicationAuthors == null )
+//			this.publicationAuthors = new HashSet<PublicationAuthor>();
+//
+//		publicationAuthors.add( publicationAuthor );
+//
+//		return this;
+//	}
+
+	public Set<Publication> getPublications()
+	{
+		if ( this.publicationAuthors == null || publicationAuthors.isEmpty() )
+			return Collections.emptySet();
+
+		Set<Publication> publications = new HashSet<Publication>();
+		for ( PublicationAuthor publicationAuthor : this.publicationAuthors )
+		{
+			publications.add( publicationAuthor.getPublication() );
+		}
+
+		return publications;
 	}
 
 }
