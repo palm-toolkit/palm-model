@@ -1,10 +1,12 @@
 package de.rwth.i9.palm.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -37,6 +39,7 @@ import org.hibernate.search.annotations.TermVector;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
 
+import de.rwth.i9.palm.helper.comparator.PublicationAuthorByPositionComparator;
 import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
@@ -727,17 +730,21 @@ public class Publication extends PersistableResource
 //		return this;
 //	}
 
-	public Set<Author> getCoAuthors()
+	public List<Author> getCoAuthors()
 	{
 		if ( this.publicationAuthors == null || publicationAuthors.isEmpty() )
-			return Collections.emptySet();
+			return Collections.emptyList();
 
-		Set<Author> authors = new HashSet<Author>();
-		for ( PublicationAuthor publicationAuthor : this.publicationAuthors )
+		List<PublicationAuthor> publicationAuthorList = new ArrayList<PublicationAuthor>( this.publicationAuthors );
+
+		// sort based on author position on paper
+		Collections.sort( publicationAuthorList, new PublicationAuthorByPositionComparator() );
+
+		List<Author> authors = new ArrayList<Author>();
+		for ( PublicationAuthor publicationAuthor : publicationAuthorList )
 		{
 			authors.add( publicationAuthor.getAuthor() );
 		}
-
 		return authors;
 	}
 
