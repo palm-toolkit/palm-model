@@ -104,8 +104,11 @@ public class Publication extends PersistableResource
 	@Column( length = 20 )
 	private String issue;
 
-	@Column( length = 20 )
-	private String pages;
+	@Column( columnDefinition = "int default 0" )
+	private int startPage;
+
+	@Column( columnDefinition = "int default 0" )
+	private int endPage;
 
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
@@ -541,16 +544,6 @@ public class Publication extends PersistableResource
 		this.issue = issue;
 	}
 
-	public String getPages()
-	{
-		return pages;
-	}
-
-	public void setPages( String pages )
-	{
-		this.pages = pages;
-	}
-
 	public int getCitedBy()
 	{
 		return citedBy;
@@ -746,6 +739,26 @@ public class Publication extends PersistableResource
 			authors.add( publicationAuthor.getAuthor() );
 		}
 		return authors;
+	}
+
+	public int getStartPage()
+	{
+		return startPage;
+	}
+
+	public void setStartPage( int startPage )
+	{
+		this.startPage = startPage;
+	}
+
+	public int getEndPage()
+	{
+		return endPage;
+	}
+
+	public void setEndPage( int endPage )
+	{
+		this.endPage = endPage;
 	}
 
 }
