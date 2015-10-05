@@ -53,6 +53,9 @@ public class PublicationSource extends PersistableResource
 	private String date;
 
 	@Column
+	private String venueShort;
+
+	@Column
 	private String venue;
 
 	@Column
@@ -342,4 +345,15 @@ public class PublicationSource extends PersistableResource
 	{
 		this.coAuthorsUrl = coAuthorsUrl;
 	}
+
+	public String getVenueShort()
+	{
+		return venueShort;
+	}
+
+	public void setVenueShort( String venueShort )
+	{
+		this.venueShort = venueShort;
+	}
+
 }
