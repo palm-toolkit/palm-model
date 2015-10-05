@@ -46,17 +46,17 @@ public class PublicationSource extends PersistableResource
 	@Lob
 	private String keyword;
 	
-	@Column
-	private String tag;
-	
 	@Column( length = 20 )
 	private String date;
 
 	@Column
-	private String venueShort;
+	private String venue;
 
 	@Column
-	private String venue;
+	private String venueUrl;
+
+	@Column
+	private String venueTheme;
 
 	@Column
 	private String publicationType;
@@ -78,9 +78,6 @@ public class PublicationSource extends PersistableResource
 
 	@Column
 	private String sourceUrl;
-
-	@Column
-	private String venueUrl;
 
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
@@ -164,16 +161,6 @@ public class PublicationSource extends PersistableResource
 	public void setKeyword( String keyword )
 	{
 		this.keyword = keyword;
-	}
-
-	public String getTag()
-	{
-		return tag;
-	}
-
-	public void setTag( String tag )
-	{
-		this.tag = tag;
 	}
 
 	public String getSourceUrl()
@@ -346,14 +333,14 @@ public class PublicationSource extends PersistableResource
 		this.coAuthorsUrl = coAuthorsUrl;
 	}
 
-	public String getVenueShort()
+	public String getVenueTheme()
 	{
-		return venueShort;
+		return venueTheme;
 	}
 
-	public void setVenueShort( String venueShort )
+	public void setVenueTheme( String venueTheme )
 	{
-		this.venueShort = venueShort;
+		this.venueTheme = venueTheme;
 	}
 
 }
