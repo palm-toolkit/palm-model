@@ -1,6 +1,8 @@
 package de.rwth.i9.palm.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -8,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -54,6 +57,9 @@ public class Event extends PersistableResource
 
 	@OneToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	private Location location;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "event" )
+	private Set<Publication> publications;
 
 	public Date getDate()
 	{
@@ -135,4 +141,23 @@ public class Event extends PersistableResource
 		this.dateFormat = dateFormat;
 	}
 
+	public Set<Publication> getPublications()
+	{
+		return publications;
+	}
+
+	public void setPublications( Set<Publication> publications )
+	{
+		this.publications = publications;
+	}
+
+	public Event addPublication( Publication publication )
+	{
+		if ( this.publications == null )
+			this.publications = new HashSet<Publication>();
+
+		this.publications.add( publication );
+
+		return this;
+	}
 }
