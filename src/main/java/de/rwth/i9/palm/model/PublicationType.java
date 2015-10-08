@@ -5,5 +5,5 @@ package de.rwth.i9.palm.model;
  */
 public enum PublicationType
 {
-	CONFERENCE, JOURNAL, BOOK, SPECIALISSUE, UNKNOWN
+	CONFERENCE, JOURNAL, BOOK, THESES, EDITORSHIP, SPECIALISSUE, UNKNOWN
 }
