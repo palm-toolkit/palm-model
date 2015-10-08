@@ -1,5 +1,6 @@
 package de.rwth.i9.palm.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -7,6 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -38,6 +40,10 @@ import org.hibernate.search.annotations.Store;
 import org.hibernate.search.annotations.TermVector;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import de.rwth.i9.palm.helper.comparator.PublicationAuthorByPositionComparator;
 import de.rwth.i9.palm.persistence.PersistableResource;
@@ -114,6 +120,7 @@ public class Publication extends PersistableResource
 	@Column( length = 16 )
 	private PublicationType publicationType;
 
+	/* store any information in json format */
 	@Column
 	@Lob
 	private String additionalInformation;
@@ -132,7 +139,7 @@ public class Publication extends PersistableResource
 	@Column( columnDefinition = "bit default 0" )
 	private boolean pdfExtracted = false;
 
-	@Column( columnDefinition = "varchar(15) default 'english'" )
+	@Column( length = 15 )
 	private String language;
 
 	// relations
@@ -623,14 +630,125 @@ public class Publication extends PersistableResource
 		return this;
 	}
 
-	public String getAdditionalInformation()
+	public Object getAdditionalInformation( String key )
 	{
-		return additionalInformation;
+		if ( this.additionalInformation == null || this.additionalInformation.equals( "" ) )
+			return null;
+
+		// search object with jackson
+		ObjectMapper mapper = new ObjectMapper();
+		try
+		{
+			ObjectNode informationNode = (ObjectNode) mapper.readTree( this.additionalInformation );
+			if ( informationNode.path( key ) != null )
+				return informationNode.path( key );
+
+			return null;
+		}
+		catch ( JsonProcessingException e )
+		{
+			e.printStackTrace();
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	public void setAdditionalInformation( String additionalInformation )
+	public boolean removeAdditionalInformation( String key )
 	{
-		this.additionalInformation = additionalInformation;
+		if ( this.additionalInformation == null || this.additionalInformation.equals( "" ) )
+			return false;
+
+		// search object with jackson
+		ObjectMapper mapper = new ObjectMapper();
+		try
+		{
+			ObjectNode informationNode = (ObjectNode) mapper.readTree( this.additionalInformation );
+			if ( informationNode.path( key ) != null )
+			{
+				informationNode.remove( key );
+				this.additionalInformation = informationNode.toString();
+				return true;
+			}
+			return false;
+		}
+		catch ( JsonProcessingException e )
+		{
+			e.printStackTrace();
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
+
+
+		return false;
+	}
+
+	public void setAdditionalInformation( String additionalInformationInJsonString )
+	{
+		this.additionalInformation = additionalInformationInJsonString;
+	}
+
+	public Map<String, Object> getAdditionalInformationAsMap()
+	{
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode informationNode = null;
+		try
+		{
+			informationNode = (ObjectNode) mapper.readTree( this.additionalInformation );
+		}
+		catch ( JsonProcessingException e )
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch ( IOException e )
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if ( informationNode == null )
+			return Collections.emptyMap();
+
+		@SuppressWarnings( "unchecked" )
+		Map<String, Object> convertValue = mapper.convertValue( informationNode, Map.class );
+
+		return convertValue;
+	}
+
+	public Publication addOrUpdateAdditionalInformation( String objectKey, Object objectValue )
+	{
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode informationNode = null;
+		if ( this.additionalInformation != null && !this.additionalInformation.equals( "" ) )
+		{
+			try
+			{
+				informationNode = (ObjectNode) mapper.readTree( this.additionalInformation );
+			}
+			catch ( JsonProcessingException e )
+			{
+				e.printStackTrace();
+			}
+			catch ( IOException e )
+			{
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			informationNode = mapper.createObjectNode();
+		}
+
+		informationNode.putPOJO( objectKey, objectValue );
+
+		this.additionalInformation = informationNode.toString();
+
+		return this;
 	}
 
 	public String getPublicationDateFormat()
