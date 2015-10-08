@@ -1,8 +1,8 @@
 package de.rwth.i9.palm.model;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -35,6 +35,9 @@ public class Event extends PersistableResource
 	@Column( length = 10 )
 	private String dateFormat;
 
+	@Column
+	private java.sql.Timestamp crawlDate;
+
 	@Column( length = 4 )
 	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	private String year;
@@ -58,8 +61,9 @@ public class Event extends PersistableResource
 	@OneToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	private Location location;
 
+	// as List, therefore it can be sorted on hibernate query
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "event" )
-	private Set<Publication> publications;
+	private List<Publication> publications;
 
 	public Date getDate()
 	{
@@ -141,12 +145,12 @@ public class Event extends PersistableResource
 		this.dateFormat = dateFormat;
 	}
 
-	public Set<Publication> getPublications()
+	public List<Publication> getPublications()
 	{
 		return publications;
 	}
 
-	public void setPublications( Set<Publication> publications )
+	public void setPublications( List<Publication> publications )
 	{
 		this.publications = publications;
 	}
@@ -154,10 +158,21 @@ public class Event extends PersistableResource
 	public Event addPublication( Publication publication )
 	{
 		if ( this.publications == null )
-			this.publications = new HashSet<Publication>();
+			this.publications = new ArrayList<Publication>();
 
 		this.publications.add( publication );
 
 		return this;
 	}
+
+	public java.sql.Timestamp getCrawlDate()
+	{
+		return crawlDate;
+	}
+
+	public void setCrawlDate( java.sql.Timestamp crawlDate )
+	{
+		this.crawlDate = crawlDate;
+	}
+
 }
