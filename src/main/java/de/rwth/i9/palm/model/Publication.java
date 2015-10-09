@@ -125,11 +125,6 @@ public class Publication extends PersistableResource
 	@Lob
 	private String additionalInformation;
 
-	@Column
-	@Lob
-	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
-	private String citationText;
-
 	@Column( columnDefinition = "int default 0" )
 	private int citedBy;
 
@@ -153,7 +148,7 @@ public class Publication extends PersistableResource
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinColumn( name = "event_id" )
 	private Event event;
-	
+
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinColumn( name = "dataset_id" )
 	private Dataset dataset;
@@ -168,9 +163,6 @@ public class Publication extends PersistableResource
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_citedby", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "publication_citedby_id" ) )
 	private Set<Publication> publicationCitedBys;
-
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true  )
-	private Set<Reference> references;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
 	private Set<PublicationHistory> publicationHistories;
@@ -189,25 +181,6 @@ public class Publication extends PersistableResource
 	public void setEvent( Event event )
 	{
 		this.event = event;
-	}
-
-	public Set<Reference> getReferences()
-	{
-		return references;
-	}
-
-	public void setReferences( Set<Reference> references )
-	{
-		this.references = references;
-	}
-
-	public Publication addReference( Reference reference )
-	{
-		if ( this.references == null )
-			this.references = new LinkedHashSet<Reference>();
-		this.references.add( reference );
-
-		return this;
 	}
 
 	public String getTitle()
@@ -334,16 +307,6 @@ public class Publication extends PersistableResource
 
 		this.publicationCitedBys.add( publicationCiteBy );
 		return this;
-	}
-
-	public String getCitationText()
-	{
-		return citationText;
-	}
-
-	public void setCitationText( String citationText )
-	{
-		this.citationText = citationText;
 	}
 
 	public String getLanguage()
@@ -683,7 +646,6 @@ public class Publication extends PersistableResource
 			e.printStackTrace();
 		}
 
-
 		return false;
 	}
 
@@ -702,12 +664,10 @@ public class Publication extends PersistableResource
 		}
 		catch ( JsonProcessingException e )
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch ( IOException e )
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
