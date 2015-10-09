@@ -1,5 +1,9 @@
 package de.rwth.i9.palm.model;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,6 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
 
@@ -61,15 +69,6 @@ public class PublicationSource extends PersistableResource
 	@Column
 	private String publicationType;
 	
-	@Column
-	private String publisher;
-	
-	@Column( length = 5 )
-	private String volume;
-	
-	@Column( length = 20 )
-	private String issue;
-	
 	@Column( length = 20 )
 	private String pages;
 	
@@ -95,6 +94,7 @@ public class PublicationSource extends PersistableResource
 	@Lob
 	private String mainSourceUrl;
 
+	/* store any information in json format */
 	@Column
 	@Lob
 	private String additionalInformation;
@@ -193,36 +193,6 @@ public class PublicationSource extends PersistableResource
 		this.date = date;
 	}
 
-	public String getPublisher()
-	{
-		return publisher;
-	}
-
-	public void setPublisher( String publisher )
-	{
-		this.publisher = publisher;
-	}
-
-	public String getVolume()
-	{
-		return volume;
-	}
-
-	public void setVolume( String volume )
-	{
-		this.volume = volume;
-	}
-
-	public String getIssue()
-	{
-		return issue;
-	}
-
-	public void setIssue( String issue )
-	{
-		this.issue = issue;
-	}
-
 	public String getPages()
 	{
 		return pages;
@@ -253,14 +223,129 @@ public class PublicationSource extends PersistableResource
 		this.sourceMethod = sourceMethod;
 	}
 
-	public String getAdditionalInformation()
+	public Object getAdditionalInformationByKey( String key )
 	{
-		return additionalInformation;
+		if ( this.additionalInformation == null || this.additionalInformation.equals( "" ) )
+			return null;
+
+		// search object with jackson
+		ObjectMapper mapper = new ObjectMapper();
+		try
+		{
+			ObjectNode informationNode = (ObjectNode) mapper.readTree( this.additionalInformation );
+			if ( informationNode.path( key ) != null )
+				return informationNode.path( key );
+
+			return null;
+		}
+		catch ( JsonProcessingException e )
+		{
+			e.printStackTrace();
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	public void setAdditionalInformation( String additionalInformation )
+	public boolean removeAdditionalInformation( String key )
 	{
-		this.additionalInformation = additionalInformation;
+		if ( this.additionalInformation == null || this.additionalInformation.equals( "" ) )
+			return false;
+
+		// search object with jackson
+		ObjectMapper mapper = new ObjectMapper();
+		try
+		{
+			ObjectNode informationNode = (ObjectNode) mapper.readTree( this.additionalInformation );
+			if ( informationNode.path( key ) != null )
+			{
+				informationNode.remove( key );
+				this.additionalInformation = informationNode.toString();
+				return true;
+			}
+			return false;
+		}
+		catch ( JsonProcessingException e )
+		{
+			e.printStackTrace();
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public void setAdditionalInformation( String additionalInformationInJsonString )
+	{
+		this.additionalInformation = additionalInformationInJsonString;
+	}
+
+	public String getAdditionalInformation()
+	{
+		return this.additionalInformation;
+	}
+
+	public Map<String, Object> getAdditionalInformationAsMap()
+	{
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode informationNode = null;
+		try
+		{
+			informationNode = (ObjectNode) mapper.readTree( this.additionalInformation );
+		}
+		catch ( JsonProcessingException e )
+		{
+			e.printStackTrace();
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
+
+		if ( informationNode == null )
+			return Collections.emptyMap();
+
+		@SuppressWarnings( "unchecked" )
+		Map<String, Object> convertValue = mapper.convertValue( informationNode, Map.class );
+
+		return convertValue;
+	}
+
+	public PublicationSource addOrUpdateAdditionalInformation( String objectKey, Object objectValue )
+	{
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode informationNode = null;
+		if ( this.additionalInformation != null && !this.additionalInformation.equals( "" ) )
+		{
+			try
+			{
+				informationNode = (ObjectNode) mapper.readTree( this.additionalInformation );
+			}
+			catch ( JsonProcessingException e )
+			{
+				e.printStackTrace();
+			}
+			catch ( IOException e )
+			{
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			informationNode = mapper.createObjectNode();
+		}
+		if ( objectValue instanceof String )
+			informationNode.putPOJO( objectKey, '"' + objectValue.toString() + '"' );
+		else
+			informationNode.putPOJO( objectKey, objectValue );
+
+		this.additionalInformation = informationNode.toString();
+
+		return this;
 	}
 
 	public String getVenue()

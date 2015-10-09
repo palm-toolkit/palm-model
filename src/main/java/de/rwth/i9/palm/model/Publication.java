@@ -101,15 +101,6 @@ public class Publication extends PersistableResource
 	@Lob
 	private String referenceText;
 
-	@Column
-	private String publisher;
-
-	@Column( length = 5 )
-	private String volume;
-
-	@Column( length = 20 )
-	private String issue;
-
 	@Column( columnDefinition = "int default 0" )
 	private int startPage;
 
@@ -470,36 +461,6 @@ public class Publication extends PersistableResource
 		this.publicationDate = publicationDate;
 	}
 
-	public String getPublisher()
-	{
-		return publisher;
-	}
-
-	public void setPublisher( String publisher )
-	{
-		this.publisher = publisher;
-	}
-
-	public String getVolume()
-	{
-		return volume;
-	}
-
-	public void setVolume( String volume )
-	{
-		this.volume = volume;
-	}
-
-	public String getIssue()
-	{
-		return issue;
-	}
-
-	public void setIssue( String issue )
-	{
-		this.issue = issue;
-	}
-
 	public int getCitedBy()
 	{
 		return citedBy;
@@ -579,7 +540,7 @@ public class Publication extends PersistableResource
 		return this;
 	}
 
-	public Object getAdditionalInformation( String key )
+	public Object getAdditionalInformationByKey( String key )
 	{
 		if ( this.additionalInformation == null || this.additionalInformation.equals( "" ) )
 			return null;
@@ -640,6 +601,11 @@ public class Publication extends PersistableResource
 		this.additionalInformation = additionalInformationInJsonString;
 	}
 
+	public String getAdditionalInformation()
+	{
+		return this.additionalInformation;
+	}
+
 	public Map<String, Object> getAdditionalInformationAsMap()
 	{
 		ObjectMapper mapper = new ObjectMapper();
@@ -690,7 +656,10 @@ public class Publication extends PersistableResource
 			informationNode = mapper.createObjectNode();
 		}
 
-		informationNode.putPOJO( objectKey, objectValue );
+		if ( objectValue instanceof String )
+			informationNode.putPOJO( objectKey, '"' + objectValue.toString() + '"' );
+		else
+			informationNode.putPOJO( objectKey, objectValue );
 
 		this.additionalInformation = informationNode.toString();
 
