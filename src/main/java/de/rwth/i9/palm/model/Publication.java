@@ -149,10 +149,6 @@ public class Publication extends PersistableResource
 	@JoinColumn( name = "event_id" )
 	private Event event;
 
-	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinColumn( name = "dataset_id" )
-	private Dataset dataset;
-
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication" )
 	private Set<PublicationAuthor> publicationAuthors;
 
@@ -462,16 +458,6 @@ public class Publication extends PersistableResource
 	public void removeAllPublicationTopic()
 	{
 		this.publicationTopics = null;
-	}
-
-	public Dataset getDataset()
-	{
-		return dataset;
-	}
-
-	public void setDataset( Dataset dataset )
-	{
-		this.dataset = dataset;
 	}
 
 	public Date getPublicationDate()

@@ -58,10 +58,6 @@ public class User extends PersistableResource
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinColumn( name = "user_id" )
-	private List<Dataset> datasets;
-
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinColumn( name = "user_id" )
 	private List<UserWidget> userWidgets;
 
 	@OneToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
@@ -209,26 +205,6 @@ public class User extends PersistableResource
 	public void setFunctions( List<Function> functions )
 	{
 		this.functions = functions;
-	}
-
-	public List<Dataset> getDatasets()
-	{
-		return datasets;
-	}
-
-	public void setDatasets( List<Dataset> datasets )
-	{
-		this.datasets = datasets;
-	}
-
-	public User addDataset( final Dataset dataset )
-	{
-		if ( this.datasets == null )
-			this.datasets = new ArrayList<Dataset>();
-
-		this.datasets.add( dataset );
-
-		return this;
 	}
 
 	public List<PublicationHistory> getPublicationHistories()
