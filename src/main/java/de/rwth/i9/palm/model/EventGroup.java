@@ -14,7 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -29,8 +28,7 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 public class EventGroup extends PersistableResource
 {
 	@Column
-	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
-	@Analyzer( definition = "customanalyzer" )
+	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	private String name;
 
 	@Column
@@ -41,11 +39,12 @@ public class EventGroup extends PersistableResource
 	@Column( length = 16 )
 	private PublicationType publicationType;
 
-	@Column( length = 24 )
+	@Column
+	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	private String notation;
 
 	@Column
-	private String knowledgeGroup;
+	private String dblpUrl;
 
 	@ContainedIn
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "eventGroup" )
@@ -100,14 +99,14 @@ public class EventGroup extends PersistableResource
 		this.name = name;
 	}
 
-	public String getKnowledgeGroup()
+	public String getDblpUrl()
 	{
-		return knowledgeGroup;
+		return dblpUrl;
 	}
 
-	public void setKnowledgeGroup( String knowledgeGroup )
+	public void setDblpUrl( String dblpUrl )
 	{
-		this.knowledgeGroup = knowledgeGroup;
+		this.dblpUrl = dblpUrl;
 	}
 
 	public String getNotation()

@@ -44,7 +44,7 @@ public class Event extends PersistableResource
 
 	/* from dblp */
 	@Column
-	private String url;
+	private String dblpUrl;
 
 	@Column( length = 5 )
 	private String volume;
@@ -105,14 +105,14 @@ public class Event extends PersistableResource
 		this.eventGroup = eventGroup;
 	}
 
-	public String getUrl()
+	public String getDblpUrl()
 	{
-		return url;
+		return dblpUrl;
 	}
 
-	public void setUrl( String url )
+	public void setDblpUrl( String dblpUrl )
 	{
-		this.url = url;
+		this.dblpUrl = dblpUrl;
 	}
 
 	public String getVolume()
