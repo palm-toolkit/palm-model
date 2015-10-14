@@ -1,6 +1,8 @@
 package de.rwth.i9.palm.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -8,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -32,13 +35,16 @@ public class Event extends PersistableResource
 	@Column( length = 10 )
 	private String dateFormat;
 
+	@Column
+	private java.sql.Timestamp crawlDate;
+
 	@Column( length = 4 )
 	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	private String year;
 
 	/* from dblp */
 	@Column
-	private String url;
+	private String dblpUrl;
 
 	@Column( length = 5 )
 	private String volume;
@@ -54,6 +60,10 @@ public class Event extends PersistableResource
 
 	@OneToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	private Location location;
+
+	// as List, therefore it can be sorted on hibernate query
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "event" )
+	private List<Publication> publications;
 
 	public Date getDate()
 	{
@@ -95,14 +105,14 @@ public class Event extends PersistableResource
 		this.eventGroup = eventGroup;
 	}
 
-	public String getUrl()
+	public String getDblpUrl()
 	{
-		return url;
+		return dblpUrl;
 	}
 
-	public void setUrl( String url )
+	public void setDblpUrl( String dblpUrl )
 	{
-		this.url = url;
+		this.dblpUrl = dblpUrl;
 	}
 
 	public String getVolume()
@@ -133,6 +143,36 @@ public class Event extends PersistableResource
 	public void setDateFormat( String dateFormat )
 	{
 		this.dateFormat = dateFormat;
+	}
+
+	public List<Publication> getPublications()
+	{
+		return publications;
+	}
+
+	public void setPublications( List<Publication> publications )
+	{
+		this.publications = publications;
+	}
+
+	public Event addPublication( Publication publication )
+	{
+		if ( this.publications == null )
+			this.publications = new ArrayList<Publication>();
+
+		this.publications.add( publication );
+
+		return this;
+	}
+
+	public java.sql.Timestamp getCrawlDate()
+	{
+		return crawlDate;
+	}
+
+	public void setCrawlDate( java.sql.Timestamp crawlDate )
+	{
+		this.crawlDate = crawlDate;
 	}
 
 }

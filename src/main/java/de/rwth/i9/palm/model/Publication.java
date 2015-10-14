@@ -1,5 +1,6 @@
 package de.rwth.i9.palm.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -7,6 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -38,6 +40,10 @@ import org.hibernate.search.annotations.Store;
 import org.hibernate.search.annotations.TermVector;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import de.rwth.i9.palm.helper.comparator.PublicationAuthorByPositionComparator;
 import de.rwth.i9.palm.persistence.PersistableResource;
@@ -95,30 +101,20 @@ public class Publication extends PersistableResource
 	@Lob
 	private String referenceText;
 
-	@Column
-	private String publisher;
+	@Column( columnDefinition = "int default 0" )
+	private int startPage;
 
-	@Column( length = 5 )
-	private String volume;
-
-	@Column( length = 20 )
-	private String issue;
-
-	@Column( length = 20 )
-	private String pages;
+	@Column( columnDefinition = "int default 0" )
+	private int endPage;
 
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
 	private PublicationType publicationType;
 
+	/* store any information in json format */
 	@Column
 	@Lob
 	private String additionalInformation;
-
-	@Column
-	@Lob
-	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
-	private String citationText;
 
 	@Column( columnDefinition = "int default 0" )
 	private int citedBy;
@@ -129,7 +125,7 @@ public class Publication extends PersistableResource
 	@Column( columnDefinition = "bit default 0" )
 	private boolean pdfExtracted = false;
 
-	@Column( columnDefinition = "varchar(15) default 'english'" )
+	@Column( length = 15 )
 	private String language;
 
 	// relations
@@ -143,10 +139,6 @@ public class Publication extends PersistableResource
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinColumn( name = "event_id" )
 	private Event event;
-	
-	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinColumn( name = "dataset_id" )
-	private Dataset dataset;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication" )
 	private Set<PublicationAuthor> publicationAuthors;
@@ -158,9 +150,6 @@ public class Publication extends PersistableResource
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "publication_citedby", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "publication_citedby_id" ) )
 	private Set<Publication> publicationCitedBys;
-
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true  )
-	private Set<Reference> references;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
 	private Set<PublicationHistory> publicationHistories;
@@ -179,25 +168,6 @@ public class Publication extends PersistableResource
 	public void setEvent( Event event )
 	{
 		this.event = event;
-	}
-
-	public Set<Reference> getReferences()
-	{
-		return references;
-	}
-
-	public void setReferences( Set<Reference> references )
-	{
-		this.references = references;
-	}
-
-	public Publication addReference( Reference reference )
-	{
-		if ( this.references == null )
-			this.references = new LinkedHashSet<Reference>();
-		this.references.add( reference );
-
-		return this;
 	}
 
 	public String getTitle()
@@ -324,16 +294,6 @@ public class Publication extends PersistableResource
 
 		this.publicationCitedBys.add( publicationCiteBy );
 		return this;
-	}
-
-	public String getCitationText()
-	{
-		return citationText;
-	}
-
-	public void setCitationText( String citationText )
-	{
-		this.citationText = citationText;
 	}
 
 	public String getLanguage()
@@ -491,16 +451,6 @@ public class Publication extends PersistableResource
 		this.publicationTopics = null;
 	}
 
-	public Dataset getDataset()
-	{
-		return dataset;
-	}
-
-	public void setDataset( Dataset dataset )
-	{
-		this.dataset = dataset;
-	}
-
 	public Date getPublicationDate()
 	{
 		return publicationDate;
@@ -509,46 +459,6 @@ public class Publication extends PersistableResource
 	public void setPublicationDate( Date publicationDate )
 	{
 		this.publicationDate = publicationDate;
-	}
-
-	public String getPublisher()
-	{
-		return publisher;
-	}
-
-	public void setPublisher( String publisher )
-	{
-		this.publisher = publisher;
-	}
-
-	public String getVolume()
-	{
-		return volume;
-	}
-
-	public void setVolume( String volume )
-	{
-		this.volume = volume;
-	}
-
-	public String getIssue()
-	{
-		return issue;
-	}
-
-	public void setIssue( String issue )
-	{
-		this.issue = issue;
-	}
-
-	public String getPages()
-	{
-		return pages;
-	}
-
-	public void setPages( String pages )
-	{
-		this.pages = pages;
 	}
 
 	public int getCitedBy()
@@ -630,14 +540,130 @@ public class Publication extends PersistableResource
 		return this;
 	}
 
-	public String getAdditionalInformation()
+	public Object getAdditionalInformationByKey( String key )
 	{
-		return additionalInformation;
+		if ( this.additionalInformation == null || this.additionalInformation.equals( "" ) )
+			return null;
+
+		// search object with jackson
+		ObjectMapper mapper = new ObjectMapper();
+		try
+		{
+			ObjectNode informationNode = (ObjectNode) mapper.readTree( this.additionalInformation );
+			if ( informationNode.path( key ) != null )
+				return informationNode.path( key );
+
+			return null;
+		}
+		catch ( JsonProcessingException e )
+		{
+			e.printStackTrace();
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	public void setAdditionalInformation( String additionalInformation )
+	public boolean removeAdditionalInformation( String key )
 	{
-		this.additionalInformation = additionalInformation;
+		if ( this.additionalInformation == null || this.additionalInformation.equals( "" ) )
+			return false;
+
+		// search object with jackson
+		ObjectMapper mapper = new ObjectMapper();
+		try
+		{
+			ObjectNode informationNode = (ObjectNode) mapper.readTree( this.additionalInformation );
+			if ( informationNode.path( key ) != null )
+			{
+				informationNode.remove( key );
+				this.additionalInformation = informationNode.toString();
+				return true;
+			}
+			return false;
+		}
+		catch ( JsonProcessingException e )
+		{
+			e.printStackTrace();
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public void setAdditionalInformation( String additionalInformationInJsonString )
+	{
+		this.additionalInformation = additionalInformationInJsonString;
+	}
+
+	public String getAdditionalInformation()
+	{
+		return this.additionalInformation;
+	}
+
+	public Map<String, Object> getAdditionalInformationAsMap()
+	{
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode informationNode = null;
+		try
+		{
+			informationNode = (ObjectNode) mapper.readTree( this.additionalInformation );
+		}
+		catch ( JsonProcessingException e )
+		{
+			e.printStackTrace();
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
+
+		if ( informationNode == null )
+			return Collections.emptyMap();
+
+		@SuppressWarnings( "unchecked" )
+		Map<String, Object> convertValue = mapper.convertValue( informationNode, Map.class );
+
+		return convertValue;
+	}
+
+	public Publication addOrUpdateAdditionalInformation( String objectKey, Object objectValue )
+	{
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode informationNode = null;
+		if ( this.additionalInformation != null && !this.additionalInformation.equals( "" ) )
+		{
+			try
+			{
+				informationNode = (ObjectNode) mapper.readTree( this.additionalInformation );
+			}
+			catch ( JsonProcessingException e )
+			{
+				e.printStackTrace();
+			}
+			catch ( IOException e )
+			{
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			informationNode = mapper.createObjectNode();
+		}
+
+		if ( objectValue instanceof String )
+			informationNode.putPOJO( objectKey, '"' + objectValue.toString() + '"' );
+		else
+			informationNode.putPOJO( objectKey, objectValue );
+
+		this.additionalInformation = informationNode.toString();
+
+		return this;
 	}
 
 	public String getPublicationDateFormat()
@@ -746,6 +772,26 @@ public class Publication extends PersistableResource
 			authors.add( publicationAuthor.getAuthor() );
 		}
 		return authors;
+	}
+
+	public int getStartPage()
+	{
+		return startPage;
+	}
+
+	public void setStartPage( int startPage )
+	{
+		this.startPage = startPage;
+	}
+
+	public int getEndPage()
+	{
+		return endPage;
+	}
+
+	public void setEndPage( int endPage )
+	{
+		this.endPage = endPage;
 	}
 
 }

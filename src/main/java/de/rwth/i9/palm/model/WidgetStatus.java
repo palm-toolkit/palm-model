@@ -7,7 +7,7 @@ package de.rwth.i9.palm.model;
  *	{@code ACTIVE}
  *		The widget is ready and working properly, thus it is choosable by the users.
  *	{@code DEFAULT}
- *		The widget is ACTIVE and set as default widget for conference, researcher 
+ *		The widget is ACTIVE and set as default widget for venue, researcher 
  *		and publication pages (even without user login).
  *	{@code UNAPPROVED}
  *		The widget is new and have not yet been approved by the administrations.
