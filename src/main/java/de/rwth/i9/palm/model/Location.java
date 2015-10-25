@@ -17,6 +17,9 @@ public class Location extends PersistableResource
 	private String city;
 
 	@Column
+	private String state;
+
+	@Column
 	private String country;
 
 	@Column
@@ -46,6 +49,16 @@ public class Location extends PersistableResource
 	public void setCity( String city )
 	{
 		this.city = city;
+	}
+
+	public String getState()
+	{
+		return state;
+	}
+
+	public void setState( String state )
+	{
+		this.state = state;
 	}
 
 	public String getCountry()

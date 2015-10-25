@@ -36,6 +36,9 @@ public class Event extends PersistableResource
 	private String dateFormat;
 
 	@Column
+	private String name;
+
+	@Column
 	private java.sql.Timestamp crawlDate;
 
 	@Column( length = 4 )
@@ -46,11 +49,11 @@ public class Event extends PersistableResource
 	@Column
 	private String dblpUrl;
 
-	@Column( length = 5 )
+	@Column( length = 10 )
 	private String volume;
 
-	@Column( length = 5 )
-	private String number;
+	@Column( name = "position_", columnDefinition = "int default 0" )
+	private int position;
 
 	@ManyToOne
 	@JoinColumn( name = "academic_event_group_id" )
@@ -123,16 +126,6 @@ public class Event extends PersistableResource
 	public void setVolume( String volume )
 	{
 		this.volume = volume;
-	}
-
-	public String getNumber()
-	{
-		return number;
-	}
-
-	public void setNumber( String number )
-	{
-		this.number = number;
 	}
 
 	public String getDateFormat()
