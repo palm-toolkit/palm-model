@@ -62,6 +62,9 @@ public class Widget extends PersistableResource
 	@Column( columnDefinition = "bit default 1" )
 	private boolean colorEnabled = true;
 
+	@Column( columnDefinition = "bit default 1" )
+	private boolean headerVisible = true;
+
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
 	private Color color;
@@ -216,6 +219,16 @@ public class Widget extends PersistableResource
 	public void setColor( Color color )
 	{
 		this.color = color;
+	}
+
+	public boolean isHeaderVisible()
+	{
+		return headerVisible;
+	}
+
+	public void setHeaderVisible( boolean headerVisible )
+	{
+		this.headerVisible = headerVisible;
 	}
 
 }
