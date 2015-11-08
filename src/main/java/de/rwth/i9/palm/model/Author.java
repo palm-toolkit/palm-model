@@ -1,10 +1,13 @@
 package de.rwth.i9.palm.model;
 
 import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -179,6 +182,33 @@ public class Author extends PersistableResource
 	{
 		return publicationAuthors;
 	}
+	
+	public List<Publication> getPublicationsByYear( int targetYear)
+	{
+		Calendar cal = Calendar.getInstance();
+		
+		if( this.publicationAuthors == null || this.publicationAuthors.isEmpty())
+			return Collections.emptyList();
+		
+		List<Publication> publications = new ArrayList<Publication>();
+		
+		for( PublicationAuthor publicationAuthor : this.publicationAuthors ){
+			Publication publication = publicationAuthor.getPublication();
+			
+			if( publication.getPublicationDate() == null)
+				continue;
+			
+			cal.setTime(publication.getPublicationDate());
+			
+			int publicationYear = cal.get( Calendar.YEAR );
+			
+			if( publicationYear == targetYear )
+				publications.add( publication );
+		}
+		
+		return publications;
+	}
+
 
 	public void setPublicationAuthors( Set<PublicationAuthor> publicationAuthors )
 	{
