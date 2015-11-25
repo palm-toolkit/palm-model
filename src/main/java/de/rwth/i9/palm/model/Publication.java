@@ -24,6 +24,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
@@ -110,6 +111,9 @@ public class Publication extends PersistableResource
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
 	private PublicationType publicationType;
+
+	@Transient
+	List<Author> authors;
 
 	/* store any information in json format */
 	@Column
@@ -766,12 +770,12 @@ public class Publication extends PersistableResource
 		// sort based on author position on paper
 		Collections.sort( publicationAuthorList, new PublicationAuthorByPositionComparator() );
 
-		List<Author> authors = new ArrayList<Author>();
+		List<Author> coAuthors = new ArrayList<Author>();
 		for ( PublicationAuthor publicationAuthor : publicationAuthorList )
 		{
-			authors.add( publicationAuthor.getAuthor() );
+			coAuthors.add( publicationAuthor.getAuthor() );
 		}
-		return authors;
+		return coAuthors;
 	}
 
 	public int getStartPage()
@@ -792,6 +796,26 @@ public class Publication extends PersistableResource
 	public void setEndPage( int endPage )
 	{
 		this.endPage = endPage;
+	}
+
+	public List<Author> getAuthors()
+	{
+		this.setAuthors();
+		return authors;
+	}
+
+	// fill transient attributes
+	public void setAuthors()
+	{
+		this.authors = new ArrayList<Author>();
+
+		List<PublicationAuthor> publicationAuthorList = new ArrayList<PublicationAuthor>( this.publicationAuthors );
+
+		// sort based on author position on paper
+		Collections.sort( publicationAuthorList, new PublicationAuthorByPositionComparator() );
+
+		for ( PublicationAuthor publicationAuthor : publicationAuthorList )
+			authors.add( publicationAuthor.getAuthor() );
 	}
 
 }
