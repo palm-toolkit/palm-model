@@ -47,8 +47,11 @@ public class EventGroup extends PersistableResource
 	private String dblpUrl;
 
 	@ContainedIn
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "eventGroup" )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "eventGroup" )
 	private List<Event> events;
+
+	@Column
+	private java.sql.Timestamp requestDate;
 
 	public PublicationType getPublicationType()
 	{
@@ -118,4 +121,15 @@ public class EventGroup extends PersistableResource
 	{
 		this.notation = notation;
 	}
+
+	public java.sql.Timestamp getRequestDate()
+	{
+		return requestDate;
+	}
+
+	public void setRequestDate( java.sql.Timestamp requestDate )
+	{
+		this.requestDate = requestDate;
+	}
+
 }

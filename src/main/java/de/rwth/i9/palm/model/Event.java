@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -36,6 +37,7 @@ public class Event extends PersistableResource
 	private String dateFormat;
 
 	@Column
+	@Lob
 	private String name;
 
 	@Column
@@ -166,6 +168,26 @@ public class Event extends PersistableResource
 	public void setCrawlDate( java.sql.Timestamp crawlDate )
 	{
 		this.crawlDate = crawlDate;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName( String name )
+	{
+		this.name = name;
+	}
+
+	public int getPosition()
+	{
+		return position;
+	}
+
+	public void setPosition( int position )
+	{
+		this.position = position;
 	}
 
 }
