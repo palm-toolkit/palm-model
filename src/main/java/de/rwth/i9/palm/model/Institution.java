@@ -42,6 +42,12 @@ public class Institution extends PersistableResource
 	@Analyzer( definition = "institutionanalyzer" )
 	private String name;
 	
+	@Column
+	private String abbr;
+
+	@Column
+	private String url;
+
 	@OneToOne( cascade = CascadeType.ALL, orphanRemoval = true )
 	private Location location;
 

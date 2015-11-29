@@ -71,7 +71,7 @@ public class Author extends PersistableResource
 	@Column
 	private String otherDetail;
 
-	@Column( length = 30 )
+	@Column
 	private String academicStatus;
 
 	@Column
