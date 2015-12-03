@@ -22,6 +22,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
@@ -88,6 +89,16 @@ public class Author extends PersistableResource
 	
 	@Column(columnDefinition = "int default 0")
 	private int citedBy;
+
+	/* These 2 transient variables are important for adding new Author via GUI*/
+	@Transient
+	private String tempId;
+
+	@Transient
+	private String affiliation;
+
+	@Column( columnDefinition = "bit default 0" )
+	private boolean added = false;
 
 	// relations
 
@@ -671,6 +682,36 @@ public class Author extends PersistableResource
 		}
 
 		return publications;
+	}
+
+	public String getAffiliation()
+	{
+		return affiliation;
+	}
+
+	public void setAffiliation( String affiliation )
+	{
+		this.affiliation = affiliation;
+	}
+
+	public String getTempId()
+	{
+		return tempId;
+	}
+
+	public void setTempId( String tempId )
+	{
+		this.tempId = tempId;
+	}
+
+	public boolean isAdded()
+	{
+		return added;
+	}
+
+	public void setAdded( boolean added )
+	{
+		this.added = added;
 	}
 
 }

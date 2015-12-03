@@ -21,11 +21,11 @@ public class Location extends PersistableResource
 	@Column
 	private String state;
 
-	@Column
-	private double latitude;
+	@Column( columnDefinition = "Decimal(3,3) default '0.000'" )
+	private double latitude = 0.0;
 
-	@Column
-	private double longitude;
+	@Column( columnDefinition = "Decimal(3,3) default '0.000'" )
+	private double longitude = 0.0;
 
 	@ManyToOne
 	@JoinColumn( name = "country_id" )
