@@ -70,6 +70,9 @@ public class Event extends PersistableResource
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "event" )
 	private List<Publication> publications;
 
+	@Column( columnDefinition = "bit default 0" )
+	private boolean added = false;
+
 	public Date getDate()
 	{
 		return date;
@@ -188,6 +191,16 @@ public class Event extends PersistableResource
 	public void setPosition( int position )
 	{
 		this.position = position;
+	}
+
+	public boolean isAdded()
+	{
+		return added;
+	}
+
+	public void setAdded( boolean added )
+	{
+		this.added = added;
 	}
 
 }
