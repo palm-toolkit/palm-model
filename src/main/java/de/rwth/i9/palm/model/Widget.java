@@ -17,6 +17,9 @@ public class Widget extends PersistableResource
 	@Column
 	private String title;
 	
+	@Column( length = 50, unique = true )
+	private String uniqueName;
+
 	@Column( name = "position_", columnDefinition = "int default 0" )
 	private int position;	
 
@@ -229,6 +232,16 @@ public class Widget extends PersistableResource
 	public void setHeaderVisible( boolean headerVisible )
 	{
 		this.headerVisible = headerVisible;
+	}
+
+	public String getUniqueName()
+	{
+		return uniqueName;
+	}
+
+	public void setUniqueName( String uniqueName )
+	{
+		this.uniqueName = uniqueName;
 	}
 
 }
