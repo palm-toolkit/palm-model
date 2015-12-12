@@ -1,8 +1,11 @@
 package de.rwth.i9.palm.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,6 +25,10 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
 
@@ -72,6 +79,17 @@ public class Event extends PersistableResource
 
 	@Column( columnDefinition = "bit default 0" )
 	private boolean added = false;
+
+	@Column( columnDefinition = "int default 0" )
+	private int numberParticipant;
+
+	@Column( columnDefinition = "int default 0" )
+	private int numberPaper;
+
+	/* store any information in json format */
+	@Column
+	@Lob
+	private String additionalInformation;
 
 	public Date getDate()
 	{
@@ -203,4 +221,149 @@ public class Event extends PersistableResource
 		this.added = added;
 	}
 
+	public int getNumberParticipant()
+	{
+		return numberParticipant;
+	}
+
+	public void setNumberParticipant( int numberParticipant )
+	{
+		this.numberParticipant = numberParticipant;
+	}
+
+	public int getNumberPaper()
+	{
+		return numberPaper;
+	}
+
+	public void setNumberPaper( int numberPaper )
+	{
+		this.numberPaper = numberPaper;
+	}
+
+	public Object getAdditionalInformationByKey( String key )
+	{
+		if ( this.additionalInformation == null || this.additionalInformation.equals( "" ) )
+			return null;
+
+		// search object with jackson
+		ObjectMapper mapper = new ObjectMapper();
+		try
+		{
+			ObjectNode informationNode = (ObjectNode) mapper.readTree( this.additionalInformation );
+			if ( informationNode.path( key ) != null )
+				return informationNode.path( key );
+
+			return null;
+		}
+		catch ( JsonProcessingException e )
+		{
+			e.printStackTrace();
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public boolean removeAdditionalInformation( String key )
+	{
+		if ( this.additionalInformation == null || this.additionalInformation.equals( "" ) )
+			return false;
+
+		// search object with jackson
+		ObjectMapper mapper = new ObjectMapper();
+		try
+		{
+			ObjectNode informationNode = (ObjectNode) mapper.readTree( this.additionalInformation );
+			if ( informationNode.path( key ) != null )
+			{
+				informationNode.remove( key );
+				this.additionalInformation = informationNode.toString();
+				return true;
+			}
+			return false;
+		}
+		catch ( JsonProcessingException e )
+		{
+			e.printStackTrace();
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public void setAdditionalInformation( String additionalInformationInJsonString )
+	{
+		this.additionalInformation = additionalInformationInJsonString;
+	}
+
+	public String getAdditionalInformation()
+	{
+		return this.additionalInformation;
+	}
+
+	public Map<String, Object> getAdditionalInformationAsMap()
+	{
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode informationNode = null;
+		try
+		{
+			informationNode = (ObjectNode) mapper.readTree( this.additionalInformation );
+		}
+		catch ( JsonProcessingException e )
+		{
+			e.printStackTrace();
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
+
+		if ( informationNode == null )
+			return Collections.emptyMap();
+
+		@SuppressWarnings( "unchecked" )
+		Map<String, Object> convertValue = mapper.convertValue( informationNode, Map.class );
+
+		return convertValue;
+	}
+
+	public Event addOrUpdateAdditionalInformation( String objectKey, Object objectValue )
+	{
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode informationNode = null;
+		if ( this.additionalInformation != null && !this.additionalInformation.equals( "" ) )
+		{
+			try
+			{
+				informationNode = (ObjectNode) mapper.readTree( this.additionalInformation );
+			}
+			catch ( JsonProcessingException e )
+			{
+				e.printStackTrace();
+			}
+			catch ( IOException e )
+			{
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			informationNode = mapper.createObjectNode();
+		}
+
+		if ( objectValue instanceof String )
+			informationNode.putPOJO( objectKey, '"' + objectValue.toString() + '"' );
+		else
+			informationNode.putPOJO( objectKey, objectValue );
+
+		this.additionalInformation = informationNode.toString();
+
+		return this;
+	}
 }
