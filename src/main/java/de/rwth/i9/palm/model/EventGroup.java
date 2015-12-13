@@ -169,6 +169,8 @@ public class EventGroup extends PersistableResource
 			tempEvent.setName( event.getName() );
 			if ( event.getVolume() != null )
 				tempEvent.setVolume( event.getVolume() );
+			if ( event.getAdditionalInformation() != null )
+				tempEvent.setAdditionalInformation( event.getAdditionalInformation() );
 		}
 		return this;
 	}
