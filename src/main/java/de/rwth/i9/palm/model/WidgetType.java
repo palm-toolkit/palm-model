@@ -10,10 +10,12 @@ package de.rwth.i9.palm.model;
  *		The widget is intended to be use on Researcher page.
  * {@code ADMINISTRATION}
  *		The widget is intended to be use on Administration page.
+ * {@code CIRCLE}
+ *		The widget is intended to be use on Circle page.
  *
  * @author sigit 
  */
 public enum WidgetType
 {
-	CONFERENCE, PUBLICATION, RESEARCHER, ADMINISTRATION
+	CONFERENCE, PUBLICATION, RESEARCHER, ADMINISTRATION, CIRCLE
 }

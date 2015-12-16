@@ -18,9 +18,9 @@ import org.hibernate.search.annotations.Indexed;
 import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
-@Table( name = "circle_author" )
+@Table( name = "circle" )
 @Indexed
-public class CircleAuthor extends PersistableResource
+public class Circle extends PersistableResource
 {
 
 	@Column
@@ -38,8 +38,12 @@ public class CircleAuthor extends PersistableResource
 	private String description;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinTable( name = "circle_author_author", joinColumns = @JoinColumn( name = "circle_id" ) , inverseJoinColumns = @JoinColumn( name = "author_id" ) )
+	@JoinTable( name = "circle_author", joinColumns = @JoinColumn( name = "circle_id" ) , inverseJoinColumns = @JoinColumn( name = "author_id" ) )
 	private Set<Author> authors;
+
+	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@JoinTable( name = "circle_publication", joinColumns = @JoinColumn( name = "circle_id" ) , inverseJoinColumns = @JoinColumn( name = "publication_id" ) )
+	private Set<Publication> publications;
 
 	public String getName()
 	{
@@ -89,6 +93,16 @@ public class CircleAuthor extends PersistableResource
 	public void setAuthors( Set<Author> authors )
 	{
 		this.authors = authors;
+	}
+
+	public Set<Publication> getPublications()
+	{
+		return publications;
+	}
+
+	public void setPublications( Set<Publication> publications )
+	{
+		this.publications = publications;
 	}
 
 }
