@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.1.8" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
-  realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+<class-diagram version="1.1.9" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="de.rwth.i9.palm.model.EventGroup" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/EventGroup.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="122" y="64"/>    
+    <position height="-1" width="-1" x="95" y="43"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -12,7 +12,7 @@
   </class>  
   <class id="2" language="java" name="de.rwth.i9.palm.model.Event" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/Event.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="291" y="248"/>    
+    <position height="-1" width="-1" x="280" y="367"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="de.rwth.i9.palm.model.Publication" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/Publication.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="465" y="483"/>    
+    <position height="-1" width="-1" x="498" y="704"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -30,7 +30,7 @@
   </class>  
   <class id="4" language="java" name="de.rwth.i9.palm.model.PublicationSource" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/PublicationSource.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="129" y="485"/>    
+    <position height="-1" width="-1" x="90" y="549"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -39,23 +39,14 @@
   </class>  
   <class id="5" language="java" name="de.rwth.i9.palm.model.PublicationHistory" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/PublicationHistory.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="729" y="542"/>    
+    <position height="-1" width="-1" x="763" y="596"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="de.rwth.i9.palm.model.Author" project="palm-model" 
-    file="/palm-model/src/main/java/de/rwth/i9/palm/model/Author.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="500" y="57"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="7" language="java" name="de.rwth.i9.palm.model.AuthorInterest" project="palm-model" 
+  <class id="6" language="java" name="de.rwth.i9.palm.model.AuthorInterest" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/AuthorInterest.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1038" y="-62"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -64,7 +55,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="de.rwth.i9.palm.model.AuthorInterestProfile" project="palm-model" 
+  <class id="7" language="java" name="de.rwth.i9.palm.model.AuthorInterestProfile" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/AuthorInterestProfile.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="761" y="-53"/>    
@@ -74,7 +65,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="de.rwth.i9.palm.model.AuthorSource" project="palm-model" 
+  <class id="8" language="java" name="de.rwth.i9.palm.model.AuthorSource" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/AuthorSource.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="819" y="95"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -83,7 +74,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="de.rwth.i9.palm.model.ExtractionService" project="palm-model" 
+  <class id="9" language="java" name="de.rwth.i9.palm.model.ExtractionService" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/ExtractionService.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1138" y="224"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -92,7 +83,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="de.rwth.i9.palm.model.Function" project="palm-model" 
+  <class id="10" language="java" name="de.rwth.i9.palm.model.Function" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/Function.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1164" y="698"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -101,16 +92,16 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="12" language="java" name="de.rwth.i9.palm.model.Institution" project="palm-model" 
+  <class id="11" language="java" name="de.rwth.i9.palm.model.Institution" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/Institution.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="697" y="305"/>    
+    <position height="-1" width="-1" x="860" y="250"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="de.rwth.i9.palm.model.InterestAuthor" project="palm-model" 
+  <class id="12" language="java" name="de.rwth.i9.palm.model.InterestAuthor" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/InterestAuthor.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="271" y="-74"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -119,7 +110,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="14" language="java" name="de.rwth.i9.palm.model.PublicationTopic" project="palm-model" 
+  <class id="13" language="java" name="de.rwth.i9.palm.model.PublicationTopic" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/PublicationTopic.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="213" y="814"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -128,7 +119,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="15" language="java" name="de.rwth.i9.palm.model.Role" project="palm-model" 
+  <class id="14" language="java" name="de.rwth.i9.palm.model.Role" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/Role.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="942" y="635"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -137,16 +128,16 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="16" language="java" name="de.rwth.i9.palm.model.Source" project="palm-model" 
+  <class id="15" language="java" name="de.rwth.i9.palm.model.Source" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/Source.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="516" y="838"/>    
+    <position height="-1" width="-1" x="502" y="1021"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="17" language="java" name="de.rwth.i9.palm.model.Subject" project="palm-model" 
+  <class id="16" language="java" name="de.rwth.i9.palm.model.Subject" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/Subject.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="715" y="849"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -155,7 +146,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="18" language="java" name="de.rwth.i9.palm.model.UserRequest" project="palm-model" 
+  <class id="17" language="java" name="de.rwth.i9.palm.model.UserRequest" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/UserRequest.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="945" y="840"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -164,7 +155,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="19" language="java" name="de.rwth.i9.palm.model.UserWidget" project="palm-model" 
+  <class id="18" language="java" name="de.rwth.i9.palm.model.UserWidget" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/UserWidget.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1212" y="526"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -173,7 +164,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="20" language="java" name="de.rwth.i9.palm.model.WeightingAlgorithm" project="palm-model" 
+  <class id="19" language="java" name="de.rwth.i9.palm.model.WeightingAlgorithm" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/WeightingAlgorithm.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1243" y="-58"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -182,7 +173,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="21" language="java" name="de.rwth.i9.palm.model.Widget" project="palm-model" 
+  <class id="20" language="java" name="de.rwth.i9.palm.model.Widget" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/Widget.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1423" y="291"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -191,7 +182,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="22" language="java" name="de.rwth.i9.palm.model.User" project="palm-model" 
+  <class id="21" language="java" name="de.rwth.i9.palm.model.User" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/User.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="974" y="448"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -200,446 +191,455 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="23" language="java" name="de.rwth.i9.palm.model.Interest" project="palm-model" 
+  <class id="22" language="java" name="de.rwth.i9.palm.model.Interest" project="palm-model" 
     file="/palm-model/src/main/java/de/rwth/i9/palm/model/Interest.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="286" y="68"/>    
+    <position height="-1" width="-1" x="280" y="36"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="24" language="java" name="de.rwth.i9.palm.model.CircleAuthor" project="palm-model" 
-    file="/palm-model/src/main/java/de/rwth/i9/palm/model/CircleAuthor.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="877" y="230"/>    
+  <class id="23" language="java" name="de.rwth.i9.palm.model.Author" project="palm-model" 
+    file="/palm-model/src/main/java/de/rwth/i9/palm/model/Author.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="504" y="48"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="24" language="java" name="de.rwth.i9.palm.model.PublicationAuthor" project="palm-model" 
+    file="/palm-model/src/main/java/de/rwth/i9/palm/model/PublicationAuthor.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="623" y="366"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
   <association id="25">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="26" name="authorSources">        
-        <position height="0" width="0" x="68" y="1"/>      
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="26" name="publicationCitess">        
+        <position height="0" width="0" x="33" y="221"/>      
       </attribute>      
       <multiplicity id="27" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="68" y="1"/>      
+        <position height="0" width="0" x="33" y="221"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
+    <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="28">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="29" name="author">        
-        <position height="0" width="0" x="63" y="34"/>      
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="29" name="user">        
+        <position height="0" width="0" x="-13" y="60"/>      
       </attribute>      
       <multiplicity id="30" minimum="0" maximum="1">        
-        <position height="0" width="0" x="63" y="34"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="31">    
-    <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="32" name="widget">        
-        <position height="0" width="0" x="209" y="50"/>      
-      </attribute>      
-      <multiplicity id="33" minimum="0" maximum="1">        
-        <position height="0" width="0" x="209" y="50"/>      
+        <position height="0" width="0" x="-13" y="60"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="21" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="34">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="35" name="user">        
-        <position height="0" width="0" x="-13" y="60"/>      
+  <association id="31">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="32" name="authorInterests">        
+        <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="36" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-13" y="60"/>      
+      <multiplicity id="33" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="22" navigable="true"/>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="34">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="35" name="eventGroup">        
+        <position height="0" width="0" x="-39" y="-28"/>      
+      </attribute>      
+      <multiplicity id="36" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-39" y="-28"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="37">    
     <end type="SOURCE" refId="23" navigable="false">      
-      <attribute id="38" name="interestAuthors">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="39" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
+      <attribute id="38" name="authorSources"/>      
+      <multiplicity id="39" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
+    <end type="TARGET" refId="8" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="40">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="41" name="interestAuthors">        
-        <position height="0" width="0" x="0" y="0"/>      
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="41" name="publicationHistories">        
+        <position height="0" width="0" x="34" y="54"/>      
       </attribute>      
       <multiplicity id="42" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="43">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="44" name="publicationHistories">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="45" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="0" width="0" x="34" y="54"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="46">    
+  <association id="43">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="47" name="publicationTopics">        
+      <attribute id="44" name="publicationAuthors"/>      
+      <multiplicity id="45" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="24" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="46">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="47" name="functions">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="48" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="16" width="21" x="1053" y="693"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
+    <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="49">    
-    <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="50" name="authors">        
-        <position height="0" width="0" x="63" y="34"/>      
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="50" name="widget">        
+        <position height="0" width="0" x="209" y="50"/>      
       </attribute>      
-      <multiplicity id="51" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="63" y="34"/>      
+      <multiplicity id="51" minimum="0" maximum="1">        
+        <position height="0" width="0" x="209" y="50"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
+    <end type="TARGET" refId="20" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="52">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="53" name="author">        
-        <position height="0" width="0" x="63" y="34"/>      
-      </attribute>      
-      <multiplicity id="54" minimum="0" maximum="1">        
-        <position height="0" width="0" x="63" y="34"/>      
-      </multiplicity>    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="53" name="interestAuthors"/>      
+      <multiplicity id="54" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
+    <end type="TARGET" refId="12" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="55">    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="56" name="broaders">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="57" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="56" name="authorInterestProfiles"/>      
+      <multiplicity id="57" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
+    <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="58">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="59" name="publicationCitedBys">        
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="59" name="narrowers">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="60" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="61">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="62" name="authorInterestProfiles">        
-        <position height="0" width="0" x="41" y="1"/>      
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="62" name="publication">        
+        <position height="0" width="0" x="33" y="221"/>      
       </attribute>      
-      <multiplicity id="63" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="41" y="1"/>      
+      <multiplicity id="63" minimum="0" maximum="1">        
+        <position height="0" width="0" x="33" y="221"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
+    <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="64">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="65" name="authorInterestProfile">        
-        <position height="0" width="0" x="41" y="1"/>      
-      </attribute>      
-      <multiplicity id="66" minimum="0" maximum="1">        
-        <position height="0" width="0" x="41" y="1"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="67">    
-    <end type="SOURCE" refId="22" navigable="false">      
-      <attribute id="68" name="publicationHistories">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="69" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="70">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="71" name="publicationSources">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="72" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="73">    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="74" name="narrowers">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="75" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="76">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="77" name="functions">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="78" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="1053" y="693"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="79">    
-    <end type="SOURCE" refId="24" navigable="false">      
-      <attribute id="80" name="authors"/>      
-      <multiplicity id="81" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="82">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="83" name="interest">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="84" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
+      <attribute id="65" name="authors"/>      
+      <multiplicity id="66" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="23" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <association id="67">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="68" name="publication">        
+        <position height="0" width="0" x="33" y="221"/>      
+      </attribute>      
+      <multiplicity id="69" minimum="0" maximum="1">        
+        <position height="0" width="0" x="33" y="221"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="70">    
+    <end type="SOURCE" refId="24" navigable="false">      
+      <attribute id="71" name="publication"/>      
+      <multiplicity id="72" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="73">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="74" name="author"/>      
+      <multiplicity id="75" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="76">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="77" name="author"/>      
+      <multiplicity id="78" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="79">    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="80" name="institutions"/>      
+      <multiplicity id="81" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="82">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="83" name="interestAuthors">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="84" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <association id="85">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="86" name="authorInterests">        
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="86" name="broaders">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="87" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
+    <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="88">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="89" name="publications">        
-        <position height="0" width="0" x="0" y="0"/>      
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="89" name="publicationSources">        
+        <position height="0" width="0" x="-39" y="64"/>      
       </attribute>      
       <multiplicity id="90" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="0" width="0" x="-39" y="64"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="91">    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="92" name="publication">        
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="92" name="subjects">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="93" minimum="0" maximum="1">        
+      <multiplicity id="93" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="16" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="94">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="95" name="publicationCitess">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="96" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="95" name="author"/>      
+      <multiplicity id="96" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="23" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="97">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="98" name="publication">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="99" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="98" name="authors"/>      
+      <multiplicity id="99" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="23" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="100">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="101" name="author">        
-        <position height="0" width="0" x="63" y="34"/>      
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="101" name="events">        
+        <position height="0" width="0" x="-11" y="119"/>      
       </attribute>      
-      <multiplicity id="102" minimum="0" maximum="1">        
-        <position height="0" width="0" x="63" y="34"/>      
+      <multiplicity id="102" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="-11" y="119"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
+    <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="103">    
     <end type="SOURCE" refId="24" navigable="false">      
-      <attribute id="104" name="creator"/>      
+      <attribute id="104" name="author"/>      
       <multiplicity id="105" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="22" navigable="true"/>    
+    <end type="TARGET" refId="23" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="106">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="107" name="subjects">        
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="107" name="role">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="108" minimum="0" maximum="2147483647">        
+      <multiplicity id="108" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="17" navigable="true"/>    
+    <end type="TARGET" refId="14" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="109">    
-    <end type="SOURCE" refId="22" navigable="false">      
-      <attribute id="110" name="role">        
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="110" name="userWidgets">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="111" minimum="0" maximum="1">        
+      <multiplicity id="111" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
+    <end type="TARGET" refId="18" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="112">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="113" name="eventGroup">        
-        <position height="0" width="0" x="-12" y="-7"/>      
-      </attribute>      
-      <multiplicity id="114" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-12" y="-7"/>      
-      </multiplicity>    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="113" name="publicationAuthors"/>      
+      <multiplicity id="114" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
+    <end type="TARGET" refId="24" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="115">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="116" name="publication">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="117" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="116" name="author"/>      
+      <multiplicity id="117" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="23" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="118">    
-    <end type="SOURCE" refId="22" navigable="false">      
-      <attribute id="119" name="userWidgets">        
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="119" name="publicationTopics">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="120" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="19" navigable="true"/>    
+    <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="121">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="122" name="event">        
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="122" name="functions">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="123" minimum="0" maximum="1">        
+      <multiplicity id="123" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="124">    
-    <end type="SOURCE" refId="22" navigable="false">      
-      <attribute id="125" name="functions">        
-        <position height="0" width="0" x="0" y="0"/>      
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="125" name="publicationCitedBys">        
+        <position height="0" width="0" x="33" y="221"/>      
       </attribute>      
       <multiplicity id="126" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="0" width="0" x="33" y="221"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
+    <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="127">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="128" name="events">        
-        <position height="0" width="0" x="0" y="0"/>      
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="128" name="interest">        
+        <position height="0" width="0" x="-6" y="-32"/>      
       </attribute>      
-      <multiplicity id="129" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <multiplicity id="129" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-6" y="-32"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="22" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="130">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="131" name="publications">        
+        <position height="0" width="0" x="33" y="221"/>      
+      </attribute>      
+      <multiplicity id="132" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="33" y="221"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="133">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="134" name="authorInterestProfile">        
+        <position height="0" width="0" x="41" y="1"/>      
+      </attribute>      
+      <multiplicity id="135" minimum="0" maximum="1">        
+        <position height="0" width="0" x="41" y="1"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="136">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="137" name="event">        
+        <position height="0" width="0" x="-11" y="119"/>      
+      </attribute>      
+      <multiplicity id="138" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-11" y="119"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="130">    
-    <end type="SOURCE" refId="22" navigable="false">      
-      <attribute id="131" name="author">        
-        <position height="0" width="0" x="63" y="34"/>      
+  <association id="139">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="140" name="publication">        
+        <position height="0" width="0" x="33" y="221"/>      
       </attribute>      
-      <multiplicity id="132" minimum="0" maximum="1">        
-        <position height="0" width="0" x="63" y="34"/>      
+      <multiplicity id="141" minimum="0" maximum="1">        
+        <position height="0" width="0" x="33" y="221"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="142">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="143" name="publicationHistories">        
+        <position height="0" width="0" x="34" y="54"/>      
+      </attribute>      
+      <multiplicity id="144" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="34" y="54"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

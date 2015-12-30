@@ -110,6 +110,7 @@ public class Publication extends PersistableResource
 
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
+	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	private PublicationType publicationType;
 
 	@Transient

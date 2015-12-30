@@ -1,5 +1,6 @@
 package de.rwth.i9.palm.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -95,6 +96,16 @@ public class Circle extends PersistableResource
 		this.authors = authors;
 	}
 
+	public Circle addAuthor( Author author )
+	{
+		if ( this.authors == null )
+			this.authors = new HashSet<Author>();
+
+		this.authors.add( author );
+
+		return this;
+	}
+
 	public Set<Publication> getPublications()
 	{
 		return publications;
@@ -103,6 +114,16 @@ public class Circle extends PersistableResource
 	public void setPublications( Set<Publication> publications )
 	{
 		this.publications = publications;
+	}
+
+	public Circle addPublication( Publication publication )
+	{
+		if ( this.publications == null )
+			this.publications = new HashSet<Publication>();
+
+		this.publications.add( publication );
+
+		return this;
 	}
 
 }
