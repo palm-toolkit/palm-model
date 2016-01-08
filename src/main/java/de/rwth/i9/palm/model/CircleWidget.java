@@ -11,15 +11,15 @@ import javax.persistence.Table;
 import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
-@Table( name = "user_widget" )
-public class UserWidget extends PersistableResource
+@Table( name = "circle_widget" )
+public class CircleWidget extends PersistableResource
 {
 	@Column( name = "position_" )
 	private int position;
 
 	@Enumerated( EnumType.STRING )
 	@Column( columnDefinition = "VARCHAR(16) DEFAULT 'NORMAL'" )
-	private WidgetCondition witgetCondition;
+	private WidgetCondition widgetCondition;
 
 	@Enumerated( EnumType.STRING )
 	@Column( length = 8 )
@@ -46,14 +46,14 @@ public class UserWidget extends PersistableResource
 		this.position = position;
 	}
 
-	public WidgetCondition getWitgetCondition()
+	public WidgetCondition getWidgetCondition()
 	{
-		return witgetCondition;
+		return widgetCondition;
 	}
 
-	public void setWitgetCondition( WidgetCondition witgetCondition )
+	public void setWidgetCondition( WidgetCondition widgetCondition )
 	{
-		this.witgetCondition = witgetCondition;
+		this.widgetCondition = widgetCondition;
 	}
 
 	public Color getWidgetColor()

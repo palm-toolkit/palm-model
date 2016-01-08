@@ -33,6 +33,7 @@ import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.Boost;
+import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -146,6 +147,7 @@ public class Publication extends PersistableResource
 	private Event event;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication" )
+	@ContainedIn
 	private Set<PublicationAuthor> publicationAuthors;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
@@ -817,6 +819,11 @@ public class Publication extends PersistableResource
 
 		for ( PublicationAuthor publicationAuthor : publicationAuthorList )
 			authors.add( publicationAuthor.getAuthor() );
+	}
+
+	public void setAuthors( List<Author> authors )
+	{
+		this.authors = authors;
 	}
 
 }

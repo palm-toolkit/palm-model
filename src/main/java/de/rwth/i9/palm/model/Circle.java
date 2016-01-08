@@ -1,6 +1,7 @@
 package de.rwth.i9.palm.model;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.search.annotations.Indexed;
@@ -45,6 +47,10 @@ public class Circle extends PersistableResource
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "circle_publication", joinColumns = @JoinColumn( name = "circle_id" ) , inverseJoinColumns = @JoinColumn( name = "publication_id" ) )
 	private Set<Publication> publications;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@JoinColumn( name = "circle_id" )
+	private List<CircleWidget> circleWidgets;
 
 	public String getName()
 	{
@@ -124,6 +130,16 @@ public class Circle extends PersistableResource
 		this.publications.add( publication );
 
 		return this;
+	}
+
+	public List<CircleWidget> getCircleWidgets()
+	{
+		return circleWidgets;
+	}
+
+	public void setCircleWidgets( List<CircleWidget> circleWidgets )
+	{
+		this.circleWidgets = circleWidgets;
 	}
 
 }
