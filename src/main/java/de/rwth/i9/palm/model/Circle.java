@@ -16,13 +16,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.search.annotations.Indexed;
-
 import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
 @Table( name = "circle" )
-@Indexed
 public class Circle extends PersistableResource
 {
 

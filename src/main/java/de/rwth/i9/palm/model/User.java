@@ -39,6 +39,12 @@ public class User extends PersistableResource
 	private boolean enabled = true;
 
 	@Column
+	private String academicStatus;
+
+	@Column
+	private String affiliation;
+
+	@Column
 	private Date lastLogin;
 
 	@Column
@@ -225,6 +231,26 @@ public class User extends PersistableResource
 		this.publicationHistories.add( publicationHistory );
 
 		return this;
+	}
+
+	public String getAcademicStatus()
+	{
+		return academicStatus;
+	}
+
+	public void setAcademicStatus( String academicStatus )
+	{
+		this.academicStatus = academicStatus;
+	}
+
+	public String getAffiliation()
+	{
+		return affiliation;
+	}
+
+	public void setAffiliation( String affiliation )
+	{
+		this.affiliation = affiliation;
 	}
 
 }
