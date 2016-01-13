@@ -49,6 +49,12 @@ public class Circle extends PersistableResource
 	@JoinColumn( name = "circle_id" )
 	private List<CircleWidget> circleWidgets;
 
+	@Column( name = "_lock", columnDefinition = "bit default 1" )
+	private boolean lock = true;
+
+	@Column( columnDefinition = "bit default 1" )
+	private boolean valid = true;
+
 	public String getName()
 	{
 		return name;
@@ -137,6 +143,26 @@ public class Circle extends PersistableResource
 	public void setCircleWidgets( List<CircleWidget> circleWidgets )
 	{
 		this.circleWidgets = circleWidgets;
+	}
+
+	public boolean isLock()
+	{
+		return lock;
+	}
+
+	public void setLock( boolean lock )
+	{
+		this.lock = lock;
+	}
+
+	public boolean isValid()
+	{
+		return valid;
+	}
+
+	public void setValid( boolean valid )
+	{
+		this.valid = valid;
 	}
 
 }
