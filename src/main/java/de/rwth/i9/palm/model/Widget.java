@@ -38,6 +38,9 @@ public class Widget extends PersistableResource
 	@Column( length = 8 )
 	private WidgetWidth widgetWidth;
 	
+	@Column( length = 8 )
+	private String widgetHeight;
+
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
 	private WidgetStatus widgetStatus;
@@ -242,6 +245,16 @@ public class Widget extends PersistableResource
 	public void setUniqueName( String uniqueName )
 	{
 		this.uniqueName = uniqueName;
+	}
+
+	public String getWidgetHeight()
+	{
+		return widgetHeight;
+	}
+
+	public void setWidgetHeight( String widgetHeight )
+	{
+		this.widgetHeight = widgetHeight;
 	}
 
 }

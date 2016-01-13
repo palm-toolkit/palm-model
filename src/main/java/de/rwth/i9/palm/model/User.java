@@ -13,7 +13,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -58,7 +57,7 @@ public class User extends PersistableResource
 	@JoinTable( name = "user_function", joinColumns = @JoinColumn( name = "user_id" ), inverseJoinColumns = @JoinColumn( name = "function_id" ) )
 	private List<Function> functions;
 
-	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 	@JoinColumn( name = "role_id" )
 	private Role role;
 
@@ -66,7 +65,13 @@ public class User extends PersistableResource
 	@JoinColumn( name = "user_id" )
 	private List<UserWidget> userWidgets;
 
-	@OneToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	/*
+	 * Actually this is OneToOne connection,
+	 * but it should be possible for users 
+	 * to be linked with same author, since
+	 * we couldn't check the users
+	 */
+	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 	@JoinColumn( name = "author_id" )
 	private Author author;
 
