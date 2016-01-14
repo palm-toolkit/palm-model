@@ -99,6 +99,7 @@ public class Author extends PersistableResource
 	private String affiliation;
 
 	@Column( columnDefinition = "bit default 0" )
+	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	private boolean added = false;
 
 	// relations
