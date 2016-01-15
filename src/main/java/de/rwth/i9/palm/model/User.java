@@ -49,6 +49,9 @@ public class User extends PersistableResource
 	@Column
 	private Date lastLogout;
 
+	@Column
+	private Date joinDate;
+
 	@Transient
 	private String sessionId;
 
@@ -256,6 +259,16 @@ public class User extends PersistableResource
 	public void setAffiliation( String affiliation )
 	{
 		this.affiliation = affiliation;
+	}
+
+	public Date getJoinDate()
+	{
+		return joinDate;
+	}
+
+	public void setJoinDate( Date joinDate )
+	{
+		this.joinDate = joinDate;
 	}
 
 }
