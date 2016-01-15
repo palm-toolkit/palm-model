@@ -120,10 +120,10 @@ public class Author extends PersistableResource
 	private Set<InterestAuthor> interestAuthors;
 
 	/* few authors probably work for several institutions */
-	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 	@JoinTable( name = "author_institution", joinColumns = @JoinColumn( name = "author_id" ) , inverseJoinColumns = @JoinColumn( name = "institution_id" ) )
 	@IndexedEmbedded
-	private Set<Institution> institutions;
+	private List<Institution> institutions;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "author", orphanRemoval = true )
 	private Set<AuthorSource> authorSources;
@@ -324,12 +324,12 @@ public class Author extends PersistableResource
 		this.requestDate = requestDate;
 	}
 
-	public Set<Institution> getInstitutions()
+	public List<Institution> getInstitutions()
 	{
 		return institutions;
 	}
 
-	public void setInstitutions( Set<Institution> institutions )
+	public void setInstitutions( List<Institution> institutions )
 	{
 		this.institutions = institutions;
 	}
@@ -337,9 +337,10 @@ public class Author extends PersistableResource
 	public Author addInstitution( Institution institution )
 	{
 		if ( this.institutions == null )
-			this.institutions = new HashSet<Institution>();
+			this.institutions = new ArrayList<Institution>();
 
-		this.institutions.add( institution );
+		if ( !this.institutions.contains( institution ) )
+			this.institutions.add( institution );
 
 		return this;
 	}
