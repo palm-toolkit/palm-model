@@ -111,6 +111,14 @@ public class User extends PersistableResource
 		return this;
 	}
 
+	public User addUserWidgetList( List<UserWidget> userWidgets )
+	{
+		if ( this.userWidgets == null )
+			this.userWidgets = new ArrayList<UserWidget>();
+		this.userWidgets.addAll( userWidgets );
+		return this;
+	}
+
 	public String getName()
 	{
 		return name;

@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -18,8 +19,8 @@ public class UserWidget extends PersistableResource
 	private int position;
 
 	@Enumerated( EnumType.STRING )
-	@Column( columnDefinition = "VARCHAR(16) DEFAULT 'NORMAL'" )
-	private WidgetCondition witgetCondition;
+	@Column( length = 16 )
+	private WidgetStatus widgetStatus;
 
 	@Enumerated( EnumType.STRING )
 	@Column( length = 8 )
@@ -29,10 +30,17 @@ public class UserWidget extends PersistableResource
 	@Column( length = 16 )
 	private Color widgetColor;
 
+	@Column( length = 8 )
+	private String widgetHeight;
+
 	// relationships
 	@OneToOne
 	@JoinColumn( name = "widget_id" )
 	private Widget widget;
+
+	@ManyToOne
+	@JoinColumn( name = "user_id" )
+	private User user;
 
 	// getter / setter
 
@@ -44,16 +52,6 @@ public class UserWidget extends PersistableResource
 	public void setPosition( int position )
 	{
 		this.position = position;
-	}
-
-	public WidgetCondition getWitgetCondition()
-	{
-		return witgetCondition;
-	}
-
-	public void setWitgetCondition( WidgetCondition witgetCondition )
-	{
-		this.witgetCondition = witgetCondition;
 	}
 
 	public Color getWidgetColor()
@@ -85,4 +83,35 @@ public class UserWidget extends PersistableResource
 	{
 		this.widgetWidth = widgetWidth;
 	}
+
+	public String getWidgetHeight()
+	{
+		return widgetHeight;
+	}
+
+	public void setWidgetHeight( String widgetHeight )
+	{
+		this.widgetHeight = widgetHeight;
+	}
+
+	public WidgetStatus getWidgetStatus()
+	{
+		return widgetStatus;
+	}
+
+	public void setWidgetStatus( WidgetStatus widgetStatus )
+	{
+		this.widgetStatus = widgetStatus;
+	}
+
+	public User getUser()
+	{
+		return user;
+	}
+
+	public void setUser( User user )
+	{
+		this.user = user;
+	}
+
 }
