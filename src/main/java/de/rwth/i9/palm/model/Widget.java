@@ -6,6 +6,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
 
@@ -74,6 +75,19 @@ public class Widget extends PersistableResource
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
 	private Color color;
+
+	// not saved in database, act like form helper
+	@Transient
+	private int pos;
+
+	@Transient
+	private String width;
+
+	@Transient
+	private String height;
+
+	@Transient
+	private String status;
 
 	// getter / setter
 
@@ -255,6 +269,46 @@ public class Widget extends PersistableResource
 	public void setWidgetHeight( String widgetHeight )
 	{
 		this.widgetHeight = widgetHeight;
+	}
+
+	public String getWidth()
+	{
+		return width;
+	}
+
+	public void setWidth( String width )
+	{
+		this.width = width;
+	}
+
+	public String getHeight()
+	{
+		return height;
+	}
+
+	public void setHeight( String height )
+	{
+		this.height = height;
+	}
+
+	public String getStatus()
+	{
+		return status;
+	}
+
+	public void setStatus( String status )
+	{
+		this.status = status;
+	}
+
+	public int getPos()
+	{
+		return pos;
+	}
+
+	public void setPos( int pos )
+	{
+		this.pos = pos;
 	}
 
 }

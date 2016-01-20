@@ -2,6 +2,7 @@ package de.rwth.i9.palm.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -277,6 +278,20 @@ public class User extends PersistableResource
 	public void setJoinDate( Date joinDate )
 	{
 		this.joinDate = joinDate;
+	}
+
+	public User removeUserWidget( UserWidget userWidget )
+	{
+		if ( this.userWidgets == null || this.userWidgets.isEmpty() )
+			return this;
+
+		for ( Iterator<UserWidget> i = this.userWidgets.iterator(); i.hasNext(); )
+		{
+			UserWidget eachUserWidget = i.next();
+			if ( eachUserWidget.equals( userWidget ) )
+				i.remove();
+		}
+		return this;
 	}
 
 }
