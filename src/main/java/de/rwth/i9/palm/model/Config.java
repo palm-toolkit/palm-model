@@ -88,7 +88,7 @@ public class Config extends PersistableResource
 		{
 			for ( ConfigProperty configProperty : this.configProperties )
 			{
-				if ( configProperty.getMainIdentifier().equals( identifier ) && configProperty.isValid() )
+				if ( configProperty.getMainIdentifier().equals( identifier ) )
 				{
 					validConfigProperties.put( configProperty.getSecondaryIdentifier(), configProperty.getValue() );
 				}

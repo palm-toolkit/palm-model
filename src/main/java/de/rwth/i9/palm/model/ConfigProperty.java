@@ -15,6 +15,7 @@ public class ConfigProperty extends PersistableResource
 	public ConfigProperty()
 	{
 	}
+
 	public ConfigProperty( String mainIdentifier, String secondaryIdentifier, String value )
 	{
 		this.mainIdentifier = mainIdentifier;
@@ -41,7 +42,7 @@ public class ConfigProperty extends PersistableResource
 	private int position;
 
 	@Column( length = 50 )
-	private String group;
+	private String groupName;
 
 	@Column
 	private java.sql.Timestamp lastModified;
@@ -136,12 +137,12 @@ public class ConfigProperty extends PersistableResource
 
 	public String getGroup()
 	{
-		return group;
+		return groupName;
 	}
 
-	public void setGroup( String group )
+	public void setGroup( String groupName )
 	{
-		this.group = group;
+		this.groupName = groupName;
 	}
 
 }

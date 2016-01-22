@@ -19,13 +19,13 @@ public class PublicationAuthorByPositionComparator implements Comparator<Publica
 		if ( publicationAuthor2 == null )
 			return -1;
 
-		int noCitation1 = publicationAuthor1.getPosition();
-		int noCitation2 = publicationAuthor2.getPosition();
+		int position1 = publicationAuthor1.getPosition();
+		int position2 = publicationAuthor2.getPosition();
 
-		if ( noCitation1 < noCitation2 )
+		if ( position1 < position2 )
 			return -1;
 
-		if ( noCitation1 > noCitation2 )
+		if ( position1 > position2 )
 			return 1;
 
 		return 0;
