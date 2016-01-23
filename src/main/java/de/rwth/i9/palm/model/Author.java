@@ -497,6 +497,8 @@ public class Author extends PersistableResource
 					abbr4 += " ";
 					abbr5 += " ";
 				}
+
+				// TODO : error
 				abbr3 += longerFirstNameSplit[i].substring( 0, 1 );
 				abbr4 += longerFirstNameSplit[i].substring( 0, 1 );
 

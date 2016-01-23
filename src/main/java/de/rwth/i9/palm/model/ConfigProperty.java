@@ -50,6 +50,12 @@ public class ConfigProperty extends PersistableResource
 	@Column( columnDefinition = "bit default 1" )
 	private boolean valid = true;
 
+	@Column( length = 20 )
+	private String fieldType;
+
+	@Column
+	private String fieldOptions;
+
 	// relation
 	@ManyToOne
 	@JoinColumn( name = "config_id" )
@@ -143,6 +149,46 @@ public class ConfigProperty extends PersistableResource
 	public void setGroup( String groupName )
 	{
 		this.groupName = groupName;
+	}
+
+	public String getDefaultValue()
+	{
+		return defaultValue;
+	}
+
+	public void setDefaultValue( String defaultValue )
+	{
+		this.defaultValue = defaultValue;
+	}
+
+	public String getGroupName()
+	{
+		return groupName;
+	}
+
+	public void setGroupName( String groupName )
+	{
+		this.groupName = groupName;
+	}
+
+	public String getFieldType()
+	{
+		return fieldType;
+	}
+
+	public void setFieldType( String fieldType )
+	{
+		this.fieldType = fieldType;
+	}
+
+	public String getFieldOptions()
+	{
+		return fieldOptions;
+	}
+
+	public void setFieldOptions( String fieldOptions )
+	{
+		this.fieldOptions = fieldOptions;
 	}
 
 }

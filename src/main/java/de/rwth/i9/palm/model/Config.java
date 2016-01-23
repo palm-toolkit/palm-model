@@ -81,6 +81,19 @@ public class Config extends PersistableResource
 		return null;
 	}
 
+	public String getConfigPropertyValueByIdentifiers( String identifier, String identifier2 )
+	{
+		if ( this.configProperties != null )
+		{
+			for ( ConfigProperty configProperty : this.configProperties )
+			{
+				if ( configProperty.getMainIdentifier().equals( identifier ) && configProperty.getSecondaryIdentifier().equals( identifier2 ) )
+					return configProperty.getValue();
+			}
+		}
+		return null;
+	}
+
 	public Map<String, String> getValidConfigPropertyListByMainIdentifierMap( String identifier )
 	{
 		Map<String, String> validConfigProperties = new HashMap<String, String>();
