@@ -3,6 +3,7 @@ package de.rwth.i9.palm.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -33,6 +34,7 @@ public class ConfigProperty extends PersistableResource
 	private String statement;
 
 	@Column
+	@Lob
 	private String value;
 
 	@Column

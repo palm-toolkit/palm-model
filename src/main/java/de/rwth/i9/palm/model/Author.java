@@ -492,6 +492,9 @@ public class Author extends PersistableResource
 		{
 			for ( int i = 0; i < longerFirstNameSplit.length; i++ )
 			{
+				if ( longerFirstNameSplit[i].length() == 0 )
+					continue;
+
 				if ( i > 0 )
 				{
 					abbr4 += " ";
