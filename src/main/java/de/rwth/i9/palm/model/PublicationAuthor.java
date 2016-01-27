@@ -3,7 +3,7 @@ package de.rwth.i9.palm.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.search.annotations.Indexed;
@@ -16,12 +16,12 @@ import de.rwth.i9.palm.persistence.PersistableType;
 @Table( name = "publication_author" )
 public class PublicationAuthor extends PersistableType
 {
-	@OneToOne
+	@ManyToOne
 	@JoinColumn( name = "publication_id" )
 	@IndexedEmbedded
 	private Publication publication;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn( name = "author_id" )
 	@IndexedEmbedded
 	private Author author;

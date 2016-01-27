@@ -99,6 +99,11 @@ public class PublicationSource extends PersistableResource
 	@Lob
 	private String additionalInformation;
 
+	/* store any citation information in jsonformat */
+	@Column
+	@Lob
+	private String citedByData;
+
 	@ManyToOne
 	@JoinColumn( name = "publication_id" )
 	private Publication publication;
@@ -426,6 +431,16 @@ public class PublicationSource extends PersistableResource
 	public void setVenueTheme( String venueTheme )
 	{
 		this.venueTheme = venueTheme;
+	}
+
+	public String getCitedByData()
+	{
+		return citedByData;
+	}
+
+	public void setCitedByData( String citedByData )
+	{
+		this.citedByData = citedByData;
 	}
 
 }

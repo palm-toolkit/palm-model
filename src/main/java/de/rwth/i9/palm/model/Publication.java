@@ -117,6 +117,18 @@ public class Publication extends PersistableResource
 	@Transient
 	List<Author> authors;
 
+	// this is used in Lucene, since it's tricky to join index in lucene
+	// if this problem solved, these attribute can be deleted (authorText and
+	// year)
+	@Column
+	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
+	@Lob
+	private String authorText;
+
+	@Column( length = 4 )
+	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
+	private String year;
+
 	/* store any information in json format */
 	@Column
 	@Lob
@@ -133,6 +145,11 @@ public class Publication extends PersistableResource
 
 	@Column( length = 15 )
 	private String language;
+
+	/* store any citation information in jsonformat */
+	@Column
+	@Lob
+	private String citedByData;
 
 	// relations
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
@@ -261,6 +278,12 @@ public class Publication extends PersistableResource
 		}
 
 		this.publicationAuthors.add( publicationAuthor );
+		// add also authorText;
+		if ( this.publicationAuthors.size() > 1 )
+			this.authorText += ",";
+		else
+			this.authorText = "";
+		this.authorText += publicationAuthor.getAuthor().getName();
 		
 		return this;
 	}
@@ -542,6 +565,15 @@ public class Publication extends PersistableResource
 	{
 		if ( this.publicationFiles == null )
 			this.publicationFiles = new HashSet<PublicationFile>();
+		else
+		{
+			// check for url duplication, skip if duplicated
+			for ( PublicationFile pubFile : this.publicationFiles )
+			{
+				if ( pubFile.getUrl().equals( publicationFile.getUrl() ) )
+					return this;
+			}
+		}
 
 		this.publicationFiles.add( publicationFile );
 		return this;
@@ -826,5 +858,34 @@ public class Publication extends PersistableResource
 		this.authors = authors;
 	}
 
+	public String getCitedByData()
+	{
+		return citedByData;
+	}
+
+	public void setCitedByData( String citedByData )
+	{
+		this.citedByData = citedByData;
+	}
+
+	public String getAuthorText()
+	{
+		return authorText;
+	}
+
+	public void setAuthorText( String authorText )
+	{
+		this.authorText = authorText;
+	}
+
+	public String getYear()
+	{
+		return year;
+	}
+
+	public void setYear( String year )
+	{
+		this.year = year;
+	}
 }
 
