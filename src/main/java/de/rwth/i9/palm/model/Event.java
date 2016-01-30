@@ -19,6 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Boost;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -45,6 +46,8 @@ public class Event extends PersistableResource
 
 	@Column
 	@Lob
+	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
+	@Analyzer( definition = "eventanalyzer" )
 	private String name;
 
 	@Column

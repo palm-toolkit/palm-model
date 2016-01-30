@@ -26,7 +26,6 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Parameter;
 import org.hibernate.search.annotations.Store;
-import org.hibernate.search.annotations.TermVector;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
 
@@ -46,7 +45,7 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 public class EventGroup extends PersistableResource
 {
 	@Column
-	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
+	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	@Analyzer( definition = "eventanalyzer" )
 	private String name;
 
