@@ -19,7 +19,6 @@ import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
-import org.hibernate.search.annotations.Boost;
 import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -45,7 +44,7 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 public class EventGroup extends PersistableResource
 {
 	@Column
-	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
+	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
 	@Analyzer( definition = "eventanalyzer" )
 	private String name;
 
@@ -59,7 +58,6 @@ public class EventGroup extends PersistableResource
 
 	@Column
 	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
-	@Boost( 3.0f )
 	private String notation;
 
 	@Column
