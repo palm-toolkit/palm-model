@@ -65,6 +65,7 @@ public class Publication extends PersistableResource
 {
 	@Column( nullable = false )
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
+	@Analyzer( definition = "customanalyzer" )
 	@Boost( 3.0f )
 	@Lob
 	private String title;

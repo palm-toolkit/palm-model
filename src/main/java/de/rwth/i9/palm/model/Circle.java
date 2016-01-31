@@ -16,14 +16,26 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Boost;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
+
 import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
 @Table( name = "circle" )
+@Indexed
 public class Circle extends PersistableResource
 {
 
-	@Column
+	@Column( nullable = false )
+	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
+	@Analyzer( definition = "customanalyzer" )
+	@Boost( 3.0f )
 	private String name;
 
 	@Column
@@ -35,6 +47,8 @@ public class Circle extends PersistableResource
 
 	@Column
 	@Lob
+	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
+	@Analyzer( definition = "customanalyzer" )
 	private String description;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
