@@ -1,5 +1,9 @@
 package de.rwth.i9.palm.model;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,6 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
 
@@ -46,9 +54,6 @@ public class PublicationSource extends PersistableResource
 	@Lob
 	private String keyword;
 	
-	@Column
-	private String tag;
-	
 	@Column( length = 20 )
 	private String date;
 
@@ -56,16 +61,13 @@ public class PublicationSource extends PersistableResource
 	private String venue;
 
 	@Column
-	private String publicationType;
-	
+	private String venueUrl;
+
 	@Column
-	private String publisher;
-	
-	@Column( length = 5 )
-	private String volume;
-	
-	@Column( length = 20 )
-	private String issue;
+	private String venueTheme;
+
+	@Column
+	private String publicationType;
 	
 	@Column( length = 20 )
 	private String pages;
@@ -75,9 +77,6 @@ public class PublicationSource extends PersistableResource
 
 	@Column
 	private String sourceUrl;
-
-	@Column
-	private String venueUrl;
 
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
@@ -95,9 +94,15 @@ public class PublicationSource extends PersistableResource
 	@Lob
 	private String mainSourceUrl;
 
+	/* store any information in json format */
 	@Column
 	@Lob
 	private String additionalInformation;
+
+	/* store any citation information in jsonformat */
+	@Column
+	@Lob
+	private String citedByData;
 
 	@ManyToOne
 	@JoinColumn( name = "publication_id" )
@@ -163,16 +168,6 @@ public class PublicationSource extends PersistableResource
 		this.keyword = keyword;
 	}
 
-	public String getTag()
-	{
-		return tag;
-	}
-
-	public void setTag( String tag )
-	{
-		this.tag = tag;
-	}
-
 	public String getSourceUrl()
 	{
 		return sourceUrl;
@@ -201,36 +196,6 @@ public class PublicationSource extends PersistableResource
 	public void setDate( String date )
 	{
 		this.date = date;
-	}
-
-	public String getPublisher()
-	{
-		return publisher;
-	}
-
-	public void setPublisher( String publisher )
-	{
-		this.publisher = publisher;
-	}
-
-	public String getVolume()
-	{
-		return volume;
-	}
-
-	public void setVolume( String volume )
-	{
-		this.volume = volume;
-	}
-
-	public String getIssue()
-	{
-		return issue;
-	}
-
-	public void setIssue( String issue )
-	{
-		this.issue = issue;
 	}
 
 	public String getPages()
@@ -263,14 +228,129 @@ public class PublicationSource extends PersistableResource
 		this.sourceMethod = sourceMethod;
 	}
 
-	public String getAdditionalInformation()
+	public Object getAdditionalInformationByKey( String key )
 	{
-		return additionalInformation;
+		if ( this.additionalInformation == null || this.additionalInformation.equals( "" ) )
+			return null;
+
+		// search object with jackson
+		ObjectMapper mapper = new ObjectMapper();
+		try
+		{
+			ObjectNode informationNode = (ObjectNode) mapper.readTree( this.additionalInformation );
+			if ( informationNode.path( key ) != null )
+				return informationNode.path( key );
+
+			return null;
+		}
+		catch ( JsonProcessingException e )
+		{
+			e.printStackTrace();
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	public void setAdditionalInformation( String additionalInformation )
+	public boolean removeAdditionalInformation( String key )
 	{
-		this.additionalInformation = additionalInformation;
+		if ( this.additionalInformation == null || this.additionalInformation.equals( "" ) )
+			return false;
+
+		// search object with jackson
+		ObjectMapper mapper = new ObjectMapper();
+		try
+		{
+			ObjectNode informationNode = (ObjectNode) mapper.readTree( this.additionalInformation );
+			if ( informationNode.path( key ) != null )
+			{
+				informationNode.remove( key );
+				this.additionalInformation = informationNode.toString();
+				return true;
+			}
+			return false;
+		}
+		catch ( JsonProcessingException e )
+		{
+			e.printStackTrace();
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public void setAdditionalInformation( String additionalInformationInJsonString )
+	{
+		this.additionalInformation = additionalInformationInJsonString;
+	}
+
+	public String getAdditionalInformation()
+	{
+		return this.additionalInformation;
+	}
+
+	public Map<String, Object> getAdditionalInformationAsMap()
+	{
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode informationNode = null;
+		try
+		{
+			informationNode = (ObjectNode) mapper.readTree( this.additionalInformation );
+		}
+		catch ( JsonProcessingException e )
+		{
+			e.printStackTrace();
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
+
+		if ( informationNode == null )
+			return Collections.emptyMap();
+
+		@SuppressWarnings( "unchecked" )
+		Map<String, Object> convertValue = mapper.convertValue( informationNode, Map.class );
+
+		return convertValue;
+	}
+
+	public PublicationSource addOrUpdateAdditionalInformation( String objectKey, Object objectValue )
+	{
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode informationNode = null;
+		if ( this.additionalInformation != null && !this.additionalInformation.equals( "" ) )
+		{
+			try
+			{
+				informationNode = (ObjectNode) mapper.readTree( this.additionalInformation );
+			}
+			catch ( JsonProcessingException e )
+			{
+				e.printStackTrace();
+			}
+			catch ( IOException e )
+			{
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			informationNode = mapper.createObjectNode();
+		}
+		if ( objectValue instanceof String )
+			informationNode.putPOJO( objectKey, '"' + objectValue.toString() + '"' );
+		else
+			informationNode.putPOJO( objectKey, objectValue );
+
+		this.additionalInformation = informationNode.toString();
+
+		return this;
 	}
 
 	public String getVenue()
@@ -342,4 +422,25 @@ public class PublicationSource extends PersistableResource
 	{
 		this.coAuthorsUrl = coAuthorsUrl;
 	}
+
+	public String getVenueTheme()
+	{
+		return venueTheme;
+	}
+
+	public void setVenueTheme( String venueTheme )
+	{
+		this.venueTheme = venueTheme;
+	}
+
+	public String getCitedByData()
+	{
+		return citedByData;
+	}
+
+	public void setCitedByData( String citedByData )
+	{
+		this.citedByData = citedByData;
+	}
+
 }

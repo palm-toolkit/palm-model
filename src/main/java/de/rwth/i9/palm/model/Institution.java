@@ -42,6 +42,14 @@ public class Institution extends PersistableResource
 	@Analyzer( definition = "institutionanalyzer" )
 	private String name;
 	
+	@Column( length = 80 )
+	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
+	@Analyzer( definition = "institutionanalyzer" )
+	private String abbr;
+
+	@Column
+	private String url;
+
 	@OneToOne( cascade = CascadeType.ALL, orphanRemoval = true )
 	private Location location;
 
@@ -78,6 +86,26 @@ public class Institution extends PersistableResource
 	public void setAuthors( List<Author> authors )
 	{
 		this.authors = authors;
+	}
+
+	public String getAbbr()
+	{
+		return abbr;
+	}
+
+	public void setAbbr( String abbr )
+	{
+		this.abbr = abbr;
+	}
+
+	public String getUrl()
+	{
+		return url;
+	}
+
+	public void setUrl( String url )
+	{
+		this.url = url;
 	}
 
 }

@@ -13,6 +13,16 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 @Table( name = "source_property" )
 public class SourceProperty extends PersistableResource
 {
+	public SourceProperty()
+	{
+	}
+	public SourceProperty( String mainIdentifier, String secondaryIdentifier, String value )
+	{
+		this.mainIdentifier = mainIdentifier;
+		this.secondaryIdentifier = secondaryIdentifier;
+		this.value = value;
+	}
+
 	@Column( length = 50 )
 	private String mainIdentifier;
 

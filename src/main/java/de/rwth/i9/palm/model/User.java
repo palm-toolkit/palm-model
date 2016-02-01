@@ -2,6 +2,7 @@ package de.rwth.i9.palm.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,7 +14,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -39,10 +39,19 @@ public class User extends PersistableResource
 	private boolean enabled = true;
 
 	@Column
+	private String academicStatus;
+
+	@Column
+	private String affiliation;
+
+	@Column
 	private Date lastLogin;
 
 	@Column
 	private Date lastLogout;
+
+	@Column
+	private Date joinDate;
 
 	@Transient
 	private String sessionId;
@@ -52,19 +61,21 @@ public class User extends PersistableResource
 	@JoinTable( name = "user_function", joinColumns = @JoinColumn( name = "user_id" ), inverseJoinColumns = @JoinColumn( name = "function_id" ) )
 	private List<Function> functions;
 
-	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 	@JoinColumn( name = "role_id" )
 	private Role role;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinColumn( name = "user_id" )
-	private List<Dataset> datasets;
-
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinColumn( name = "user_id" )
 	private List<UserWidget> userWidgets;
 
-	@OneToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	/*
+	 * Actually this is OneToOne connection,
+	 * but it should be possible for users 
+	 * to be linked with same author, since
+	 * we couldn't check the users
+	 */
+	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 	@JoinColumn( name = "author_id" )
 	private Author author;
 
@@ -98,6 +109,14 @@ public class User extends PersistableResource
 		if ( this.userWidgets == null )
 			this.userWidgets = new ArrayList<UserWidget>();
 		this.userWidgets.add( userWidget );
+		return this;
+	}
+
+	public User addUserWidgetList( List<UserWidget> userWidgets )
+	{
+		if ( this.userWidgets == null )
+			this.userWidgets = new ArrayList<UserWidget>();
+		this.userWidgets.addAll( userWidgets );
 		return this;
 	}
 
@@ -211,26 +230,6 @@ public class User extends PersistableResource
 		this.functions = functions;
 	}
 
-	public List<Dataset> getDatasets()
-	{
-		return datasets;
-	}
-
-	public void setDatasets( List<Dataset> datasets )
-	{
-		this.datasets = datasets;
-	}
-
-	public User addDataset( final Dataset dataset )
-	{
-		if ( this.datasets == null )
-			this.datasets = new ArrayList<Dataset>();
-
-		this.datasets.add( dataset );
-
-		return this;
-	}
-
 	public List<PublicationHistory> getPublicationHistories()
 	{
 		return publicationHistories;
@@ -248,6 +247,50 @@ public class User extends PersistableResource
 
 		this.publicationHistories.add( publicationHistory );
 
+		return this;
+	}
+
+	public String getAcademicStatus()
+	{
+		return academicStatus;
+	}
+
+	public void setAcademicStatus( String academicStatus )
+	{
+		this.academicStatus = academicStatus;
+	}
+
+	public String getAffiliation()
+	{
+		return affiliation;
+	}
+
+	public void setAffiliation( String affiliation )
+	{
+		this.affiliation = affiliation;
+	}
+
+	public Date getJoinDate()
+	{
+		return joinDate;
+	}
+
+	public void setJoinDate( Date joinDate )
+	{
+		this.joinDate = joinDate;
+	}
+
+	public User removeUserWidget( UserWidget userWidget )
+	{
+		if ( this.userWidgets == null || this.userWidgets.isEmpty() )
+			return this;
+
+		for ( Iterator<UserWidget> i = this.userWidgets.iterator(); i.hasNext(); )
+		{
+			UserWidget eachUserWidget = i.next();
+			if ( eachUserWidget.equals( userWidget ) )
+				i.remove();
+		}
 		return this;
 	}
 

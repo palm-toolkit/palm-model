@@ -6,6 +6,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
 
@@ -17,6 +18,9 @@ public class Widget extends PersistableResource
 	@Column
 	private String title;
 	
+	@Column( length = 50, unique = true )
+	private String uniqueName;
+
 	@Column( name = "position_", columnDefinition = "int default 0" )
 	private int position;	
 
@@ -35,6 +39,9 @@ public class Widget extends PersistableResource
 	@Column( length = 8 )
 	private WidgetWidth widgetWidth;
 	
+	@Column( length = 8 )
+	private String widgetHeight;
+
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
 	private WidgetStatus widgetStatus;
@@ -62,9 +69,25 @@ public class Widget extends PersistableResource
 	@Column( columnDefinition = "bit default 1" )
 	private boolean colorEnabled = true;
 
+	@Column( columnDefinition = "bit default 1" )
+	private boolean headerVisible = true;
+
 	@Enumerated( EnumType.STRING )
 	@Column( length = 16 )
 	private Color color;
+
+	// not saved in database, act like form helper
+	@Transient
+	private int pos;
+
+	@Transient
+	private String width;
+
+	@Transient
+	private String height;
+
+	@Transient
+	private String status;
 
 	// getter / setter
 
@@ -216,6 +239,76 @@ public class Widget extends PersistableResource
 	public void setColor( Color color )
 	{
 		this.color = color;
+	}
+
+	public boolean isHeaderVisible()
+	{
+		return headerVisible;
+	}
+
+	public void setHeaderVisible( boolean headerVisible )
+	{
+		this.headerVisible = headerVisible;
+	}
+
+	public String getUniqueName()
+	{
+		return uniqueName;
+	}
+
+	public void setUniqueName( String uniqueName )
+	{
+		this.uniqueName = uniqueName;
+	}
+
+	public String getWidgetHeight()
+	{
+		return widgetHeight;
+	}
+
+	public void setWidgetHeight( String widgetHeight )
+	{
+		this.widgetHeight = widgetHeight;
+	}
+
+	public String getWidth()
+	{
+		return width;
+	}
+
+	public void setWidth( String width )
+	{
+		this.width = width;
+	}
+
+	public String getHeight()
+	{
+		return height;
+	}
+
+	public void setHeight( String height )
+	{
+		this.height = height;
+	}
+
+	public String getStatus()
+	{
+		return status;
+	}
+
+	public void setStatus( String status )
+	{
+		this.status = status;
+	}
+
+	public int getPos()
+	{
+		return pos;
+	}
+
+	public void setPos( int pos )
+	{
+		this.pos = pos;
 	}
 
 }

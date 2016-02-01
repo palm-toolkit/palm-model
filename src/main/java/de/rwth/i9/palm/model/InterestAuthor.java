@@ -12,7 +12,7 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 @Table( name = "interest_author" )
 public class InterestAuthor extends PersistableResource
 {
-	@Column
+	@Column( columnDefinition = "Decimal(3,3) default '0.000'" )
 	double value;
 
 	// relation

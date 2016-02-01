@@ -22,6 +22,9 @@ public class Function extends PersistableResource
 	@Column
 	private String comment;
 
+	@Column( columnDefinition = "VARCHAR(16) DEFAULT 'DEFAULT'" )
+	private String grantType;
+
 	// getter / setter
 
 	public FunctionType getFunctionType()
@@ -42,5 +45,25 @@ public class Function extends PersistableResource
 	public void setName( final String name )
 	{
 		this.name = name;
+	}
+
+	public String getComment()
+	{
+		return comment;
+	}
+
+	public void setComment( String comment )
+	{
+		this.comment = comment;
+	}
+
+	public String getGrantType()
+	{
+		return grantType;
+	}
+
+	public void setGrantType( String grantType )
+	{
+		this.grantType = grantType;
 	}
 }

@@ -14,19 +14,19 @@ import javax.persistence.MapKeyColumn;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
 
-@Entity( name = "author_interest" )
-public class AuthorInterest extends PersistableResource
+@Entity( name = "circle_interest" )
+public class CircleInterest extends PersistableResource
 {
 	@ElementCollection
 	@MapKeyColumn( name = "term" )
 	@Column( name = "weight" )
-	@CollectionTable( name = "term_weight" )
+	@CollectionTable( name = "circle_term_weight" )
 	Map<Interest, Double> termWeights;
 
 	@ElementCollection
 	@MapKeyColumn( name = "term" )
 	@Column( name = "weight" )
-	@CollectionTable( name = "term_weight_string" )
+	@CollectionTable( name = "circle_term_weight_string" )
 	Map<String, Double> termWeightsString;
 
 	@Column
@@ -40,8 +40,8 @@ public class AuthorInterest extends PersistableResource
 
 	// relation
 	@ManyToOne
-	@JoinColumn( name = "author_interest_profile_id" )
-	private AuthorInterestProfile authorInterestProfile;
+	@JoinColumn( name = "circle_interest_profile_id" )
+	private CircleInterestProfile circleInterestProfile;
 
 	// getter & setter
 
@@ -55,7 +55,7 @@ public class AuthorInterest extends PersistableResource
 		this.termWeights = termWeights;
 	}
 
-	public AuthorInterest addTermWeight( Interest term, double weight )
+	public CircleInterest addTermWeight( Interest term, double weight )
 	{
 		if ( termWeights == null )
 			termWeights = new LinkedHashMap<Interest, Double>();
@@ -75,7 +75,7 @@ public class AuthorInterest extends PersistableResource
 		this.termWeightsString = termWeightsString;
 	}
 
-	public AuthorInterest addTermWeight( String term, double weight )
+	public CircleInterest addTermWeight( String term, double weight )
 	{
 		if ( termWeightsString == null )
 			termWeightsString = new LinkedHashMap<String, Double>();
@@ -115,14 +115,14 @@ public class AuthorInterest extends PersistableResource
 		this.language = language;
 	}
 
-	public AuthorInterestProfile getAuthorInterestProfile()
+	public CircleInterestProfile getCircleInterestProfile()
 	{
-		return authorInterestProfile;
+		return circleInterestProfile;
 	}
 
-	public void setAuthorInterestProfile( AuthorInterestProfile authorInterestProfile )
+	public void setCircleInterestProfile( CircleInterestProfile circleInterestProfile )
 	{
-		this.authorInterestProfile = authorInterestProfile;
+		this.circleInterestProfile = circleInterestProfile;
 	}
 
 }

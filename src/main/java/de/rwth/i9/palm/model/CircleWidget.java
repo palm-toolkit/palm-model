@@ -4,23 +4,22 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
-@Table( name = "user_widget" )
-public class UserWidget extends PersistableResource
+@Table( name = "circle_widget" )
+public class CircleWidget extends PersistableResource
 {
 	@Column( name = "position_" )
 	private int position;
 
 	@Enumerated( EnumType.STRING )
-	@Column( length = 16 )
-	private WidgetStatus widgetStatus;
+	@Column( columnDefinition = "VARCHAR(16) DEFAULT 'NORMAL'" )
+	private WidgetCondition widgetCondition;
 
 	@Enumerated( EnumType.STRING )
 	@Column( length = 8 )
@@ -30,17 +29,10 @@ public class UserWidget extends PersistableResource
 	@Column( length = 16 )
 	private Color widgetColor;
 
-	@Column( length = 8 )
-	private String widgetHeight;
-
 	// relationships
-	@ManyToOne( fetch = FetchType.EAGER )
+	@OneToOne
 	@JoinColumn( name = "widget_id" )
 	private Widget widget;
-
-	@ManyToOne
-	@JoinColumn( name = "user_id" )
-	private User user;
 
 	// getter / setter
 
@@ -52,6 +44,16 @@ public class UserWidget extends PersistableResource
 	public void setPosition( int position )
 	{
 		this.position = position;
+	}
+
+	public WidgetCondition getWidgetCondition()
+	{
+		return widgetCondition;
+	}
+
+	public void setWidgetCondition( WidgetCondition widgetCondition )
+	{
+		this.widgetCondition = widgetCondition;
 	}
 
 	public Color getWidgetColor()
@@ -83,35 +85,4 @@ public class UserWidget extends PersistableResource
 	{
 		this.widgetWidth = widgetWidth;
 	}
-
-	public String getWidgetHeight()
-	{
-		return widgetHeight;
-	}
-
-	public void setWidgetHeight( String widgetHeight )
-	{
-		this.widgetHeight = widgetHeight;
-	}
-
-	public WidgetStatus getWidgetStatus()
-	{
-		return widgetStatus;
-	}
-
-	public void setWidgetStatus( WidgetStatus widgetStatus )
-	{
-		this.widgetStatus = widgetStatus;
-	}
-
-	public User getUser()
-	{
-		return user;
-	}
-
-	public void setUser( User user )
-	{
-		this.user = user;
-	}
-
 }

@@ -1,10 +1,13 @@
 package de.rwth.i9.palm.model;
 
 import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -19,6 +22,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
@@ -26,6 +30,7 @@ import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.Boost;
+import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -68,7 +73,7 @@ public class Author extends PersistableResource
 	@Column
 	private String otherDetail;
 
-	@Column( length = 30 )
+	@Column
 	private String academicStatus;
 
 	@Column
@@ -86,29 +91,41 @@ public class Author extends PersistableResource
 	@Column(columnDefinition = "int default 0")
 	private int citedBy;
 
+	/* These 2 transient variables are important for adding new Author via GUI*/
+	@Transient
+	private String tempId;
+
+	@Transient
+	private String affiliation;
+
+	@Column( columnDefinition = "bit default 0" )
+	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
+	private boolean added = false;
+
 	// relations
 
 	/* other name of the author */
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "author", orphanRemoval = true )
 	private Set<AuthorAlias> aliases;
 
-	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 	@JoinColumn( name = "location_id" )
 	private Location based_near;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author" )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "author" )
+	@ContainedIn
 	private Set<PublicationAuthor> publicationAuthors;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author" )
 	private Set<InterestAuthor> interestAuthors;
 
 	/* few authors probably work for several institutions */
-	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 	@JoinTable( name = "author_institution", joinColumns = @JoinColumn( name = "author_id" ) , inverseJoinColumns = @JoinColumn( name = "institution_id" ) )
 	@IndexedEmbedded
 	private Set<Institution> institutions;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "author", orphanRemoval = true )
 	private Set<AuthorSource> authorSources;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
@@ -179,6 +196,33 @@ public class Author extends PersistableResource
 	{
 		return publicationAuthors;
 	}
+	
+	public List<Publication> getPublicationsByYear( int targetYear)
+	{
+		Calendar cal = Calendar.getInstance();
+		
+		if( this.publicationAuthors == null || this.publicationAuthors.isEmpty())
+			return Collections.emptyList();
+		
+		List<Publication> publications = new ArrayList<Publication>();
+		
+		for( PublicationAuthor publicationAuthor : this.publicationAuthors ){
+			Publication publication = publicationAuthor.getPublication();
+			
+			if( publication.getPublicationDate() == null)
+				continue;
+			
+			cal.setTime(publication.getPublicationDate());
+			
+			int publicationYear = cal.get( Calendar.YEAR );
+			
+			if( publicationYear == targetYear )
+				publications.add( publication );
+		}
+		
+		return publications;
+	}
+
 
 	public void setPublicationAuthors( Set<PublicationAuthor> publicationAuthors )
 	{
@@ -285,7 +329,7 @@ public class Author extends PersistableResource
 		return institutions;
 	}
 
-	public void setInstitutions( Set<Institution> institutions )
+	public void setInstitutions( HashSet<Institution> institutions )
 	{
 		this.institutions = institutions;
 	}
@@ -295,7 +339,8 @@ public class Author extends PersistableResource
 		if ( this.institutions == null )
 			this.institutions = new HashSet<Institution>();
 
-		this.institutions.add( institution );
+		if ( !this.institutions.contains( institution ) )
+			this.institutions.add( institution );
 
 		return this;
 	}
@@ -447,11 +492,16 @@ public class Author extends PersistableResource
 		{
 			for ( int i = 0; i < longerFirstNameSplit.length; i++ )
 			{
+				if ( longerFirstNameSplit[i].length() == 0 )
+					continue;
+
 				if ( i > 0 )
 				{
 					abbr4 += " ";
 					abbr5 += " ";
 				}
+
+				// TODO : error
 				abbr3 += longerFirstNameSplit[i].substring( 0, 1 );
 				abbr4 += longerFirstNameSplit[i].substring( 0, 1 );
 
@@ -641,6 +691,36 @@ public class Author extends PersistableResource
 		}
 
 		return publications;
+	}
+
+	public String getAffiliation()
+	{
+		return affiliation;
+	}
+
+	public void setAffiliation( String affiliation )
+	{
+		this.affiliation = affiliation;
+	}
+
+	public String getTempId()
+	{
+		return tempId;
+	}
+
+	public void setTempId( String tempId )
+	{
+		this.tempId = tempId;
+	}
+
+	public boolean isAdded()
+	{
+		return added;
+	}
+
+	public void setAdded( boolean added )
+	{
+		this.added = added;
 	}
 
 }

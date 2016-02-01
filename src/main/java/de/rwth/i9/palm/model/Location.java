@@ -2,6 +2,8 @@ package de.rwth.i9.palm.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
@@ -17,16 +19,17 @@ public class Location extends PersistableResource
 	private String city;
 
 	@Column
-	private String country;
+	private String state;
 
-	@Column
-	private String continent;
+	@Column( columnDefinition = "Decimal(3,3) default '0.000'" )
+	private double latitude = 0.0;
 
-	@Column
-	private double latitude;
+	@Column( columnDefinition = "Decimal(3,3) default '0.000'" )
+	private double longitude = 0.0;
 
-	@Column
-	private double longitude;
+	@ManyToOne
+	@JoinColumn( name = "country_id" )
+	private Country country;
 
 	public String getAddress()
 	{
@@ -48,24 +51,14 @@ public class Location extends PersistableResource
 		this.city = city;
 	}
 
-	public String getCountry()
+	public String getState()
 	{
-		return country;
+		return state;
 	}
 
-	public void setCountry( String country )
+	public void setState( String state )
 	{
-		this.country = country;
-	}
-
-	public String getContinent()
-	{
-		return continent;
-	}
-
-	public void setContinent( String continent )
-	{
-		this.continent = continent;
+		this.state = state;
 	}
 
 	public double getLatitude()
@@ -86,5 +79,15 @@ public class Location extends PersistableResource
 	public void setLongitude( double longitude )
 	{
 		this.longitude = longitude;
+	}
+
+	public Country getCountry()
+	{
+		return country;
+	}
+
+	public void setCountry( Country country )
+	{
+		this.country = country;
 	}
 }

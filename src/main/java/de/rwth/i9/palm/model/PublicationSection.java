@@ -21,7 +21,7 @@ public class PublicationSection extends PersistableResource
 	@Column( length = 50 )
 	private String headerFont;
 
-	@Column
+	@Column( columnDefinition = "Decimal(3,3) default '0.000'" )
 	private double headerHeight;
 
 	@Column
