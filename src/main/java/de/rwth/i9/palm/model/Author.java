@@ -86,6 +86,9 @@ public class Author extends PersistableResource
 	private String photoUrl;
 	
 	@Column
+	private String homepage;
+
+	@Column
 	private java.sql.Timestamp requestDate;
 	
 	@Column(columnDefinition = "int default 0")
@@ -721,6 +724,21 @@ public class Author extends PersistableResource
 	public void setAdded( boolean added )
 	{
 		this.added = added;
+	}
+
+	public String getHomepage()
+	{
+		return homepage;
+	}
+
+	public void setHomepage( String homepage )
+	{
+		this.homepage = homepage;
+	}
+
+	public void setInstitutions( Set<Institution> institutions )
+	{
+		this.institutions = institutions;
 	}
 
 }
