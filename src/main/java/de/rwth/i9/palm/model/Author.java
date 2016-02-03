@@ -17,8 +17,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -122,11 +120,10 @@ public class Author extends PersistableResource
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author" )
 	private Set<InterestAuthor> interestAuthors;
 
-	/* few authors probably work for several institutions */
-	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
-	@JoinTable( name = "author_institution", joinColumns = @JoinColumn( name = "author_id" ) , inverseJoinColumns = @JoinColumn( name = "institution_id" ) )
+	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+	@JoinColumn( name = "institution_id" )
 	@IndexedEmbedded
-	private Set<Institution> institutions;
+	private Institution institution;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "author", orphanRemoval = true )
 	private Set<AuthorSource> authorSources;
@@ -329,33 +326,6 @@ public class Author extends PersistableResource
 	public void setRequestDate( java.sql.Timestamp requestDate )
 	{
 		this.requestDate = requestDate;
-	}
-
-	public Set<Institution> getInstitutions()
-	{
-		return institutions;
-	}
-
-	public void setInstitutions( HashSet<Institution> institutions )
-	{
-		if ( this.institutions == null )
-			this.institutions = new HashSet<Institution>();
-		this.institutions.clear();
-
-		this.institutions.addAll( institutions );
-	}
-
-	public Author addInstitution( Institution institution )
-	{
-		if ( this.institutions == null )
-			this.institutions = new HashSet<Institution>();
-
-		// at this moment only author only belong to one institution
-		this.institutions.clear();
-		// if ( !this.institutions.contains( institution ) )
-			this.institutions.add( institution );
-
-		return this;
 	}
 
 	public int getCitedBy()
@@ -746,9 +716,14 @@ public class Author extends PersistableResource
 		this.homepage = homepage;
 	}
 
-	public void setInstitutions( Set<Institution> institutions )
+	public Institution getInstitution()
 	{
-		this.institutions = institutions;
+		return institution;
+	}
+
+	public void setInstitution( Institution institution )
+	{
+		this.institution = institution;
 	}
 
 }
