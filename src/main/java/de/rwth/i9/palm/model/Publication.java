@@ -471,6 +471,8 @@ public class Publication extends PersistableResource
 
 	public Publication addPublicationTopic( PublicationTopic publicationTopic )
 	{
+		if ( publicationTopic == null )
+			return this;
 		if ( this.publicationTopics == null )
 			this.publicationTopics = new LinkedHashSet<PublicationTopic>();
 		this.publicationTopics.add( publicationTopic );

@@ -26,9 +26,19 @@ public class PublicationHistory extends PersistableResource
 	@Lob
 	private String authorString;
 
+	/* spaces sparated author id */
+	@Column
+	@Lob
+	private String authorIdString;
+
 	/* comma separated author list */
 	@Column
-	private String authorAffiliation;
+	private String authorAffiliationString;
+
+	/* spaces sparated author id */
+	@Column
+	@Lob
+	private String authorAffiliationIdString;
 
 	@Column
 	@Lob
@@ -126,14 +136,14 @@ public class PublicationHistory extends PersistableResource
 		this.user = user;
 	}
 
-	public String getAuthorAffiliation()
+	public String getAuthorAffiliationString()
 	{
-		return authorAffiliation;
+		return authorAffiliationString;
 	}
 
 	public void setAuthorAffiliation( String authorAffiliation )
 	{
-		this.authorAffiliation = authorAffiliation;
+		this.authorAffiliationString = authorAffiliation;
 	}
 
 	public String getCitation()

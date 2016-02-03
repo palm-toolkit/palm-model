@@ -153,11 +153,15 @@ public class Author extends PersistableResource
 	{
 		this.setName( name );
 		String[] splitName = name.split( " " );
-		this.setLastName( splitName[splitName.length - 1] );
+		if ( splitName.length > 0 )
+			this.setLastName( splitName[splitName.length - 1] );
 
-		String firstName = name.substring( 0, name.length() - lastName.length() ).trim();
-		if ( !firstName.equals( "" ) )
-			this.setFirstName( firstName );
+		if ( lastName != null )
+		{
+			String firstName = name.substring( 0, name.length() - lastName.length() ).trim();
+			if ( !firstName.equals( "" ) )
+				this.setFirstName( firstName );
+		}
 	}
 
 	public void setEmail( String email )
@@ -334,7 +338,11 @@ public class Author extends PersistableResource
 
 	public void setInstitutions( HashSet<Institution> institutions )
 	{
-		this.institutions = institutions;
+		if ( this.institutions == null )
+			this.institutions = new HashSet<Institution>();
+		this.institutions.clear();
+
+		this.institutions.addAll( institutions );
 	}
 
 	public Author addInstitution( Institution institution )
@@ -342,7 +350,9 @@ public class Author extends PersistableResource
 		if ( this.institutions == null )
 			this.institutions = new HashSet<Institution>();
 
-		if ( !this.institutions.contains( institution ) )
+		// at this moment only author only belong to one institution
+		this.institutions.clear();
+		// if ( !this.institutions.contains( institution ) )
 			this.institutions.add( institution );
 
 		return this;

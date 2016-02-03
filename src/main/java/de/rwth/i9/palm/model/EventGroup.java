@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
@@ -69,6 +70,10 @@ public class EventGroup extends PersistableResource
 
 	@Column( columnDefinition = "bit default 0" )
 	private boolean added = false;
+
+	// helper for changing publicationType on >Spring binding
+	@Transient
+	private String type;
 
 	@Column
 	private java.sql.Timestamp requestDate;
@@ -220,6 +225,16 @@ public class EventGroup extends PersistableResource
 	public void setAdded( boolean added )
 	{
 		this.added = added;
+	}
+
+	public String getType()
+	{
+		return type;
+	}
+
+	public void setType( String type )
+	{
+		this.type = type;
 	}
 
 }
