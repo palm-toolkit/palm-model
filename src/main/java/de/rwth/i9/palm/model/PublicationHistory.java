@@ -53,7 +53,10 @@ public class PublicationHistory extends PersistableResource
 	private String citation;
 
 	@Column
-	private String venue;
+	private String event;
+
+	@Column
+	private String eventId;
 
 	@Column( length = 4 )
 	private String year;
@@ -156,16 +159,6 @@ public class PublicationHistory extends PersistableResource
 		this.citation = citation;
 	}
 
-	public String getVenue()
-	{
-		return venue;
-	}
-
-	public void setVenue( String venue )
-	{
-		this.venue = venue;
-	}
-
 	public String getYear()
 	{
 		return year;
@@ -204,6 +197,51 @@ public class PublicationHistory extends PersistableResource
 	public void setPublication( Publication publication )
 	{
 		this.publication = publication;
+	}
+
+	public String getAuthorIdString()
+	{
+		return authorIdString;
+	}
+
+	public void setAuthorIdString( String authorIdString )
+	{
+		this.authorIdString = authorIdString;
+	}
+
+	public String getAuthorAffiliationIdString()
+	{
+		return authorAffiliationIdString;
+	}
+
+	public void setAuthorAffiliationIdString( String authorAffiliationIdString )
+	{
+		this.authorAffiliationIdString = authorAffiliationIdString;
+	}
+
+	public String getEvent()
+	{
+		return event;
+	}
+
+	public void setEvent( String event )
+	{
+		this.event = event;
+	}
+
+	public String getEventId()
+	{
+		return eventId;
+	}
+
+	public void setEventId( String eventId )
+	{
+		this.eventId = eventId;
+	}
+
+	public void setAuthorAffiliationString( String authorAffiliationString )
+	{
+		this.authorAffiliationString = authorAffiliationString;
 	}
 
 }
