@@ -244,16 +244,6 @@ public class Publication extends PersistableResource
 		return this;
 	}
 
-	public Event getVenue()
-	{
-		return event;
-	}
-
-	public void setVenue( Event event )
-	{
-		this.event = event;
-	}
-
 	public Set<PublicationAuthor> getPublicationAuthors()
 	{
 		return publicationAuthors;
