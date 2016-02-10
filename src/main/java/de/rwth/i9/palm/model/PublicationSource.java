@@ -344,7 +344,15 @@ public class PublicationSource extends PersistableResource
 			informationNode = mapper.createObjectNode();
 		}
 		if ( objectValue instanceof String )
-			informationNode.putPOJO( objectKey, '"' + objectValue.toString() + '"' );
+			try
+			{
+				informationNode.putPOJO( objectKey, mapper.writeValueAsString( objectValue ) );
+			}
+			catch ( JsonProcessingException e )
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		else
 			informationNode.putPOJO( objectKey, objectValue );
 
