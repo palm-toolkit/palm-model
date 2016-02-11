@@ -118,6 +118,9 @@ public class Publication extends PersistableResource
 	@Transient
 	List<Author> authors;
 
+	@Transient
+	String publisher;
+
 	// this is used in Lucene, since it's tricky to join index in lucene
 	// if this problem solved, these attribute can be deleted (authorText and
 	// year)
@@ -160,7 +163,7 @@ public class Publication extends PersistableResource
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
 	private Set<PublicationTopic> publicationTopics;
 	
-	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 	@JoinColumn( name = "event_id" )
 	private Event event;
 
@@ -251,7 +254,10 @@ public class Publication extends PersistableResource
 
 	public void setPublicationAuthors( Set<PublicationAuthor> publicationAuthors )
 	{
-		this.publicationAuthors = publicationAuthors;
+		if ( this.publicationAuthors == null )
+			this.publicationAuthors = new LinkedHashSet<PublicationAuthor>();
+		this.publicationAuthors.clear();
+		this.publicationAuthors.addAll( publicationAuthors );
 	}
 
 	public Publication addPublicationAuthor( final PublicationAuthor publicationAuthor )
@@ -888,5 +894,16 @@ public class Publication extends PersistableResource
 	{
 		this.year = year;
 	}
+
+	public String getPublisher()
+	{
+		return publisher;
+	}
+
+	public void setPublisher( String publisher )
+	{
+		this.publisher = publisher;
+	}
+
 }
 
