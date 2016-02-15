@@ -153,7 +153,7 @@ public class Publication extends PersistableResource
 	/* store any citation information in jsonformat */
 	@Column
 	@Lob
-	private String citedByData;
+	private String citedByUrl;
 
 	// relations
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
@@ -250,6 +250,12 @@ public class Publication extends PersistableResource
 	public Set<PublicationAuthor> getPublicationAuthors()
 	{
 		return publicationAuthors;
+	}
+
+	public void clearPublicationAuthors()
+	{
+		this.publicationAuthors.clear();
+		this.publicationAuthors = null;
 	}
 
 	public void setPublicationAuthors( Set<PublicationAuthor> publicationAuthors )
@@ -865,14 +871,14 @@ public class Publication extends PersistableResource
 		this.authors = authors;
 	}
 
-	public String getCitedByData()
+	public String getCitedByUrl()
 	{
-		return citedByData;
+		return citedByUrl;
 	}
 
-	public void setCitedByData( String citedByData )
+	public void setCitedByUrl( String citedByUrl )
 	{
-		this.citedByData = citedByData;
+		this.citedByUrl = citedByUrl;
 	}
 
 	public String getAuthorText()
