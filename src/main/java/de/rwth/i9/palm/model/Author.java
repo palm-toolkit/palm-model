@@ -113,7 +113,7 @@ public class Author extends PersistableResource
 	@JoinColumn( name = "location_id" )
 	private Location based_near;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "author" )
+	@OneToMany( fetch = FetchType.EAGER, mappedBy = "author" )
 	@ContainedIn
 	private Set<PublicationAuthor> publicationAuthors;
 
@@ -125,7 +125,7 @@ public class Author extends PersistableResource
 	@IndexedEmbedded
 	private Institution institution;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "author", orphanRemoval = true )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
 	private Set<AuthorSource> authorSources;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
