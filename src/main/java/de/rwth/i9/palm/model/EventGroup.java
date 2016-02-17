@@ -58,7 +58,7 @@ public class EventGroup extends PersistableResource
 	private PublicationType publicationType;
 
 	@Column
-	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
+	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
 	private String notation;
 
 	@Column
