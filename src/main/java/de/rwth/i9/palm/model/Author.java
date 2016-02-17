@@ -17,8 +17,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -86,6 +84,9 @@ public class Author extends PersistableResource
 	private String photoUrl;
 	
 	@Column
+	private String homepage;
+
+	@Column
 	private java.sql.Timestamp requestDate;
 	
 	@Column(columnDefinition = "int default 0")
@@ -112,20 +113,19 @@ public class Author extends PersistableResource
 	@JoinColumn( name = "location_id" )
 	private Location based_near;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "author" )
+	@OneToMany( fetch = FetchType.EAGER, mappedBy = "author" )
 	@ContainedIn
 	private Set<PublicationAuthor> publicationAuthors;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author" )
 	private Set<InterestAuthor> interestAuthors;
 
-	/* few authors probably work for several institutions */
-	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
-	@JoinTable( name = "author_institution", joinColumns = @JoinColumn( name = "author_id" ) , inverseJoinColumns = @JoinColumn( name = "institution_id" ) )
+	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+	@JoinColumn( name = "institution_id" )
 	@IndexedEmbedded
-	private Set<Institution> institutions;
+	private Institution institution;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "author", orphanRemoval = true )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
 	private Set<AuthorSource> authorSources;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
@@ -150,11 +150,15 @@ public class Author extends PersistableResource
 	{
 		this.setName( name );
 		String[] splitName = name.split( " " );
-		this.setLastName( splitName[splitName.length - 1] );
+		if ( splitName.length > 0 )
+			this.setLastName( splitName[splitName.length - 1] );
 
-		String firstName = name.substring( 0, name.length() - lastName.length() ).trim();
-		if ( !firstName.equals( "" ) )
-			this.setFirstName( firstName );
+		if ( lastName != null )
+		{
+			String firstName = name.substring( 0, name.length() - lastName.length() ).trim();
+			if ( !firstName.equals( "" ) )
+				this.setFirstName( firstName );
+		}
 	}
 
 	public void setEmail( String email )
@@ -322,27 +326,6 @@ public class Author extends PersistableResource
 	public void setRequestDate( java.sql.Timestamp requestDate )
 	{
 		this.requestDate = requestDate;
-	}
-
-	public Set<Institution> getInstitutions()
-	{
-		return institutions;
-	}
-
-	public void setInstitutions( HashSet<Institution> institutions )
-	{
-		this.institutions = institutions;
-	}
-
-	public Author addInstitution( Institution institution )
-	{
-		if ( this.institutions == null )
-			this.institutions = new HashSet<Institution>();
-
-		if ( !this.institutions.contains( institution ) )
-			this.institutions.add( institution );
-
-		return this;
 	}
 
 	public int getCitedBy()
@@ -721,6 +704,26 @@ public class Author extends PersistableResource
 	public void setAdded( boolean added )
 	{
 		this.added = added;
+	}
+
+	public String getHomepage()
+	{
+		return homepage;
+	}
+
+	public void setHomepage( String homepage )
+	{
+		this.homepage = homepage;
+	}
+
+	public Institution getInstitution()
+	{
+		return institution;
+	}
+
+	public void setInstitution( Institution institution )
+	{
+		this.institution = institution;
 	}
 
 }

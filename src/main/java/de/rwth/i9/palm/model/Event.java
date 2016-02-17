@@ -67,13 +67,13 @@ public class Event extends PersistableResource
 	@Column( name = "position_", columnDefinition = "int default 0" )
 	private int position;
 
-	@ManyToOne
+	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 	@JoinColumn( name = "academic_event_group_id" )
 	@IndexedEmbedded
 	@Boost( 2.0f )
 	private EventGroup eventGroup;
 
-	@OneToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@OneToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 	private Location location;
 
 	// as List, therefore it can be sorted on hibernate query

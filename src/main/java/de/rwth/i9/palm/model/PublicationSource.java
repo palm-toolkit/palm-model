@@ -102,7 +102,7 @@ public class PublicationSource extends PersistableResource
 	/* store any citation information in jsonformat */
 	@Column
 	@Lob
-	private String citedByData;
+	private String citedByUrl;
 
 	@ManyToOne
 	@JoinColumn( name = "publication_id" )
@@ -344,7 +344,15 @@ public class PublicationSource extends PersistableResource
 			informationNode = mapper.createObjectNode();
 		}
 		if ( objectValue instanceof String )
-			informationNode.putPOJO( objectKey, '"' + objectValue.toString() + '"' );
+			try
+			{
+				informationNode.putPOJO( objectKey, mapper.writeValueAsString( objectValue ) );
+			}
+			catch ( JsonProcessingException e )
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		else
 			informationNode.putPOJO( objectKey, objectValue );
 
@@ -433,14 +441,14 @@ public class PublicationSource extends PersistableResource
 		this.venueTheme = venueTheme;
 	}
 
-	public String getCitedByData()
+	public String getCitedByUrl()
 	{
-		return citedByData;
+		return citedByUrl;
 	}
 
-	public void setCitedByData( String citedByData )
+	public void setCitedByUrl( String citedByUrl )
 	{
-		this.citedByData = citedByData;
+		this.citedByUrl = citedByUrl;
 	}
 
 }

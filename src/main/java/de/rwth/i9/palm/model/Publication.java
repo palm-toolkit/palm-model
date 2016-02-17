@@ -118,6 +118,9 @@ public class Publication extends PersistableResource
 	@Transient
 	List<Author> authors;
 
+	@Transient
+	String publisher;
+
 	// this is used in Lucene, since it's tricky to join index in lucene
 	// if this problem solved, these attribute can be deleted (authorText and
 	// year)
@@ -150,7 +153,7 @@ public class Publication extends PersistableResource
 	/* store any citation information in jsonformat */
 	@Column
 	@Lob
-	private String citedByData;
+	private String citedByUrl;
 
 	// relations
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
@@ -160,7 +163,7 @@ public class Publication extends PersistableResource
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
 	private Set<PublicationTopic> publicationTopics;
 	
-	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 	@JoinColumn( name = "event_id" )
 	private Event event;
 
@@ -244,24 +247,23 @@ public class Publication extends PersistableResource
 		return this;
 	}
 
-	public Event getVenue()
-	{
-		return event;
-	}
-
-	public void setVenue( Event event )
-	{
-		this.event = event;
-	}
-
 	public Set<PublicationAuthor> getPublicationAuthors()
 	{
 		return publicationAuthors;
 	}
 
+	public void clearPublicationAuthors()
+	{
+		this.publicationAuthors.clear();
+		this.publicationAuthors = null;
+	}
+
 	public void setPublicationAuthors( Set<PublicationAuthor> publicationAuthors )
 	{
-		this.publicationAuthors = publicationAuthors;
+		if ( this.publicationAuthors == null )
+			this.publicationAuthors = new LinkedHashSet<PublicationAuthor>();
+		this.publicationAuthors.clear();
+		this.publicationAuthors.addAll( publicationAuthors );
 	}
 
 	public Publication addPublicationAuthor( final PublicationAuthor publicationAuthor )
@@ -471,6 +473,8 @@ public class Publication extends PersistableResource
 
 	public Publication addPublicationTopic( PublicationTopic publicationTopic )
 	{
+		if ( publicationTopic == null )
+			return this;
 		if ( this.publicationTopics == null )
 			this.publicationTopics = new LinkedHashSet<PublicationTopic>();
 		this.publicationTopics.add( publicationTopic );
@@ -697,7 +701,15 @@ public class Publication extends PersistableResource
 		}
 
 		if ( objectValue instanceof String )
-			informationNode.putPOJO( objectKey, '"' + objectValue.toString() + '"' );
+			try
+			{
+				informationNode.putPOJO( objectKey, mapper.writeValueAsString( objectValue ) );
+			}
+			catch ( JsonProcessingException e )
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		else
 			informationNode.putPOJO( objectKey, objectValue );
 
@@ -859,14 +871,14 @@ public class Publication extends PersistableResource
 		this.authors = authors;
 	}
 
-	public String getCitedByData()
+	public String getCitedByUrl()
 	{
-		return citedByData;
+		return citedByUrl;
 	}
 
-	public void setCitedByData( String citedByData )
+	public void setCitedByUrl( String citedByUrl )
 	{
-		this.citedByData = citedByData;
+		this.citedByUrl = citedByUrl;
 	}
 
 	public String getAuthorText()
@@ -888,5 +900,16 @@ public class Publication extends PersistableResource
 	{
 		this.year = year;
 	}
+
+	public String getPublisher()
+	{
+		return publisher;
+	}
+
+	public void setPublisher( String publisher )
+	{
+		this.publisher = publisher;
+	}
+
 }
 
