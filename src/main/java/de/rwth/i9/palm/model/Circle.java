@@ -1,6 +1,7 @@
 package de.rwth.i9.palm.model;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -62,6 +63,9 @@ public class Circle extends PersistableResource
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinColumn( name = "circle_id" )
 	private List<CircleWidget> circleWidgets;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "circle", orphanRemoval = true )
+	private Set<CircleInterestProfile> circleInterestProfiles;
 
 	@Column( name = "_lock", columnDefinition = "bit default 1" )
 	private boolean lock = true;
@@ -177,6 +181,45 @@ public class Circle extends PersistableResource
 	public void setValid( boolean valid )
 	{
 		this.valid = valid;
+	}
+
+	public Set<CircleInterestProfile> getCircleInterestProfiles()
+	{
+		return circleInterestProfiles;
+	}
+
+	public void setCircleInterestProfiles( Set<CircleInterestProfile> circleInterestProfiles )
+	{
+		this.circleInterestProfiles = circleInterestProfiles;
+	}
+
+	public Circle addCircleInterestProfiles( CircleInterestProfile circleInterestProfile )
+	{
+		if ( this.circleInterestProfiles == null )
+			this.circleInterestProfiles = new LinkedHashSet<CircleInterestProfile>();
+
+		this.circleInterestProfiles.add( circleInterestProfile );
+
+		return this;
+	}
+
+	public CircleInterestProfile getSpecificCircleInterestProfile( String interestProfileName )
+	{
+		if ( interestProfileName == null || interestProfileName.equals( "" ) )
+			return null;
+
+		if ( this.circleInterestProfiles == null || this.circleInterestProfiles.isEmpty() )
+			return null;
+
+		for ( CircleInterestProfile aip : this.circleInterestProfiles )
+		{
+			if ( aip.getName().equals( interestProfileName ) )
+			{
+				return aip;
+			}
+		}
+
+		return null;
 	}
 
 }

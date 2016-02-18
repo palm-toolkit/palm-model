@@ -17,8 +17,8 @@ import javax.persistence.Table;
 import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
-@Table( name = "circle_interest_profile" )
-public class CircleInterestProfile extends PersistableResource
+@Table( name = "circle_topicmodel_profile" )
+public class CircleTopicModelingProfile extends PersistableResource
 {
 	@Column( nullable = false )
 	private String name;
@@ -38,21 +38,21 @@ public class CircleInterestProfile extends PersistableResource
 	@JoinColumn( name = "circle_id" )
 	private Circle circle;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "circleInterestProfile", orphanRemoval = true )
-	Set<CircleInterest> circleInterests;
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "circleTopicModelingProfile", orphanRemoval = true )
+	Set<CircleTopicModeling> circleTopicModelings;
 
 	@ManyToOne
-	@JoinColumn( name = "interest_profile_id" )
-	private InterestProfileCircle interestProfileCircle;
+	@JoinColumn( name = "topic_modeling_algorithm_circle_id" )
+	private TopicModelingAlgorithmCircle topicModelingAlgorithmCircle;
 
 	// getter & setter
 
-	public CircleInterestProfile addCircleInterest( CircleInterest circleInterest )
+	public CircleTopicModelingProfile addCircleTopicModeling( CircleTopicModeling circleTopicModeling )
 	{
-		if ( this.circleInterests == null )
-			circleInterests = new HashSet<CircleInterest>();
+		if ( this.circleTopicModelings == null )
+			circleTopicModelings = new HashSet<CircleTopicModeling>();
 
-		circleInterests.add( circleInterest );
+		circleTopicModelings.add( circleTopicModeling );
 		return this;
 	}
 
@@ -96,17 +96,17 @@ public class CircleInterestProfile extends PersistableResource
 		this.circle = circle;
 	}
 
-	public Set<CircleInterest> getCircleInterests()
+	public Set<CircleTopicModeling> getCircleTopicModelings()
 	{
-		return circleInterests;
+		return circleTopicModelings;
 	}
 
-	public void setCircleInterests( Set<CircleInterest> circleInterests )
+	public void setCircleTopicModelings( Set<CircleTopicModeling> circleTopicModelings )
 	{
-		if ( this.circleInterests == null )
-			this.circleInterests = new HashSet<CircleInterest>();
-		this.circleInterests.clear();
-		this.circleInterests.addAll( circleInterests );
+		if ( this.circleTopicModelings == null )
+			this.circleTopicModelings = new HashSet<CircleTopicModeling>();
+		this.circleTopicModelings.clear();
+		this.circleTopicModelings.addAll( circleTopicModelings );
 	}
 
 	public boolean isValid()
@@ -119,14 +119,14 @@ public class CircleInterestProfile extends PersistableResource
 		this.valid = valid;
 	}
 
-	public InterestProfileCircle getInterestProfileCircle()
+	public TopicModelingAlgorithmCircle getTopicModelingAlgorithmCircle()
 	{
-		return this.interestProfileCircle;
+		return this.topicModelingAlgorithmCircle;
 	}
 
-	public void setInterestProfileCircle( InterestProfileCircle interestProfileCircle )
+	public void setTopicModelingAlgorithmCircle( TopicModelingAlgorithmCircle topicModelingAlgorithmCircle )
 	{
-		this.interestProfileCircle = interestProfileCircle;
+		this.topicModelingAlgorithmCircle = topicModelingAlgorithmCircle;
 	}
 
 }
