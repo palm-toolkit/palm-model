@@ -629,7 +629,7 @@ public class Author extends PersistableResource
 		this.academicStatus = academicStatus;
 	}
 
-	public AuthorInterestProfile getSpecifitAuthorInterestProfile( String interestProfileName )
+	public AuthorInterestProfile getSpecificAuthorInterestProfile( String interestProfileName )
 	{
 		if ( interestProfileName == null || interestProfileName.equals( "" ) )
 			return null;
