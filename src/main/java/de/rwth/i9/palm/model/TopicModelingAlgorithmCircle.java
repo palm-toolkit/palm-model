@@ -40,8 +40,8 @@ public class TopicModelingAlgorithmCircle extends PersistableResource
 	@Lob
 	private String role;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "interestProfileCircle", orphanRemoval = true )
-	private Set<CircleInterestProfile> circleInterestProfile;
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "topicModelingAlgorithmCircle", orphanRemoval = true )
+	private Set<CircleTopicModelingProfile> circleTopicModelingProfile;
 
 	// getter & setter
 
@@ -105,14 +105,14 @@ public class TopicModelingAlgorithmCircle extends PersistableResource
 		this.role = role;
 	}
 
-	public Set<CircleInterestProfile> getCircleInterestProfile()
+	public Set<CircleTopicModelingProfile> getCircleTopicModelingProfile()
 	{
-		return circleInterestProfile;
+		return circleTopicModelingProfile;
 	}
 
-	public void setCircleInterestProfile( Set<CircleInterestProfile> circleInterestProfile )
+	public void setCircleTopicModelingProfile( Set<CircleTopicModelingProfile> circleTopicModelingProfile )
 	{
-		this.circleInterestProfile = circleInterestProfile;
+		this.circleTopicModelingProfile = circleTopicModelingProfile;
 	}
 
 
