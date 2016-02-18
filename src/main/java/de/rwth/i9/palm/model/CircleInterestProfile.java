@@ -43,7 +43,7 @@ public class CircleInterestProfile extends PersistableResource
 
 	@ManyToOne
 	@JoinColumn( name = "interest_profile_id" )
-	private InterestProfile interestProfile;
+	private InterestProfileCircle interestProfileCircle;
 
 	// getter & setter
 
@@ -119,14 +119,14 @@ public class CircleInterestProfile extends PersistableResource
 		this.valid = valid;
 	}
 
-	public InterestProfile getInterestProfile()
+	public InterestProfileCircle getInterestProfileCircle()
 	{
-		return interestProfile;
+		return this.interestProfileCircle;
 	}
 
-	public void setInterestProfile( InterestProfile interestProfile )
+	public void setInterestProfileCircle( InterestProfileCircle interestProfileCircle )
 	{
-		this.interestProfile = interestProfile;
+		this.interestProfileCircle = interestProfileCircle;
 	}
 
 }
