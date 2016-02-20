@@ -6,7 +6,8 @@ public enum Color
 	GREEN("#00A65A"), 
 	YELLOW("#F39C12"), 
 	RED("#DD4B39"), 
-	BLUE("#3C8DBC");
+	BLUE("#3C8DBC"),
+	SOLID("#EEEEEE");
 	
 	private String value;
 
