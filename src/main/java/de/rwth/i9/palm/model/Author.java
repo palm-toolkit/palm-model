@@ -435,7 +435,7 @@ public class Author extends PersistableResource
 	 */
 	public boolean isAliasNameFromFirstName( String firstName )
 	{
-		if ( firstName == null || firstName.equals( "" ) )
+		if ( firstName == null || firstName.equals( "" ) || this.getFirstName() == null )
 			return false;
 
 		String shorterFirstName = null;
