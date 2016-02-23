@@ -911,5 +911,21 @@ public class Publication extends PersistableResource
 		this.publisher = publisher;
 	}
 
+	public boolean isPublicationTopicEverExtractedWith( ExtractionServiceType extractionServiceType )
+	{
+		if ( this.publicationTopics == null || this.publicationTopics.isEmpty() )
+			return false;
+
+		for ( PublicationTopic eachPublicationTopic : this.publicationTopics )
+		{
+			if ( eachPublicationTopic.getExtractionServiceType().equals( extractionServiceType ) && eachPublicationTopic.isValid() )
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 }
 
