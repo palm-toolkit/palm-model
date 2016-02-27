@@ -131,6 +131,9 @@ public class Author extends PersistableResource
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
 	private Set<AuthorInterestProfile> authorInterestProfiles;
 
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
+	private Set<AuthorTopicModelingProfile> authorTopicModelingProfiles;
+
 	public String getName()
 	{
 		return name;
@@ -724,6 +727,26 @@ public class Author extends PersistableResource
 	public void setInstitution( Institution institution )
 	{
 		this.institution = institution;
+	}
+
+	public Set<AuthorTopicModelingProfile> getAuthorTopicModelingProfiles()
+	{
+		return authorTopicModelingProfiles;
+	}
+
+	public void setAuthorTopicModelingProfiles( Set<AuthorTopicModelingProfile> authorTopicModelingProfiles )
+	{
+		this.authorTopicModelingProfiles = authorTopicModelingProfiles;
+	}
+
+	public Author addAuthorTopicModelingProfiles( AuthorTopicModelingProfile authorTopicModelingProfile )
+	{
+		if ( this.authorTopicModelingProfiles == null )
+			this.authorTopicModelingProfiles = new LinkedHashSet<AuthorTopicModelingProfile>();
+
+		this.authorTopicModelingProfiles.add( authorTopicModelingProfile );
+
+		return this;
 	}
 
 }
