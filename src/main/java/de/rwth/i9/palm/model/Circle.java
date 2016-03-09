@@ -73,6 +73,9 @@ public class Circle extends PersistableResource
 	@Column( columnDefinition = "bit default 1" )
 	private boolean valid = true;
 
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "circle", orphanRemoval = true )
+	private Set<CircleTopicModelingProfile> circleTopicModelingProfiles;
+
 	public String getName()
 	{
 		return name;
@@ -220,6 +223,26 @@ public class Circle extends PersistableResource
 		}
 
 		return null;
+	}
+
+	public Set<CircleTopicModelingProfile> getCircleTopicModelingProfiles()
+	{
+		return circleTopicModelingProfiles;
+	}
+
+	public void setCircleTopicModelingProfiles( Set<CircleTopicModelingProfile> circleTopicModelingProfiles )
+	{
+		this.circleTopicModelingProfiles = circleTopicModelingProfiles;
+	}
+
+	public Circle addAuthorTopicModelingProfiles( CircleTopicModelingProfile circleTopicModelingProfile )
+	{
+		if ( this.circleTopicModelingProfiles == null )
+			this.circleTopicModelingProfiles = new LinkedHashSet<CircleTopicModelingProfile>();
+
+		this.circleTopicModelingProfiles.add( circleTopicModelingProfile );
+
+		return this;
 	}
 
 }
