@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
 
@@ -44,6 +45,9 @@ public class ExtractionService extends PersistableResource
 
 	@Column( columnDefinition = "int default 5000" )
 	private int maxTextLength;
+
+	@Transient
+	private int counter = 0;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "extractionService", orphanRemoval = true )
 	private List<ExtractionServiceProperty> extractionServiceProperties;
@@ -138,6 +142,16 @@ public class ExtractionService extends PersistableResource
 	public void setExtractionServiceProperties( List<ExtractionServiceProperty> extractionServiceProperties )
 	{
 		this.extractionServiceProperties = extractionServiceProperties;
+	}
+
+	public int getCounter()
+	{
+		return counter;
+	}
+
+	public void setCounter( int counter )
+	{
+		this.counter = counter;
 	}
 	
 }

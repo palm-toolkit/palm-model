@@ -546,7 +546,7 @@ public class Author extends PersistableResource
 	public void setPossibleNames( String name )
 	{
 		// check name length after normalization to ASCII
-		String nameAscii = name.replaceAll( "[^a-zA-Z ]", "" );
+		String nameAscii = name.replaceAll( "[^-a-zA-Z ]", "" );
 		
 		if ( nameAscii.length() == name.length() )
 		{

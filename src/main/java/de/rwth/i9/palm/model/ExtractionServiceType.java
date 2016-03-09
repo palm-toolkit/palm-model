@@ -5,5 +5,17 @@ package de.rwth.i9.palm.model;
  */
 public enum ExtractionServiceType
 {
-	OPENNLP, ALCHEMY, TEXTWISE, YAHOOCONTENTANALYSIS, FIVEFILTERS
+	OPENNLP("OpenNLP"), ALCHEMY("Alchemy"), TEXTWISE("Textwise"), YAHOOCONTENTANALYSIS("Yahoo Content Analysis"), FIVEFILTERS("Five Filters"), OPENCALAIS("OpenCalais");
+
+	private String name;
+
+	private ExtractionServiceType( final String name )
+	{
+		this.name = name;
+	}
+
+	public String getName()
+	{
+		return this.name;
+	}
 }
