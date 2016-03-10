@@ -73,6 +73,9 @@ public class Circle extends PersistableResource
 	@Column( columnDefinition = "bit default 1" )
 	private boolean valid = true;
 
+	@Column( columnDefinition = "bit default 0" )
+	private boolean isUpdateInterest = false;
+
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "circle", orphanRemoval = true )
 	private Set<CircleTopicModelingProfile> circleTopicModelingProfiles;
 
@@ -243,6 +246,16 @@ public class Circle extends PersistableResource
 		this.circleTopicModelingProfiles.add( circleTopicModelingProfile );
 
 		return this;
+	}
+
+	public boolean isUpdateInterest()
+	{
+		return isUpdateInterest;
+	}
+
+	public void setUpdateInterest( boolean isUpdateInterest )
+	{
+		this.isUpdateInterest = isUpdateInterest;
 	}
 
 }

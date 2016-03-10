@@ -103,6 +103,9 @@ public class Author extends PersistableResource
 	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	private boolean added = false;
 
+	@Column( columnDefinition = "bit default 0" )
+	private boolean isUpdateInterest = false;
+
 	// relations
 
 	/* other name of the author */
@@ -747,6 +750,16 @@ public class Author extends PersistableResource
 		this.authorTopicModelingProfiles.add( authorTopicModelingProfile );
 
 		return this;
+	}
+
+	public boolean isUpdateInterest()
+	{
+		return isUpdateInterest;
+	}
+
+	public void setUpdateInterest( boolean isUpdateInterest )
+	{
+		this.isUpdateInterest = isUpdateInterest;
 	}
 
 }
