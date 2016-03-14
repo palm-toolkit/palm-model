@@ -126,7 +126,10 @@ public class Circle extends PersistableResource
 
 	public void setAuthors( Set<Author> authors )
 	{
-		this.authors = authors;
+		if ( this.authors == null )
+			this.authors = new HashSet<Author>();
+		this.authors.clear();
+		this.authors.addAll( authors );
 	}
 
 	public Circle addAuthor( Author author )
@@ -146,7 +149,10 @@ public class Circle extends PersistableResource
 
 	public void setPublications( Set<Publication> publications )
 	{
-		this.publications = publications;
+		if ( this.publications == null )
+			this.publications = new HashSet<Publication>();
+		this.publications.clear();
+		this.publications.addAll( publications );
 	}
 
 	public Circle addPublication( Publication publication )
