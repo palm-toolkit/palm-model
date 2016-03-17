@@ -73,6 +73,12 @@ public class Circle extends PersistableResource
 	@Column( columnDefinition = "bit default 1" )
 	private boolean valid = true;
 
+	@Column( columnDefinition = "bit default 0" )
+	private boolean isUpdateInterest = false;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "circle", orphanRemoval = true )
+	private Set<CircleTopicModelingProfile> circleTopicModelingProfiles;
+
 	public String getName()
 	{
 		return name;
@@ -120,7 +126,10 @@ public class Circle extends PersistableResource
 
 	public void setAuthors( Set<Author> authors )
 	{
-		this.authors = authors;
+		if ( this.authors == null )
+			this.authors = new HashSet<Author>();
+		this.authors.clear();
+		this.authors.addAll( authors );
 	}
 
 	public Circle addAuthor( Author author )
@@ -140,7 +149,10 @@ public class Circle extends PersistableResource
 
 	public void setPublications( Set<Publication> publications )
 	{
-		this.publications = publications;
+		if ( this.publications == null )
+			this.publications = new HashSet<Publication>();
+		this.publications.clear();
+		this.publications.addAll( publications );
 	}
 
 	public Circle addPublication( Publication publication )
@@ -220,6 +232,36 @@ public class Circle extends PersistableResource
 		}
 
 		return null;
+	}
+
+	public Set<CircleTopicModelingProfile> getCircleTopicModelingProfiles()
+	{
+		return circleTopicModelingProfiles;
+	}
+
+	public void setCircleTopicModelingProfiles( Set<CircleTopicModelingProfile> circleTopicModelingProfiles )
+	{
+		this.circleTopicModelingProfiles = circleTopicModelingProfiles;
+	}
+
+	public Circle addAuthorTopicModelingProfiles( CircleTopicModelingProfile circleTopicModelingProfile )
+	{
+		if ( this.circleTopicModelingProfiles == null )
+			this.circleTopicModelingProfiles = new LinkedHashSet<CircleTopicModelingProfile>();
+
+		this.circleTopicModelingProfiles.add( circleTopicModelingProfile );
+
+		return this;
+	}
+
+	public boolean isUpdateInterest()
+	{
+		return isUpdateInterest;
+	}
+
+	public void setUpdateInterest( boolean isUpdateInterest )
+	{
+		this.isUpdateInterest = isUpdateInterest;
 	}
 
 }

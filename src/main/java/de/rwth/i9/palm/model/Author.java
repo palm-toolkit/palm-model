@@ -103,6 +103,9 @@ public class Author extends PersistableResource
 	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	private boolean added = false;
 
+	@Column( columnDefinition = "bit default 0" )
+	private boolean isUpdateInterest = false;
+
 	// relations
 
 	/* other name of the author */
@@ -130,6 +133,9 @@ public class Author extends PersistableResource
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
 	private Set<AuthorInterestProfile> authorInterestProfiles;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
+	private Set<AuthorTopicModelingProfile> authorTopicModelingProfiles;
 
 	public String getName()
 	{
@@ -435,7 +441,7 @@ public class Author extends PersistableResource
 	 */
 	public boolean isAliasNameFromFirstName( String firstName )
 	{
-		if ( firstName == null || firstName.equals( "" ) )
+		if ( firstName == null || firstName.equals( "" ) || this.getFirstName() == null )
 			return false;
 
 		String shorterFirstName = null;
@@ -543,7 +549,7 @@ public class Author extends PersistableResource
 	public void setPossibleNames( String name )
 	{
 		// check name length after normalization to ASCII
-		String nameAscii = name.replaceAll( "[^a-zA-Z ]", "" );
+		String nameAscii = name.replaceAll( "[^-a-zA-Z ]", "" );
 		
 		if ( nameAscii.length() == name.length() )
 		{
@@ -724,6 +730,36 @@ public class Author extends PersistableResource
 	public void setInstitution( Institution institution )
 	{
 		this.institution = institution;
+	}
+
+	public Set<AuthorTopicModelingProfile> getAuthorTopicModelingProfiles()
+	{
+		return authorTopicModelingProfiles;
+	}
+
+	public void setAuthorTopicModelingProfiles( Set<AuthorTopicModelingProfile> authorTopicModelingProfiles )
+	{
+		this.authorTopicModelingProfiles = authorTopicModelingProfiles;
+	}
+
+	public Author addAuthorTopicModelingProfiles( AuthorTopicModelingProfile authorTopicModelingProfile )
+	{
+		if ( this.authorTopicModelingProfiles == null )
+			this.authorTopicModelingProfiles = new LinkedHashSet<AuthorTopicModelingProfile>();
+
+		this.authorTopicModelingProfiles.add( authorTopicModelingProfile );
+
+		return this;
+	}
+
+	public boolean isUpdateInterest()
+	{
+		return isUpdateInterest;
+	}
+
+	public void setUpdateInterest( boolean isUpdateInterest )
+	{
+		this.isUpdateInterest = isUpdateInterest;
 	}
 
 }

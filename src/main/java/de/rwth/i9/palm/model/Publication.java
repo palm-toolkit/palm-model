@@ -160,7 +160,7 @@ public class Publication extends PersistableResource
 	@JoinTable( name = "publication_keyword", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "keyword_id" ) )
 	private Set<Subject> subjects;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication" )
 	private Set<PublicationTopic> publicationTopics;
 	
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
@@ -909,6 +909,22 @@ public class Publication extends PersistableResource
 	public void setPublisher( String publisher )
 	{
 		this.publisher = publisher;
+	}
+
+	public boolean isPublicationTopicEverExtractedWith( ExtractionServiceType extractionServiceType )
+	{
+		if ( this.publicationTopics == null || this.publicationTopics.isEmpty() )
+			return false;
+
+		for ( PublicationTopic eachPublicationTopic : this.publicationTopics )
+		{
+			if ( eachPublicationTopic.getExtractionServiceType().equals( extractionServiceType ) && eachPublicationTopic.isValid() )
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }
