@@ -2,8 +2,10 @@ package de.rwth.i9.palm.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -68,6 +70,9 @@ public class User extends PersistableResource
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinColumn( name = "user_id" )
 	private List<UserWidget> userWidgets;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user" )
+	private Set<UserPublicationBookmark> userPublicationBookmarks;
 
 	/*
 	 * Actually this is OneToOne connection,
@@ -294,4 +299,37 @@ public class User extends PersistableResource
 		return this;
 	}
 
+	public Set<UserPublicationBookmark> getUserPublicationBookmarks()
+	{
+		return userPublicationBookmarks;
+	}
+
+	public void setUserPublicationBookmarks( Set<UserPublicationBookmark> userPublicationBookmarks )
+	{
+		this.userPublicationBookmarks = userPublicationBookmarks;
+	}
+
+	public User addUserPublicationBookmark( final UserPublicationBookmark userPublicationBookmark )
+	{
+		if ( this.userPublicationBookmarks == null )
+			this.userPublicationBookmarks = new HashSet<UserPublicationBookmark>();
+
+		this.userPublicationBookmarks.add( userPublicationBookmark );
+
+		return this;
+	}
+
+	public User removeUserPublicationBookmark( final UserPublicationBookmark userPublicationBookmark )
+	{
+		if ( this.userPublicationBookmarks != null )
+		{
+			for ( Iterator<UserPublicationBookmark> i = this.userPublicationBookmarks.iterator(); i.hasNext(); )
+			{
+				UserPublicationBookmark upb = i.next();
+				if ( upb.equals( userPublicationBookmark ) )
+					i.remove();
+			}
+		}
+		return this;
+	}
 }
