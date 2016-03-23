@@ -72,6 +72,15 @@ public class User extends PersistableResource
 	private List<UserWidget> userWidgets;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user" )
+	private Set<UserAuthorBookmark> userAuthorBookmarks;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user" )
+	private Set<UserCircleBookmark> userCircleBookmarks;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user" )
+	private Set<UserEventGroupBookmark> userEventGroupBookmarks;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user" )
 	private Set<UserPublicationBookmark> userPublicationBookmarks;
 
 	/*
@@ -299,6 +308,108 @@ public class User extends PersistableResource
 		return this;
 	}
 
+	public Set<UserAuthorBookmark> getUserAuthorBookmarks()
+	{
+		return userAuthorBookmarks;
+	}
+
+	public void setUserAuthorBookmarks( Set<UserAuthorBookmark> userAuthorBookmarks )
+	{
+		this.userAuthorBookmarks = userAuthorBookmarks;
+	}
+
+	public User addUserAuthorBookmark( final UserAuthorBookmark userAuthorBookmark )
+	{
+		if ( this.userAuthorBookmarks == null )
+			this.userAuthorBookmarks = new HashSet<UserAuthorBookmark>();
+
+		this.userAuthorBookmarks.add( userAuthorBookmark );
+
+		return this;
+	}
+
+	public User removeUserAuthorBookmark( final UserAuthorBookmark userAuthorBookmark )
+	{
+		if ( this.userAuthorBookmarks != null )
+		{
+			for ( Iterator<UserAuthorBookmark> i = this.userAuthorBookmarks.iterator(); i.hasNext(); )
+			{
+				UserAuthorBookmark upb = i.next();
+				if ( upb.equals( userAuthorBookmark ) )
+					i.remove();
+			}
+		}
+		return this;
+	}
+
+	public Set<UserCircleBookmark> getUserCircleBookmarks()
+	{
+		return userCircleBookmarks;
+	}
+
+	public void setUserCircleBookmarks( Set<UserCircleBookmark> userCircleBookmarks )
+	{
+		this.userCircleBookmarks = userCircleBookmarks;
+	}
+
+	public User addUserCircleBookmark( final UserCircleBookmark userCircleBookmark )
+	{
+		if ( this.userCircleBookmarks == null )
+			this.userCircleBookmarks = new HashSet<UserCircleBookmark>();
+
+		this.userCircleBookmarks.add( userCircleBookmark );
+
+		return this;
+	}
+
+	public User removeUserCircleBookmark( final UserCircleBookmark userCircleBookmark )
+	{
+		if ( this.userCircleBookmarks != null )
+		{
+			for ( Iterator<UserCircleBookmark> i = this.userCircleBookmarks.iterator(); i.hasNext(); )
+			{
+				UserCircleBookmark upb = i.next();
+				if ( upb.equals( userCircleBookmark ) )
+					i.remove();
+			}
+		}
+		return this;
+	}
+
+	public Set<UserEventGroupBookmark> getUserEventGroupBookmarks()
+	{
+		return userEventGroupBookmarks;
+	}
+
+	public void setUserEventGroupBookmarks( Set<UserEventGroupBookmark> userEventGroupBookmarks )
+	{
+		this.userEventGroupBookmarks = userEventGroupBookmarks;
+	}
+
+	public User addUserEventGroupBookmark( final UserEventGroupBookmark userEventGroupBookmark )
+	{
+		if ( this.userEventGroupBookmarks == null )
+			this.userEventGroupBookmarks = new HashSet<UserEventGroupBookmark>();
+
+		this.userEventGroupBookmarks.add( userEventGroupBookmark );
+
+		return this;
+	}
+
+	public User removeUserEventGroupBookmark( final UserEventGroupBookmark userEventGroupBookmark )
+	{
+		if ( this.userEventGroupBookmarks != null )
+		{
+			for ( Iterator<UserEventGroupBookmark> i = this.userEventGroupBookmarks.iterator(); i.hasNext(); )
+			{
+				UserEventGroupBookmark upb = i.next();
+				if ( upb.equals( userEventGroupBookmark ) )
+					i.remove();
+			}
+		}
+		return this;
+	}
+
 	public Set<UserPublicationBookmark> getUserPublicationBookmarks()
 	{
 		return userPublicationBookmarks;
@@ -332,4 +443,5 @@ public class User extends PersistableResource
 		}
 		return this;
 	}
+
 }
