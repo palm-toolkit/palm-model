@@ -32,6 +32,10 @@ public class Source extends PersistableResource
 	@Column( length = 16, nullable = false, unique = true )
 	private SourceType sourceType;
 
+	@Enumerated( EnumType.STRING )
+	@Column( length = 16, nullable = false )
+	private SourceMethod sourceMethod;
+
 	@Column( columnDefinition = "bit default 1" )
 	private boolean active = true;
 
@@ -66,6 +70,16 @@ public class Source extends PersistableResource
 	public void setSourceType( SourceType sourceType )
 	{
 		this.sourceType = sourceType;
+	}
+
+	public SourceMethod getSourceMethod()
+	{
+		return sourceMethod;
+	}
+
+	public void setSourceMethod( SourceMethod sourceMethod )
+	{
+		this.sourceMethod = sourceMethod;
 	}
 
 	public boolean isActive()

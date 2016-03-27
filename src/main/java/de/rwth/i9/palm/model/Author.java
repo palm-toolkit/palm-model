@@ -308,16 +308,19 @@ public class Author extends PersistableResource
 		}
 		else
 		{
-			boolean updateSourceUrl = false;
+			boolean addSource = true;
 			for ( AuthorSource eachAuhorSource : this.authorSources )
 			{
 				if ( eachAuhorSource.getSourceType().equals( auhtorSource.getSourceType() ) )
 				{
-					eachAuhorSource.setSourceUrl( auhtorSource.getSourceUrl() );
-					updateSourceUrl = true;
+					//if ( eachAuhorSource.getSourceUrl().equals( auhtorSource.getSourceUrl() ) )
+					//{
+						addSource = false;
+						break;
+					//}
 				}
 			}
-			if ( !updateSourceUrl )
+			if ( addSource )
 				this.authorSources.add( auhtorSource );
 		}
 
@@ -760,6 +763,20 @@ public class Author extends PersistableResource
 	public void setUpdateInterest( boolean isUpdateInterest )
 	{
 		this.isUpdateInterest = isUpdateInterest;
+	}
+
+	public boolean isContainSource( Source source )
+	{
+		if ( this.authorSources == null )
+			return false;
+
+		else
+		{
+			for ( AuthorSource eachAuhorSource : this.authorSources )
+				if ( eachAuhorSource.getSourceType().toString().equals( source.getSourceType().toString() ) )
+					return true;
+		}
+		return false;
 	}
 
 }
