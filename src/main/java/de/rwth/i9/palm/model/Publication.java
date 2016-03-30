@@ -573,6 +573,14 @@ public class Publication extends PersistableResource
 		else
 		{
 			// check for url duplication, skip if duplicated
+			// first check from source
+			for ( PublicationSource pubSource : this.publicationSources )
+			{
+				if ( pubSource.getSourceType().equals( publicationFile.getSourceType() ) )
+					return this;
+			}
+			
+			// second check from file itself
 			for ( PublicationFile pubFile : this.publicationFiles )
 			{
 				if ( pubFile.getUrl().equals( publicationFile.getUrl() ) )
