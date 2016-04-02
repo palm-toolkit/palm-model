@@ -4,8 +4,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import de.rwth.i9.palm.persistence.PersistableResource;
@@ -18,8 +19,8 @@ public class CircleWidget extends PersistableResource
 	private int position;
 
 	@Enumerated( EnumType.STRING )
-	@Column( columnDefinition = "VARCHAR(16) DEFAULT 'NORMAL'" )
-	private WidgetCondition widgetCondition;
+	@Column( length = 16 )
+	private WidgetStatus widgetStatus;
 
 	@Enumerated( EnumType.STRING )
 	@Column( length = 8 )
@@ -29,10 +30,17 @@ public class CircleWidget extends PersistableResource
 	@Column( length = 16 )
 	private Color widgetColor;
 
+	@Column( length = 8 )
+	private String widgetHeight;
+
 	// relationships
-	@OneToOne
+	@ManyToOne( fetch = FetchType.EAGER )
 	@JoinColumn( name = "widget_id" )
 	private Widget widget;
+
+	@ManyToOne
+	@JoinColumn( name = "circle_id" )
+	private Circle circle;
 
 	// getter / setter
 
@@ -46,14 +54,24 @@ public class CircleWidget extends PersistableResource
 		this.position = position;
 	}
 
-	public WidgetCondition getWidgetCondition()
+	public WidgetStatus getWidgetStatus()
 	{
-		return widgetCondition;
+		return widgetStatus;
 	}
 
-	public void setWidgetCondition( WidgetCondition widgetCondition )
+	public void setWidgetStatus( WidgetStatus widgetStatus )
 	{
-		this.widgetCondition = widgetCondition;
+		this.widgetStatus = widgetStatus;
+	}
+
+	public String getWidgetHeight()
+	{
+		return widgetHeight;
+	}
+
+	public void setWidgetHeight( String widgetHeight )
+	{
+		this.widgetHeight = widgetHeight;
 	}
 
 	public Color getWidgetColor()
@@ -85,4 +103,15 @@ public class CircleWidget extends PersistableResource
 	{
 		this.widgetWidth = widgetWidth;
 	}
+
+	public Circle getCircle()
+	{
+		return circle;
+	}
+
+	public void setCircle( Circle circle )
+	{
+		this.circle = circle;
+	}
+
 }

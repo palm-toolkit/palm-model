@@ -1,6 +1,8 @@
 package de.rwth.i9.palm.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -175,6 +177,36 @@ public class Circle extends PersistableResource
 		this.circleWidgets = circleWidgets;
 	}
 
+	public Circle addCircleWidget( CircleWidget circleWidget )
+	{
+		if ( this.circleWidgets == null )
+			this.circleWidgets = new ArrayList<CircleWidget>();
+		this.circleWidgets.add( circleWidget );
+		return this;
+	}
+
+	public Circle addCircleWidgetList( List<CircleWidget> circleWidgets )
+	{
+		if ( this.circleWidgets == null )
+			this.circleWidgets = new ArrayList<CircleWidget>();
+		this.circleWidgets.addAll( circleWidgets );
+		return this;
+	}
+
+	public Circle removeCircleWidget( CircleWidget circleWidget )
+	{
+		if ( this.circleWidgets == null || this.circleWidgets.isEmpty() )
+			return this;
+
+		for ( Iterator<CircleWidget> i = this.circleWidgets.iterator(); i.hasNext(); )
+		{
+			CircleWidget eachCircleWidget = i.next();
+			if ( eachCircleWidget.equals( circleWidget ) )
+				i.remove();
+		}
+		return this;
+	}
+
 	public boolean isLock()
 	{
 		return lock;
@@ -263,5 +295,6 @@ public class Circle extends PersistableResource
 	{
 		this.isUpdateInterest = isUpdateInterest;
 	}
+
 
 }

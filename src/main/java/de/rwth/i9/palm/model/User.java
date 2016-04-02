@@ -134,6 +134,20 @@ public class User extends PersistableResource
 		return this;
 	}
 
+	public User removeUserWidget( UserWidget userWidget )
+	{
+		if ( this.userWidgets == null || this.userWidgets.isEmpty() )
+			return this;
+
+		for ( Iterator<UserWidget> i = this.userWidgets.iterator(); i.hasNext(); )
+		{
+			UserWidget eachUserWidget = i.next();
+			if ( eachUserWidget.equals( userWidget ) )
+				i.remove();
+		}
+		return this;
+	}
+
 	public String getName()
 	{
 		return name;
@@ -292,20 +306,6 @@ public class User extends PersistableResource
 	public void setJoinDate( Date joinDate )
 	{
 		this.joinDate = joinDate;
-	}
-
-	public User removeUserWidget( UserWidget userWidget )
-	{
-		if ( this.userWidgets == null || this.userWidgets.isEmpty() )
-			return this;
-
-		for ( Iterator<UserWidget> i = this.userWidgets.iterator(); i.hasNext(); )
-		{
-			UserWidget eachUserWidget = i.next();
-			if ( eachUserWidget.equals( userWidget ) )
-				i.remove();
-		}
-		return this;
 	}
 
 	public Set<UserAuthorBookmark> getUserAuthorBookmarks()
