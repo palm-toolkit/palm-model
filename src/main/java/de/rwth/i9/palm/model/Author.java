@@ -779,4 +779,18 @@ public class Author extends PersistableResource
 		return false;
 	}
 
+	public boolean isContainAuthorSource( AuthorSource as )
+	{
+		if ( this.authorSources == null )
+			return false;
+
+		else
+		{
+			for ( AuthorSource eachAuhorSource : this.authorSources )
+				if ( eachAuhorSource.getSourceType().toString().equals( as.getSourceType().toString() ) )
+					return true;
+		}
+		return false;
+	}
+
 }

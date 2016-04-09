@@ -36,8 +36,7 @@ public class Circle extends PersistableResource
 {
 
 	@Column( nullable = false )
-	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
-	@Analyzer( definition = "customanalyzer" )
+	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	@Boost( 3.0f )
 	private String name;
 
@@ -51,14 +50,14 @@ public class Circle extends PersistableResource
 	@Column
 	@Lob
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
-	@Analyzer( definition = "customanalyzer" )
+	@Analyzer( definition = "lowercaseSnowballAnalyzer" )
 	private String description;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "circle_author", joinColumns = @JoinColumn( name = "circle_id" ) , inverseJoinColumns = @JoinColumn( name = "author_id" ) )
 	private Set<Author> authors;
 
-	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@ManyToMany( cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY )
 	@JoinTable( name = "circle_publication", joinColumns = @JoinColumn( name = "circle_id" ) , inverseJoinColumns = @JoinColumn( name = "publication_id" ) )
 	private Set<Publication> publications;
 
@@ -164,6 +163,20 @@ public class Circle extends PersistableResource
 
 		this.publications.add( publication );
 
+		return this;
+	}
+
+	public Circle removePublication( Publication publication )
+	{
+		if ( this.publications == null || this.publications.isEmpty() )
+			return this;
+
+		for ( Iterator<Publication> i = this.publications.iterator(); i.hasNext(); )
+		{
+			Publication eachPublication = i.next();
+			if ( eachPublication.equals( publication ) )
+				i.remove();
+		}
 		return this;
 	}
 

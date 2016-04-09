@@ -54,7 +54,7 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 @Table( name = "publication" )
 @Indexed
 @AnalyzerDef( 
-		name = "customanalyzer", 
+		name = "lowercaseSnowballAnalyzer",
 		tokenizer = @TokenizerDef( factory = StandardTokenizerFactory.class ), 
 		filters = { 
 			@TokenFilterDef( factory = LowerCaseFilterFactory.class ), 
@@ -65,7 +65,7 @@ public class Publication extends PersistableResource
 {
 	@Column( nullable = false )
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
-	@Analyzer( definition = "customanalyzer" )
+	@Analyzer( definition = "lowercaseSnowballAnalyzer" )
 	@Boost( 3.0f )
 	@Lob
 	private String title;
@@ -79,7 +79,7 @@ public class Publication extends PersistableResource
 	@Column
 	@Lob
 	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
-	@Analyzer( definition = "customanalyzer" )
+	@Analyzer( definition = "lowercaseSnowballAnalyzer" )
 	private String abstractText;
 
 	@Enumerated( EnumType.STRING )
@@ -89,7 +89,7 @@ public class Publication extends PersistableResource
 	@Column
 	@Lob
 	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
-	@Analyzer( definition = "customanalyzer" )
+	@Analyzer( definition = "lowercaseSnowballAnalyzer" )
 	private String contentText;
 
 	@Column
@@ -187,6 +187,10 @@ public class Publication extends PersistableResource
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "publication", orphanRemoval = true )
 	private Set<PublicationFile> publicationFiles;
+
+	@ManyToMany( cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY )
+	@JoinTable( name = "circle_publication", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "circle_id" ) )
+	private Set<Circle> circles;
 
 	public Event getEvent()
 	{
@@ -933,6 +937,16 @@ public class Publication extends PersistableResource
 		}
 
 		return false;
+	}
+
+	public Set<Circle> getCircles()
+	{
+		return circles;
+	}
+
+	public void setCircles( Set<Circle> circles )
+	{
+		this.circles = circles;
 	}
 
 }
