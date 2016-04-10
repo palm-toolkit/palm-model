@@ -160,7 +160,7 @@ public class Publication extends PersistableResource
 	@JoinTable( name = "publication_keyword", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "keyword_id" ) )
 	private Set<Subject> subjects;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication" )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
 	private Set<PublicationTopic> publicationTopics;
 	
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
@@ -483,11 +483,6 @@ public class Publication extends PersistableResource
 			this.publicationTopics = new LinkedHashSet<PublicationTopic>();
 		this.publicationTopics.add( publicationTopic );
 		return this;
-	}
-
-	public void removeAllPublicationTopic()
-	{
-		this.publicationTopics = null;
 	}
 
 	public Date getPublicationDate()
