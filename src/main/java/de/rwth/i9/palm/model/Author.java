@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -137,6 +138,9 @@ public class Author extends PersistableResource
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
 	private Set<AuthorTopicModelingProfile> authorTopicModelingProfiles;
 
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author" )
+	private Set<UserAuthorBookmark> userAuthorBookmarks;
+
 	public String getName()
 	{
 		return name;
@@ -253,6 +257,20 @@ public class Author extends PersistableResource
 
 		this.publicationAuthors.add( publicationAuthor );
 
+		return this;
+	}
+
+	public Author removePublicationAuthor( PublicationAuthor publicationAuthor )
+	{
+		if ( this.publicationAuthors == null || this.publicationAuthors.isEmpty() )
+			return this;
+
+		for ( Iterator<PublicationAuthor> i = this.publicationAuthors.iterator(); i.hasNext(); )
+		{
+			PublicationAuthor eachPublicationAuthor = i.next();
+			if ( eachPublicationAuthor.equals( publicationAuthor ) )
+				i.remove();
+		}
 		return this;
 	}
 
@@ -791,6 +809,16 @@ public class Author extends PersistableResource
 					return true;
 		}
 		return false;
+	}
+
+	public Set<UserAuthorBookmark> getUserAuthorBookmarks()
+	{
+		return userAuthorBookmarks;
+	}
+
+	public void setUserAuthorBookmarks( Set<UserAuthorBookmark> userAuthorBookmarks )
+	{
+		this.userAuthorBookmarks = userAuthorBookmarks;
 	}
 
 }

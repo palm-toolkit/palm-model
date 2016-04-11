@@ -61,8 +61,7 @@ public class Circle extends PersistableResource
 	@JoinTable( name = "circle_publication", joinColumns = @JoinColumn( name = "circle_id" ) , inverseJoinColumns = @JoinColumn( name = "publication_id" ) )
 	private Set<Publication> publications;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinColumn( name = "circle_id" )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "circle", orphanRemoval = true )
 	private List<CircleWidget> circleWidgets;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "circle", orphanRemoval = true )
@@ -79,6 +78,9 @@ public class Circle extends PersistableResource
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "circle", orphanRemoval = true )
 	private Set<CircleTopicModelingProfile> circleTopicModelingProfiles;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "circle" )
+	private Set<UserCircleBookmark> userCircleBookmarks;
 
 	public String getName()
 	{
@@ -309,5 +311,14 @@ public class Circle extends PersistableResource
 		this.isUpdateInterest = isUpdateInterest;
 	}
 
+	public Set<UserCircleBookmark> getUserCircleBookmarks()
+	{
+		return userCircleBookmarks;
+	}
+
+	public void setUserCircleBookmarks( Set<UserCircleBookmark> userCircleBookmarks )
+	{
+		this.userCircleBookmarks = userCircleBookmarks;
+	}
 
 }

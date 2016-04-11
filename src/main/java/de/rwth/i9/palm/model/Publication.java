@@ -192,6 +192,9 @@ public class Publication extends PersistableResource
 	@JoinTable( name = "circle_publication", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "circle_id" ) )
 	private Set<Circle> circles;
 
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication" )
+	private Set<UserPublicationBookmark> userPublicationBookmarks;
+
 	public Event getEvent()
 	{
 		return event;
@@ -942,6 +945,16 @@ public class Publication extends PersistableResource
 	public void setCircles( Set<Circle> circles )
 	{
 		this.circles = circles;
+	}
+
+	public Set<UserPublicationBookmark> getUserPublicationBookmarks()
+	{
+		return userPublicationBookmarks;
+	}
+
+	public void setUserPublicationBookmarks( Set<UserPublicationBookmark> userPublicationBookmarks )
+	{
+		this.userPublicationBookmarks = userPublicationBookmarks;
 	}
 
 }
