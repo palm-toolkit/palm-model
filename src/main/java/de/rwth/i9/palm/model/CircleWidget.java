@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -34,7 +33,7 @@ public class CircleWidget extends PersistableResource
 	private String widgetHeight;
 
 	// relationships
-	@ManyToOne( fetch = FetchType.EAGER )
+	@ManyToOne
 	@JoinColumn( name = "widget_id" )
 	private Widget widget;
 
