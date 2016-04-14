@@ -154,4 +154,16 @@ public class ExtractionService extends PersistableResource
 		this.counter = counter;
 	}
 	
+	public ExtractionServiceProperty getExtractionServicePropertyByIdentifiers( String identifier, String identifier2 )
+	{
+		if ( this.extractionServiceProperties != null )
+		{
+			for ( ExtractionServiceProperty extractionServiceProperty : this.extractionServiceProperties )
+			{
+				if ( extractionServiceProperty.getMainIdentifier().equals( identifier ) && extractionServiceProperty.getSecondaryIdentifier().equals( identifier2 ) )
+					return extractionServiceProperty;
+			}
+		}
+		return null;
+	}
 }

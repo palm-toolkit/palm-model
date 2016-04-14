@@ -575,6 +575,13 @@ public class Author extends PersistableResource
 		if ( nameAscii.length() == name.length() )
 		{
 			this.setCompleteName( name );
+			if ( name.contains( "-" ) )
+			{
+				AuthorAlias authorAlias = new AuthorAlias();
+				authorAlias.setCompleteName( name.replaceAll( "-", " " ) );
+				authorAlias.setAuthor( this );
+				this.addAlias( authorAlias );
+			}
 		}
 		else
 		{
@@ -629,7 +636,7 @@ public class Author extends PersistableResource
 			Pattern pattern = Pattern.compile( "\\p{InCombiningDiacriticalMarks}+" );
 			String mainName = pattern.matcher( nfdNormalizedString ).replaceAll( "" );
 
-			this.setCompleteName( mainName.replaceAll( "[^a-zA-Z ]", "" ) );
+			this.setCompleteName( mainName.replaceAll( "[^-a-zA-Z ]", "" ) );
 
 			AuthorAlias authorAlias1 = new AuthorAlias();
 			authorAlias1.setCompleteName( name );
@@ -642,6 +649,14 @@ public class Author extends PersistableResource
 				authorAlias2.setCompleteName( aliasName );
 				authorAlias2.setAuthor( this );
 				this.addAlias( authorAlias2 );
+			}
+
+			if ( mainName.contains( "-" ) )
+			{
+				AuthorAlias authorAlias3 = new AuthorAlias();
+				authorAlias3.setCompleteName( mainName.replaceAll( "-", " " ) );
+				authorAlias3.setAuthor( this );
+				this.addAlias( authorAlias3 );
 			}
 		}
 	}

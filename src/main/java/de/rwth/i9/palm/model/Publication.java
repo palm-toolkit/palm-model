@@ -937,6 +937,22 @@ public class Publication extends PersistableResource
 		return false;
 	}
 
+	public boolean isPublicationContainSourceFrom( SourceType sourceType )
+	{
+		if ( this.publicationSources == null || this.publicationSources.isEmpty() )
+			return false;
+
+		for ( PublicationSource eachPublicationSource : this.publicationSources )
+		{
+			if ( eachPublicationSource.getSourceType().equals( sourceType ) )
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public Set<Circle> getCircles()
 	{
 		return circles;

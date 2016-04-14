@@ -123,4 +123,14 @@ public class PublicationFile extends PersistableResource
 		this.fileType = fileType;
 	}
 	
+	public boolean isPublicationFileUrlContainsUrls( String[] arrayOfUrl )
+	{
+		for ( String eachUrl : arrayOfUrl )
+		{
+			if ( this.url.contains( eachUrl ) )
+				return true;
+		}
+		return false;
+	}
+
 }
