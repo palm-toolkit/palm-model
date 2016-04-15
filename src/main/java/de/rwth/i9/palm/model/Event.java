@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -88,6 +90,12 @@ public class Event extends PersistableResource
 
 	@Column( columnDefinition = "int default 0" )
 	private int numberPaper;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "event", orphanRemoval = true )
+	private Set<EventInterestProfile> eventInterestProfiles;
+
+	@Column( columnDefinition = "bit default 0" )
+	private boolean isUpdateInterest = false;
 
 	/* store any information in json format */
 	@Column
@@ -369,4 +377,54 @@ public class Event extends PersistableResource
 
 		return this;
 	}
+
+	public Set<EventInterestProfile> getEventInterestProfiles()
+	{
+		return eventInterestProfiles;
+	}
+
+	public void setEventInterestProfiles( Set<EventInterestProfile> eventInterestProfiles )
+	{
+		this.eventInterestProfiles = eventInterestProfiles;
+	}
+
+	public Event addEventInterestProfiles( EventInterestProfile eventInterestProfile )
+	{
+		if ( this.eventInterestProfiles == null )
+			this.eventInterestProfiles = new LinkedHashSet<EventInterestProfile>();
+
+		this.eventInterestProfiles.add( eventInterestProfile );
+
+		return this;
+	}
+
+	public EventInterestProfile getSpecificEventInterestProfile( String interestProfileName )
+	{
+		if ( interestProfileName == null || interestProfileName.equals( "" ) )
+			return null;
+
+		if ( this.eventInterestProfiles == null || this.eventInterestProfiles.isEmpty() )
+			return null;
+
+		for ( EventInterestProfile aip : this.eventInterestProfiles )
+		{
+			if ( aip.getName().equals( interestProfileName ) )
+			{
+				return aip;
+			}
+		}
+
+		return null;
+	}
+
+	public boolean isUpdateInterest()
+	{
+		return isUpdateInterest;
+	}
+
+	public void setUpdateInterest( boolean isUpdateInterest )
+	{
+		this.isUpdateInterest = isUpdateInterest;
+	}
+
 }
