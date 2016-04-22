@@ -2,6 +2,7 @@ package de.rwth.i9.palm.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -68,6 +69,9 @@ public class EventGroup extends PersistableResource
 
 	@Column( columnDefinition = "bit default 0" )
 	private boolean added = false;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "eventGroup" )
+	private Set<UserEventGroupBookmark> userEventGroupBookmarks;
 
 	// helper for changing publicationType on >Spring binding
 	@Transient
@@ -147,7 +151,12 @@ public class EventGroup extends PersistableResource
 								isEventExist = true;
 						}
 						if ( eachEvent.getYear() != null && eachEvent.getYear().equals( event.getYear() ) )
+						{
+							if ( eachEvent.getDblpUrl() == null && event.getDblpUrl() != null )
+								eachEvent.setDblpUrl( event.getDblpUrl() );
 							isEventExist = true;
+						}
+
 					}
 				}
 
@@ -234,5 +243,16 @@ public class EventGroup extends PersistableResource
 	{
 		this.type = type;
 	}
+
+	public Set<UserEventGroupBookmark> getUserEventGroupBookmarks()
+	{
+		return userEventGroupBookmarks;
+	}
+
+	public void setUserEventGroupBookmarks( Set<UserEventGroupBookmark> userEventGroupBookmarks )
+	{
+		this.userEventGroupBookmarks = userEventGroupBookmarks;
+	}
+
 
 }

@@ -1,6 +1,8 @@
 package de.rwth.i9.palm.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,8 +36,7 @@ public class Circle extends PersistableResource
 {
 
 	@Column( nullable = false )
-	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
-	@Analyzer( definition = "customanalyzer" )
+	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	@Boost( 3.0f )
 	private String name;
 
@@ -49,19 +50,18 @@ public class Circle extends PersistableResource
 	@Column
 	@Lob
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
-	@Analyzer( definition = "customanalyzer" )
+	@Analyzer( definition = "lowercaseSnowballAnalyzer" )
 	private String description;
 
 	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	@JoinTable( name = "circle_author", joinColumns = @JoinColumn( name = "circle_id" ) , inverseJoinColumns = @JoinColumn( name = "author_id" ) )
 	private Set<Author> authors;
 
-	@ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	@ManyToMany( cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY )
 	@JoinTable( name = "circle_publication", joinColumns = @JoinColumn( name = "circle_id" ) , inverseJoinColumns = @JoinColumn( name = "publication_id" ) )
 	private Set<Publication> publications;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-	@JoinColumn( name = "circle_id" )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "circle", orphanRemoval = true )
 	private List<CircleWidget> circleWidgets;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "circle", orphanRemoval = true )
@@ -78,6 +78,9 @@ public class Circle extends PersistableResource
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "circle", orphanRemoval = true )
 	private Set<CircleTopicModelingProfile> circleTopicModelingProfiles;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "circle" )
+	private Set<UserCircleBookmark> userCircleBookmarks;
 
 	public String getName()
 	{
@@ -165,6 +168,20 @@ public class Circle extends PersistableResource
 		return this;
 	}
 
+	public Circle removePublication( Publication publication )
+	{
+		if ( this.publications == null || this.publications.isEmpty() )
+			return this;
+
+		for ( Iterator<Publication> i = this.publications.iterator(); i.hasNext(); )
+		{
+			Publication eachPublication = i.next();
+			if ( eachPublication.equals( publication ) )
+				i.remove();
+		}
+		return this;
+	}
+
 	public List<CircleWidget> getCircleWidgets()
 	{
 		return circleWidgets;
@@ -173,6 +190,36 @@ public class Circle extends PersistableResource
 	public void setCircleWidgets( List<CircleWidget> circleWidgets )
 	{
 		this.circleWidgets = circleWidgets;
+	}
+
+	public Circle addCircleWidget( CircleWidget circleWidget )
+	{
+		if ( this.circleWidgets == null )
+			this.circleWidgets = new ArrayList<CircleWidget>();
+		this.circleWidgets.add( circleWidget );
+		return this;
+	}
+
+	public Circle addCircleWidgetList( List<CircleWidget> circleWidgets )
+	{
+		if ( this.circleWidgets == null )
+			this.circleWidgets = new ArrayList<CircleWidget>();
+		this.circleWidgets.addAll( circleWidgets );
+		return this;
+	}
+
+	public Circle removeCircleWidget( CircleWidget circleWidget )
+	{
+		if ( this.circleWidgets == null || this.circleWidgets.isEmpty() )
+			return this;
+
+		for ( Iterator<CircleWidget> i = this.circleWidgets.iterator(); i.hasNext(); )
+		{
+			CircleWidget eachCircleWidget = i.next();
+			if ( eachCircleWidget.equals( circleWidget ) )
+				i.remove();
+		}
+		return this;
 	}
 
 	public boolean isLock()
@@ -262,6 +309,16 @@ public class Circle extends PersistableResource
 	public void setUpdateInterest( boolean isUpdateInterest )
 	{
 		this.isUpdateInterest = isUpdateInterest;
+	}
+
+	public Set<UserCircleBookmark> getUserCircleBookmarks()
+	{
+		return userCircleBookmarks;
+	}
+
+	public void setUserCircleBookmarks( Set<UserCircleBookmark> userCircleBookmarks )
+	{
+		this.userCircleBookmarks = userCircleBookmarks;
 	}
 
 }

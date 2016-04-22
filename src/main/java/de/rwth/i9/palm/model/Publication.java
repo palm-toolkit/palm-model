@@ -54,7 +54,7 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 @Table( name = "publication" )
 @Indexed
 @AnalyzerDef( 
-		name = "customanalyzer", 
+		name = "lowercaseSnowballAnalyzer",
 		tokenizer = @TokenizerDef( factory = StandardTokenizerFactory.class ), 
 		filters = { 
 			@TokenFilterDef( factory = LowerCaseFilterFactory.class ), 
@@ -65,7 +65,7 @@ public class Publication extends PersistableResource
 {
 	@Column( nullable = false )
 	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
-	@Analyzer( definition = "customanalyzer" )
+	@Analyzer( definition = "lowercaseSnowballAnalyzer" )
 	@Boost( 3.0f )
 	@Lob
 	private String title;
@@ -79,7 +79,7 @@ public class Publication extends PersistableResource
 	@Column
 	@Lob
 	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
-	@Analyzer( definition = "customanalyzer" )
+	@Analyzer( definition = "lowercaseSnowballAnalyzer" )
 	private String abstractText;
 
 	@Enumerated( EnumType.STRING )
@@ -89,7 +89,7 @@ public class Publication extends PersistableResource
 	@Column
 	@Lob
 	@Field( index = Index.YES, termVector = TermVector.WITH_POSITION_OFFSETS, store = Store.YES )
-	@Analyzer( definition = "customanalyzer" )
+	@Analyzer( definition = "lowercaseSnowballAnalyzer" )
 	private String contentText;
 
 	@Column
@@ -160,7 +160,7 @@ public class Publication extends PersistableResource
 	@JoinTable( name = "publication_keyword", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "keyword_id" ) )
 	private Set<Subject> subjects;
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication" )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
 	private Set<PublicationTopic> publicationTopics;
 	
 	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
@@ -187,6 +187,13 @@ public class Publication extends PersistableResource
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "publication", orphanRemoval = true )
 	private Set<PublicationFile> publicationFiles;
+
+	@ManyToMany( cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY )
+	@JoinTable( name = "circle_publication", joinColumns = @JoinColumn( name = "publication_id" ), inverseJoinColumns = @JoinColumn( name = "circle_id" ) )
+	private Set<Circle> circles;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication" )
+	private Set<UserPublicationBookmark> userPublicationBookmarks;
 
 	public Event getEvent()
 	{
@@ -481,11 +488,6 @@ public class Publication extends PersistableResource
 		return this;
 	}
 
-	public void removeAllPublicationTopic()
-	{
-		this.publicationTopics = null;
-	}
-
 	public Date getPublicationDate()
 	{
 		return publicationDate;
@@ -573,6 +575,14 @@ public class Publication extends PersistableResource
 		else
 		{
 			// check for url duplication, skip if duplicated
+			// first check from source
+			for ( PublicationSource pubSource : this.publicationSources )
+			{
+				if ( pubSource.getSourceType().equals( publicationFile.getSourceType() ) )
+					return this;
+			}
+			
+			// second check from file itself
 			for ( PublicationFile pubFile : this.publicationFiles )
 			{
 				if ( pubFile.getUrl().equals( publicationFile.getUrl() ) )
@@ -925,6 +935,42 @@ public class Publication extends PersistableResource
 		}
 
 		return false;
+	}
+
+	public boolean isPublicationContainSourceFrom( SourceType sourceType )
+	{
+		if ( this.publicationSources == null || this.publicationSources.isEmpty() )
+			return false;
+
+		for ( PublicationSource eachPublicationSource : this.publicationSources )
+		{
+			if ( eachPublicationSource.getSourceType().equals( sourceType ) )
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public Set<Circle> getCircles()
+	{
+		return circles;
+	}
+
+	public void setCircles( Set<Circle> circles )
+	{
+		this.circles = circles;
+	}
+
+	public Set<UserPublicationBookmark> getUserPublicationBookmarks()
+	{
+		return userPublicationBookmarks;
+	}
+
+	public void setUserPublicationBookmarks( Set<UserPublicationBookmark> userPublicationBookmarks )
+	{
+		this.userPublicationBookmarks = userPublicationBookmarks;
 	}
 
 }

@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -137,6 +138,9 @@ public class Author extends PersistableResource
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
 	private Set<AuthorTopicModelingProfile> authorTopicModelingProfiles;
 
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author" )
+	private Set<UserAuthorBookmark> userAuthorBookmarks;
+
 	public String getName()
 	{
 		return name;
@@ -256,6 +260,20 @@ public class Author extends PersistableResource
 		return this;
 	}
 
+	public Author removePublicationAuthor( PublicationAuthor publicationAuthor )
+	{
+		if ( this.publicationAuthors == null || this.publicationAuthors.isEmpty() )
+			return this;
+
+		for ( Iterator<PublicationAuthor> i = this.publicationAuthors.iterator(); i.hasNext(); )
+		{
+			PublicationAuthor eachPublicationAuthor = i.next();
+			if ( eachPublicationAuthor.equals( publicationAuthor ) )
+				i.remove();
+		}
+		return this;
+	}
+
 	public Location getBased_near()
 	{
 		return based_near;
@@ -308,16 +326,19 @@ public class Author extends PersistableResource
 		}
 		else
 		{
-			boolean updateSourceUrl = false;
+			boolean addSource = true;
 			for ( AuthorSource eachAuhorSource : this.authorSources )
 			{
 				if ( eachAuhorSource.getSourceType().equals( auhtorSource.getSourceType() ) )
 				{
-					eachAuhorSource.setSourceUrl( auhtorSource.getSourceUrl() );
-					updateSourceUrl = true;
+					//if ( eachAuhorSource.getSourceUrl().equals( auhtorSource.getSourceUrl() ) )
+					//{
+						addSource = false;
+						break;
+					//}
 				}
 			}
-			if ( !updateSourceUrl )
+			if ( addSource )
 				this.authorSources.add( auhtorSource );
 		}
 
@@ -554,6 +575,13 @@ public class Author extends PersistableResource
 		if ( nameAscii.length() == name.length() )
 		{
 			this.setCompleteName( name );
+			if ( name.contains( "-" ) )
+			{
+				AuthorAlias authorAlias = new AuthorAlias();
+				authorAlias.setCompleteName( name.replaceAll( "-", " " ) );
+				authorAlias.setAuthor( this );
+				this.addAlias( authorAlias );
+			}
 		}
 		else
 		{
@@ -608,7 +636,7 @@ public class Author extends PersistableResource
 			Pattern pattern = Pattern.compile( "\\p{InCombiningDiacriticalMarks}+" );
 			String mainName = pattern.matcher( nfdNormalizedString ).replaceAll( "" );
 
-			this.setCompleteName( mainName.replaceAll( "[^a-zA-Z ]", "" ) );
+			this.setCompleteName( mainName.replaceAll( "[^-a-zA-Z ]", "" ) );
 
 			AuthorAlias authorAlias1 = new AuthorAlias();
 			authorAlias1.setCompleteName( name );
@@ -621,6 +649,14 @@ public class Author extends PersistableResource
 				authorAlias2.setCompleteName( aliasName );
 				authorAlias2.setAuthor( this );
 				this.addAlias( authorAlias2 );
+			}
+
+			if ( mainName.contains( "-" ) )
+			{
+				AuthorAlias authorAlias3 = new AuthorAlias();
+				authorAlias3.setCompleteName( mainName.replaceAll( "-", " " ) );
+				authorAlias3.setAuthor( this );
+				this.addAlias( authorAlias3 );
 			}
 		}
 	}
@@ -760,6 +796,44 @@ public class Author extends PersistableResource
 	public void setUpdateInterest( boolean isUpdateInterest )
 	{
 		this.isUpdateInterest = isUpdateInterest;
+	}
+
+	public boolean isContainSource( Source source )
+	{
+		if ( this.authorSources == null )
+			return false;
+
+		else
+		{
+			for ( AuthorSource eachAuhorSource : this.authorSources )
+				if ( eachAuhorSource.getSourceType().toString().equals( source.getSourceType().toString() ) )
+					return true;
+		}
+		return false;
+	}
+
+	public boolean isContainAuthorSource( AuthorSource as )
+	{
+		if ( this.authorSources == null )
+			return false;
+
+		else
+		{
+			for ( AuthorSource eachAuhorSource : this.authorSources )
+				if ( eachAuhorSource.getSourceType().toString().equals( as.getSourceType().toString() ) )
+					return true;
+		}
+		return false;
+	}
+
+	public Set<UserAuthorBookmark> getUserAuthorBookmarks()
+	{
+		return userAuthorBookmarks;
+	}
+
+	public void setUserAuthorBookmarks( Set<UserAuthorBookmark> userAuthorBookmarks )
+	{
+		this.userAuthorBookmarks = userAuthorBookmarks;
 	}
 
 }
