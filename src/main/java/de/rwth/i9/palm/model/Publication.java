@@ -115,6 +115,10 @@ public class Publication extends PersistableResource
 	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	private PublicationType publicationType;
 
+	@Enumerated( EnumType.STRING )
+	@Column( length = 20, columnDefinition = "varchar(20) default 'NOT_COMPLETE'" )
+	private CompletionStatus publicationTypeStatus;
+
 	@Transient
 	List<Author> authors;
 
@@ -971,6 +975,16 @@ public class Publication extends PersistableResource
 	public void setUserPublicationBookmarks( Set<UserPublicationBookmark> userPublicationBookmarks )
 	{
 		this.userPublicationBookmarks = userPublicationBookmarks;
+	}
+
+	public CompletionStatus getPublicationTypeStatus()
+	{
+		return publicationTypeStatus;
+	}
+
+	public void setPublicationTypeStatus( CompletionStatus publicationTypeStatus )
+	{
+		this.publicationTypeStatus = publicationTypeStatus;
 	}
 
 }
