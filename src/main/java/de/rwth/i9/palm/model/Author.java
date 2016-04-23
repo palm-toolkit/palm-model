@@ -317,6 +317,20 @@ public class Author extends PersistableResource
 		this.authorSources.addAll( authorSources );
 	}
 
+	public Author removeAuthorSource( AuthorSource authorSource )
+	{
+		if ( this.authorSources == null || this.authorSources.isEmpty() )
+			return this;
+
+		for ( Iterator<AuthorSource> i = this.authorSources.iterator(); i.hasNext(); )
+		{
+			AuthorSource eachAuthorSource = i.next();
+			if ( eachAuthorSource.equals( authorSource ) )
+				i.remove();
+		}
+		return this;
+	}
+
 	public Author addAuthorSource( AuthorSource auhtorSource )
 	{
 		if ( this.authorSources == null )
