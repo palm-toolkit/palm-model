@@ -107,6 +107,9 @@ public class Author extends PersistableResource
 	@Column( columnDefinition = "bit default 0" )
 	private boolean isUpdateInterest = false;
 
+	@Column( columnDefinition = "bit default 0" )
+	private boolean isFetchPublicationDetail = false;
+
 	// relations
 
 	/* other name of the author */
@@ -315,6 +318,20 @@ public class Author extends PersistableResource
 			this.authorSources = new LinkedHashSet<AuthorSource>();
 		this.authorSources.clear();
 		this.authorSources.addAll( authorSources );
+	}
+
+	public Author removeAuthorSource( AuthorSource authorSource )
+	{
+		if ( this.authorSources == null || this.authorSources.isEmpty() )
+			return this;
+
+		for ( Iterator<AuthorSource> i = this.authorSources.iterator(); i.hasNext(); )
+		{
+			AuthorSource eachAuthorSource = i.next();
+			if ( eachAuthorSource.equals( authorSource ) )
+				i.remove();
+		}
+		return this;
 	}
 
 	public Author addAuthorSource( AuthorSource auhtorSource )
@@ -834,6 +851,16 @@ public class Author extends PersistableResource
 	public void setUserAuthorBookmarks( Set<UserAuthorBookmark> userAuthorBookmarks )
 	{
 		this.userAuthorBookmarks = userAuthorBookmarks;
+	}
+
+	public boolean isFetchPublicationDetail()
+	{
+		return isFetchPublicationDetail;
+	}
+
+	public void setFetchPublicationDetail( boolean isFetchPublicationDetail )
+	{
+		this.isFetchPublicationDetail = isFetchPublicationDetail;
 	}
 
 }
