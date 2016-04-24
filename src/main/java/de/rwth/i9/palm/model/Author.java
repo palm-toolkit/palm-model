@@ -107,6 +107,9 @@ public class Author extends PersistableResource
 	@Column( columnDefinition = "bit default 0" )
 	private boolean isUpdateInterest = false;
 
+	@Column( columnDefinition = "bit default 0" )
+	private boolean isFetchPublicationDetail = false;
+
 	// relations
 
 	/* other name of the author */
@@ -848,6 +851,16 @@ public class Author extends PersistableResource
 	public void setUserAuthorBookmarks( Set<UserAuthorBookmark> userAuthorBookmarks )
 	{
 		this.userAuthorBookmarks = userAuthorBookmarks;
+	}
+
+	public boolean isFetchPublicationDetail()
+	{
+		return isFetchPublicationDetail;
+	}
+
+	public void setFetchPublicationDetail( boolean isFetchPublicationDetail )
+	{
+		this.isFetchPublicationDetail = isFetchPublicationDetail;
 	}
 
 }
