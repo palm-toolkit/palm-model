@@ -93,6 +93,9 @@ public class Author extends PersistableResource
 	@Column(columnDefinition = "int default 0")
 	private int citedBy;
 
+	@Column( columnDefinition = "int default 0" )
+	private int noPublication;
+
 	/* These 2 transient variables are important for adding new Author via GUI*/
 	@Transient
 	private String tempId;
@@ -113,21 +116,21 @@ public class Author extends PersistableResource
 	// relations
 
 	/* other name of the author */
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "author", orphanRemoval = true )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
 	private Set<AuthorAlias> aliases;
 
-	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+	@ManyToOne( cascade = CascadeType.ALL )
 	@JoinColumn( name = "location_id" )
 	private Location based_near;
 
-	@OneToMany( fetch = FetchType.EAGER, mappedBy = "author" )
+	@OneToMany( fetch = FetchType.LAZY, mappedBy = "author" )
 	@ContainedIn
 	private Set<PublicationAuthor> publicationAuthors;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author" )
 	private Set<InterestAuthor> interestAuthors;
 
-	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+	@ManyToOne( cascade = CascadeType.ALL )
 	@JoinColumn( name = "institution_id" )
 	@IndexedEmbedded
 	private Institution institution;
@@ -861,6 +864,16 @@ public class Author extends PersistableResource
 	public void setFetchPublicationDetail( boolean isFetchPublicationDetail )
 	{
 		this.isFetchPublicationDetail = isFetchPublicationDetail;
+	}
+
+	public int getNoPublication()
+	{
+		return noPublication;
+	}
+
+	public void setNoPublication( int noPublication )
+	{
+		this.noPublication = noPublication;
 	}
 
 }
