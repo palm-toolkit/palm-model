@@ -578,17 +578,11 @@ public class Publication extends PersistableResource
 			this.publicationFiles = new HashSet<PublicationFile>();
 		else
 		{
-			// check for url duplication, skip if duplicated
-			// first check from source
-			for ( PublicationSource pubSource : this.publicationSources )
-			{
-				if ( pubSource.getSourceType().equals( publicationFile.getSourceType() ) )
-					return this;
-			}
-			
 			// second check from file itself
 			for ( PublicationFile pubFile : this.publicationFiles )
 			{
+				if ( publicationFile.getSourceType().equals( SourceType.CITESEERX ) && pubFile.getSourceType().equals( SourceType.CITESEERX ) )
+					return this;
 				if ( pubFile.getUrl().equals( publicationFile.getUrl() ) )
 					return this;
 			}
