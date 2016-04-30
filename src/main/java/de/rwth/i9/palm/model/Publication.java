@@ -409,6 +409,7 @@ public class Publication extends PersistableResource
 		// check for duplication source
 		PublicationSource existedPublicationSourceWithSameSourceType = this.getPublicationSourceBySourceType( publicationSource.getSourceType() );
 
+		// update information
 		if ( existedPublicationSourceWithSameSourceType != null )
 		{
 			// there are information from similar source, get the most complete
@@ -439,6 +440,10 @@ public class Publication extends PersistableResource
 				// choose longer text
 				if ( existedPublicationSourceWithSameSourceType.getAbstractText().length() < publicationSource.getAbstractText().length() )
 					existedPublicationSourceWithSameSourceType.setAbstractText( publicationSource.getAbstractText() );
+			}
+			if ( existedPublicationSourceWithSameSourceType.getPages() == null && publicationSource.getPages() != null )
+			{
+				existedPublicationSourceWithSameSourceType.setPages( publicationSource.getPages() );
 			}
 		}
 		else
