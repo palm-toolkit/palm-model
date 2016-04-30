@@ -69,6 +69,7 @@ public class EventGroup extends PersistableResource
 	private List<Event> events;
 
 	@Column( columnDefinition = "bit default 0" )
+	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	private boolean added = false;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "eventGroup" )
