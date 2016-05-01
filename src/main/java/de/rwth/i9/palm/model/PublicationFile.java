@@ -125,11 +125,14 @@ public class PublicationFile extends PersistableResource
 	
 	public boolean isPublicationFileUrlContainsUrls( String[] arrayOfUrl )
 	{
-		for ( String eachUrl : arrayOfUrl )
-		{
-			if ( this.url.contains( eachUrl ) )
-				return true;
-		}
+		if ( arrayOfUrl.length > 0 )
+			for ( String eachUrl : arrayOfUrl )
+			{
+				if ( eachUrl.equals( "" ) )
+					continue;
+				if ( this.url.contains( eachUrl ) )
+					return true;
+			}
 		return false;
 	}
 
