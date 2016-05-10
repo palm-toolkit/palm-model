@@ -1,6 +1,7 @@
 package de.rwth.i9.palm.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -68,6 +69,7 @@ public class EventGroup extends PersistableResource
 	private List<Event> events;
 
 	@Column( columnDefinition = "bit default 0" )
+	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
 	private boolean added = false;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "eventGroup" )
@@ -180,6 +182,21 @@ public class EventGroup extends PersistableResource
 				tempEvent.setVolume( event.getVolume() );
 			if ( event.getAdditionalInformation() != null )
 				tempEvent.setAdditionalInformation( event.getAdditionalInformation() );
+		}
+		return this;
+	}
+
+	/* removing event */
+	public EventGroup removeEvent( Event event )
+	{
+		if ( this.events == null || this.events.isEmpty() )
+			return this;
+
+		for ( Iterator<Event> i = this.events.iterator(); i.hasNext(); )
+		{
+			Event eachEvent = i.next();
+			if ( eachEvent.equals( event ) )
+				i.remove();
 		}
 		return this;
 	}

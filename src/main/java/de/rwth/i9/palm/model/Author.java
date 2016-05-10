@@ -1,6 +1,7 @@
 package de.rwth.i9.palm.model;
 
 import java.text.Normalizer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -874,6 +875,30 @@ public class Author extends PersistableResource
 	public void setNoPublication( int noPublication )
 	{
 		this.noPublication = noPublication;
+	}
+
+	/**
+	 * Recalculate publication and citation
+	 * 
+	 * @param author
+	 */
+	public Author reCalculateNumberOfPublicationAndCitation()
+	{
+		// count total citation on author
+		int citation = 0;
+		SimpleDateFormat sdf = new SimpleDateFormat( "yyyy" );
+
+		for ( Publication publication : this.getPublications() )
+		{
+			citation += publication.getCitedBy();
+			// set publication year
+			if ( publication.getPublicationDate() != null )
+				publication.setYear( sdf.format( publication.getPublicationDate() ) );
+		}
+
+		this.setNoPublication( this.getPublications().size() );
+		this.setCitedBy( citation );
+		return this;
 	}
 
 }
