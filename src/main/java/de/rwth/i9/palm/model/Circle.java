@@ -67,6 +67,9 @@ public class Circle extends PersistableResource
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "circle", orphanRemoval = true )
 	private Set<CircleInterestProfile> circleInterestProfiles;
 
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author", orphanRemoval = true )
+	private Set<AuthorTopicModelingProfile> authorTopicModelingProfiles;
+
 	@Column( name = "_lock", columnDefinition = "bit default 1" )
 	private boolean lock = true;
 
@@ -321,4 +324,13 @@ public class Circle extends PersistableResource
 		this.userCircleBookmarks = userCircleBookmarks;
 	}
 
+	public Circle addCircleTopicModelingProfiles( CircleTopicModelingProfile circleTopicModelingProfile )
+	{
+		if ( this.circleTopicModelingProfiles == null )
+			this.circleTopicModelingProfiles = new LinkedHashSet<CircleTopicModelingProfile>();
+
+		this.circleTopicModelingProfiles.add( circleTopicModelingProfile );
+
+		return this;
+	}
 }
