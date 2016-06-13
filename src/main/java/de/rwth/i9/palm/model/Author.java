@@ -901,4 +901,15 @@ public class Author extends PersistableResource
 		return this;
 	}
 
+	public Object getJsonStub()
+	{
+		final String _name = this.getName();
+		final String _id = this.getId();
+		return new Object()
+		{
+			public final String name = _name;
+			public final String id = _id;
+		};
+	}
+
 }
