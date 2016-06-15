@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
-import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
 
 import org.hibernate.search.annotations.Analyze;
@@ -21,7 +20,6 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 
 @Entity
 @Table( name = "publication" )
-@SecondaryTable( name = "term_value" )
 @Indexed
 public class DataMiningPublication extends PersistableResource
 {
@@ -43,7 +41,7 @@ public class DataMiningPublication extends PersistableResource
 		this.citedBy = citedBy;
 	}
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "publication", orphanRemoval = true )
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
 	private Set<PublicationTopic> publicationTopics;
 
 	public String getTitle()
