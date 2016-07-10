@@ -988,9 +988,11 @@ public class Publication extends PersistableResource
 
 	public Object getJsonStub()
 	{
+		final String _name = this.getTitle();
 		final String _id = this.getId();
 		return new Object()
 		{
+			public final String name = _name;
 			public final String id = _id;
 		};
 	}
