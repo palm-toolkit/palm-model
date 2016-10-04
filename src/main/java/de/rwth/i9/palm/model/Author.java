@@ -23,6 +23,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.transaction.Transactional;
 
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
@@ -44,6 +45,7 @@ import de.rwth.i9.palm.persistence.PersistableResource;
 @Entity
 @Table( name = "author" )
 @Indexed
+@Transactional
 @AnalyzerDef( 
 		name = "authoranalyzer", 
 		tokenizer = @TokenizerDef( factory = StandardTokenizerFactory.class ), 
@@ -127,6 +129,10 @@ public class Author extends PersistableResource
 	@OneToMany( fetch = FetchType.LAZY, mappedBy = "author" )
 	@ContainedIn
 	private Set<PublicationAuthor> publicationAuthors;
+
+	@OneToMany( fetch = FetchType.LAZY, mappedBy = "author" )
+	@ContainedIn
+	private Set<CircleAuthor> circleAuthors;
 
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author" )
 	private Set<InterestAuthor> interestAuthors;
@@ -218,6 +224,11 @@ public class Author extends PersistableResource
 		return publicationAuthors;
 	}
 	
+	public Set<CircleAuthor> getCircleAuthors()
+	{
+		return circleAuthors;
+	}
+
 	public List<Publication> getPublicationsByYear( int targetYear)
 	{
 		Calendar cal = Calendar.getInstance();
@@ -248,6 +259,11 @@ public class Author extends PersistableResource
 	public void setPublicationAuthors( Set<PublicationAuthor> publicationAuthors )
 	{
 		this.publicationAuthors = publicationAuthors;
+	}
+
+	public void setCircleAuthors( Set<CircleAuthor> circleAuthors )
+	{
+		this.circleAuthors = circleAuthors;
 	}
 
 	public Author addPublicationAuthor( final PublicationAuthor publicationAuthor )

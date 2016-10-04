@@ -271,5 +271,17 @@ public class EventGroup extends PersistableResource
 		this.userEventGroupBookmarks = userEventGroupBookmarks;
 	}
 
+	public Object getJsonStub()
+	{
+		final String _name = this.getName();
+		final String _id = this.getId();
+		final String _abbreviation = this.getNotation();
+		return new Object()
+		{
+			public final String name = _name;
+			public final String id = _id;
+			public final String abr = _abbreviation;
+		};
+	}
 
 }
