@@ -48,15 +48,16 @@ public class DataMiningEventGroup extends PersistableResource
 		this.events = events;
 	}
 
-	public EventGroupInterestFlat getEventgroup_interest_flat()
-	{
-		return eventgroup_interest_flat;
-	}
-
-	public void setEventgroup_interest_flat( EventGroupInterestFlat eventgroup_interest_flat )
-	{
-		this.eventgroup_interest_flat = eventgroup_interest_flat;
-	}
+	// public EventGroupInterestFlat getEventgroup_interest_flat()
+	// {
+	// return eventgroup_interest_flat;
+	// }
+	//
+	// public void setEventgroup_interest_flat( EventGroupInterestFlat
+	// eventgroup_interest_flat )
+	// {
+	// this.eventgroup_interest_flat = eventgroup_interest_flat;
+	// }
 
 	public EventGroupInterestFlat getEventGroup_interest_flat()
 	{
