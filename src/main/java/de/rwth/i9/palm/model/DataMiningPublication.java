@@ -81,9 +81,11 @@ public class DataMiningPublication extends PersistableResource
 	public Object getJsonStub()
 	{
 		final String _id = this.getId();
+		final String _title = this.getTitle();
 		return new Object()
 		{
 			public final String id = _id;
+			public final String title = _title;
 		};
 	}
 

@@ -35,6 +35,10 @@ public class DataMiningEventGroup extends PersistableResource
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "eventGroup" )
 	private List<Event> events;
 
+	@Column
+	@Field( index = Index.YES, analyze = Analyze.YES, store = Store.YES )
+	private String notation;
+
 	@OneToOne( fetch = FetchType.EAGER, mappedBy = "eventGroup" )
 	private EventGroupInterestFlat eventgroup_interest_flat;
 
@@ -79,14 +83,26 @@ public class DataMiningEventGroup extends PersistableResource
 		this.name = name;
 	}
 
+	public String getNotation()
+	{
+		return notation;
+	}
+
+	public void setNotation( String notation )
+	{
+		this.notation = notation;
+	}
+
 	public Object getJsonStub()
 	{
 		final String _id = this.getId();
 		final String _name = this.getName();
+		final String _abbreviation = this.getNotation();
 		return new Object()
 		{
 			public final String id = _id;
 			public final String name = _name;
+			public final String abr = _abbreviation;
 		};
 	}
 }
