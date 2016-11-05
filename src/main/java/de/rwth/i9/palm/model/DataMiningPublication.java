@@ -35,6 +35,23 @@ public class DataMiningPublication extends PersistableResource
 	@OneToOne( fetch = FetchType.EAGER, mappedBy = "publication" )
 	private PublicationTopicFlat publication_topic_flat;
 
+	@Column( length = 4 )
+	@Field( index = Index.YES, analyze = Analyze.NO, store = Store.YES )
+	private String year;
+
+	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
+	private Set<PublicationTopic> publicationTopics;
+
+	public String getTitle()
+	{
+		return title;
+	}
+
+	public void setTitle( String title )
+	{
+		this.title = title;
+	}
+
 	public PublicationTopicFlat getPublication_topic_flat()
 	{
 		return publication_topic_flat;
@@ -55,17 +72,14 @@ public class DataMiningPublication extends PersistableResource
 		this.citedBy = citedBy;
 	}
 
-	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publication", orphanRemoval = true )
-	private Set<PublicationTopic> publicationTopics;
-
-	public String getTitle()
+	public String getYear()
 	{
-		return title;
+		return year;
 	}
 
-	public void setTitle( String title )
+	public void setYear( String year )
 	{
-		this.title = title;
+		this.year = year;
 	}
 
 	public Set<PublicationTopic> getPublicationTopics()
