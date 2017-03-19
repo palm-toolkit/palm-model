@@ -17,12 +17,12 @@ import de.rwth.i9.palm.persistence.PersistableType;
 public class PublicationAuthor extends PersistableType
 {
 	@ManyToOne
-	@JoinColumn( name = "publication_id" )
+	@JoinColumn( name = "publication_id", unique = false )
 	@IndexedEmbedded
 	private Publication publication;
 
 	@ManyToOne
-	@JoinColumn( name = "author_id" )
+	@JoinColumn( name = "author_id", unique = false )
 	@IndexedEmbedded
 	private Author author;
 
