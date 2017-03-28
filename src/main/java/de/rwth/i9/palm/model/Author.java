@@ -97,6 +97,9 @@ public class Author extends PersistableResource
 	@Column( columnDefinition = "int default 0" )
 	private int noPublication;
 
+	@Column( columnDefinition = "int default 0" )
+	private int hindex;
+
 	/* These 2 transient variables are important for adding new Author via GUI*/
 	@Transient
 	private String tempId;
@@ -576,6 +579,16 @@ public class Author extends PersistableResource
 		// put other possibilities here
 
 		return false;
+	}
+
+	public int getHindex()
+	{
+		return hindex;
+	}
+
+	public void setHindex( int hindex )
+	{
+		this.hindex = hindex;
 	}
 
 	public void setAuthorNameAndAddAlias( String longerFirstName, String shorterFirstName )
